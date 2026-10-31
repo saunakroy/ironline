@@ -11,8 +11,10 @@ import {
   AlertCircle, 
   ShieldAlert, 
   Send, 
-  Receipt, 
-  Sparkles
+  Sparkles,
+  Users,
+  DollarSign,
+  Smartphone
 } from 'lucide-react';
 import { EvidenceModal } from './EvidenceModal';
 
@@ -48,95 +50,105 @@ export const MaintainerDashboard: React.FC<MaintainerDashboardProps> = ({
   };
 
   return (
-    <div className="space-y-6 pb-12">
+    <div className="space-y-7 pb-16">
       {/* Toast Notice */}
       {toolActionNotice && (
-        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white text-xs font-semibold px-4 py-2.5 rounded-full shadow-lg flex items-center gap-2 animate-in slide-in-from-top">
+        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white text-sm font-bold px-6 py-3 rounded-full shadow-2xl flex items-center gap-2.5 animate-in slide-in-from-top">
           <Sparkles className="w-4 h-4 text-amber-400" />
           {toolActionNotice}
         </div>
       )}
 
-      {/* 4 Clean Fleet Metrics Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-sm">
-          <div className="flex items-center justify-between text-slate-500 mb-1">
-            <span className="text-xs font-medium uppercase tracking-wider">Revenue / Mile</span>
-            <div className="p-1.5 rounded-lg bg-emerald-50 text-emerald-600">
-              <TrendingUp className="w-4 h-4" />
-            </div>
-          </div>
-          <div className="text-2xl font-bold font-mono text-slate-900">
-            ${kpis.revenuePerMile.toFixed(2)}
-          </div>
-          <div className="text-[11px] text-emerald-600 font-medium mt-1">
-            +$0.40/mi vs 2025 benchmark
-          </div>
-        </div>
+      {/* Simplified Header 1: Fleet Overview Metrics */}
+      <div className="space-y-3">
+        <h2 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+          <span>Fleet Overview</span>
+          <span className="text-xs font-bold text-slate-500 font-normal">
+            (Live Financial & Operating KPIs)
+          </span>
+        </h2>
 
-        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-sm">
-          <div className="flex items-center justify-between text-slate-500 mb-1">
-            <span className="text-xs font-medium uppercase tracking-wider">Fuel Cost / Mile</span>
-            <div className="p-1.5 rounded-lg bg-amber-50 text-amber-600">
-              <Fuel className="w-4 h-4" />
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-xs">
+            <div className="flex items-center justify-between text-slate-500 mb-2">
+              <span className="text-xs sm:text-sm font-bold uppercase tracking-wider">Revenue / Mile</span>
+              <div className="p-2 rounded-xl bg-emerald-50 text-emerald-600">
+                <TrendingUp className="w-5 h-5" />
+              </div>
+            </div>
+            <div className="text-2xl sm:text-3xl font-black font-mono text-slate-900">
+              ${kpis.revenuePerMile.toFixed(2)}
+            </div>
+            <div className="text-xs font-bold text-emerald-700 mt-1">
+              +$0.40/mi vs industry benchmark
             </div>
           </div>
-          <div className="text-2xl font-bold font-mono text-slate-900">
-            ${kpis.fuelCostPerMile.toFixed(2)}
-          </div>
-          <div className="text-[11px] text-slate-500 mt-1">
-            4 active trucks fuel synced
-          </div>
-        </div>
 
-        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-sm">
-          <div className="flex items-center justify-between text-slate-500 mb-1">
-            <span className="text-xs font-medium uppercase tracking-wider">Open Receivables</span>
-            <div className="p-1.5 rounded-lg bg-blue-50 text-blue-600">
-              <Clock className="w-4 h-4" />
+          <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-xs">
+            <div className="flex items-center justify-between text-slate-500 mb-2">
+              <span className="text-xs sm:text-sm font-bold uppercase tracking-wider">Fuel Cost / Mile</span>
+              <div className="p-2 rounded-xl bg-amber-50 text-amber-600">
+                <Fuel className="w-5 h-5" />
+              </div>
+            </div>
+            <div className="text-2xl sm:text-3xl font-black font-mono text-slate-900">
+              ${kpis.fuelCostPerMile.toFixed(2)}
+            </div>
+            <div className="text-xs font-semibold text-slate-500 mt-1">
+              Diesel index: $5.79/gal
             </div>
           </div>
-          <div className="text-2xl font-bold font-mono text-slate-900">
-            ${kpis.openReceivablesTotal.toLocaleString()}
-          </div>
-          <div className="text-[11px] text-amber-600 font-medium mt-1">
-            {kpis.overdueReceivablesCount} invoices overdue
-          </div>
-        </div>
 
-        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-sm">
-          <div className="flex items-center justify-between text-slate-500 mb-1">
-            <span className="text-xs font-medium uppercase tracking-wider">Unbilled Detention</span>
-            <div className="p-1.5 rounded-lg bg-rose-50 text-rose-600">
-              <AlertCircle className="w-4 h-4" />
+          <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-xs">
+            <div className="flex items-center justify-between text-slate-500 mb-2">
+              <span className="text-xs sm:text-sm font-bold uppercase tracking-wider">Open Receivables</span>
+              <div className="p-2 rounded-xl bg-blue-50 text-blue-600">
+                <Clock className="w-5 h-5" />
+              </div>
+            </div>
+            <div className="text-2xl sm:text-3xl font-black font-mono text-slate-900">
+              ${kpis.openReceivablesTotal.toLocaleString()}
+            </div>
+            <div className="text-xs font-bold text-amber-700 mt-1">
+              {kpis.overdueReceivablesCount} invoices overdue (&gt;30d)
             </div>
           </div>
-          <div className="text-2xl font-bold font-mono text-rose-600">
-            -${kpis.unbilledDetentionLoss.toLocaleString()}
-          </div>
-          <div className="text-[11px] text-slate-500 mt-1">
-            Recoverable via signed BOLs
+
+          <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-xs">
+            <div className="flex items-center justify-between text-slate-500 mb-2">
+              <span className="text-xs sm:text-sm font-bold uppercase tracking-wider">Unbilled Detention</span>
+              <div className="p-2 rounded-xl bg-rose-50 text-rose-600">
+                <AlertCircle className="w-5 h-5" />
+              </div>
+            </div>
+            <div className="text-2xl sm:text-3xl font-black font-mono text-rose-600">
+              -${kpis.unbilledDetentionLoss.toLocaleString()}
+            </div>
+            <div className="text-xs font-bold text-rose-700 mt-1">
+              Recoverable via signed BOLs
+            </div>
           </div>
         </div>
       </div>
 
-      {/* SECTION 1: DRIVERS DASHBOARD (Name, Stats, Expands into Tools) */}
+      {/* Simplified Header 2: Drivers & Equipment (Name, Stats, Expands into Tools) */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
-            <h2 className="text-lg font-bold text-slate-900 tracking-tight">
-              Fleet Drivers & Active Equipment
+            <h2 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+              <Users className="w-5 h-5 text-blue-600" />
+              <span>Drivers & Equipment</span>
             </h2>
-            <p className="text-xs text-slate-500">
-              Expand any driver card to inspect their live load, reconcile documents, and access tools.
+            <p className="text-sm text-slate-500">
+              Tap any driver card to inspect their assignment, audit receipts, or run fleet tools.
             </p>
           </div>
-          <span className="text-xs font-mono font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-700">
-            4 Trucks En Route
+          <span className="text-xs font-mono font-bold px-3 py-1.5 rounded-full bg-slate-100 text-slate-700 self-start sm:self-auto">
+            4 Trucks Active
           </span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
           {drivers.map((driver) => {
             const isExpanded = expandedDriverId === driver.id;
             const driverLoad = loads.find(l => l.id === driver.currentLoadId);
@@ -145,65 +157,69 @@ export const MaintainerDashboard: React.FC<MaintainerDashboardProps> = ({
             return (
               <div 
                 key={driver.id} 
-                className={`bg-white rounded-3xl border transition-all duration-200 shadow-sm ${
-                  isExpanded ? 'border-blue-400 ring-2 ring-blue-500/10' : 'border-slate-200/80 hover:border-slate-300'
+                className={`bg-white rounded-3xl border transition-all duration-200 shadow-xs ${
+                  isExpanded ? 'border-blue-400 ring-2 ring-blue-500/10' : 'border-slate-200 hover:border-slate-300'
                 }`}
               >
-                {/* Driver Summary Card */}
-                <div className="p-5 flex items-start justify-between gap-4">
-                  <div className="flex items-center gap-3.5">
+                {/* Driver Card Header */}
+                <div 
+                  onClick={() => setExpandedDriverId(isExpanded ? null : driver.id)}
+                  className="p-5 sm:p-6 flex items-start justify-between gap-4 cursor-pointer select-none"
+                >
+                  <div className="flex items-center gap-4">
                     <img 
                       src={driver.avatar} 
                       alt={driver.name} 
-                      className="w-12 h-12 rounded-2xl object-cover border border-slate-100 shrink-0"
+                      className="w-14 h-14 rounded-2xl object-cover border-2 border-slate-100 shadow-sm shrink-0"
                     />
                     <div>
-                      <div className="flex items-center gap-2">
-                        <h3 className="text-base font-bold text-slate-900">{driver.name}</h3>
-                        <span className={`px-2 py-0.5 text-[10px] font-bold rounded-full ${
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h3 className="text-lg font-black text-slate-900">{driver.name}</h3>
+                        <span className={`px-2.5 py-0.5 text-xs font-bold rounded-full ${
                           driver.status === 'Driving' ? 'bg-blue-50 text-blue-700 border border-blue-200' :
                           driver.status === 'Loading / Dock' ? 'bg-amber-50 text-amber-700 border border-amber-200' :
-                          'bg-slate-100 text-slate-600'
+                          'bg-slate-100 text-slate-700'
                         }`}>
                           {driver.status}
                         </span>
                       </div>
-                      <p className="text-xs text-slate-500 font-medium mt-0.5">
-                        {driver.truckId} • {driver.phone} • Fuel {driver.fuelCardNumber}
+                      <p className="text-xs font-semibold text-slate-500 mt-1">
+                        {driver.truckId} • {driver.phone} • {driver.fuelCardNumber}
                       </p>
                     </div>
                   </div>
 
                   <button
-                    onClick={() => setExpandedDriverId(isExpanded ? null : driver.id)}
-                    className="p-2 text-slate-400 hover:text-slate-800 rounded-xl hover:bg-slate-100 transition"
+                    className="p-2 text-slate-400 hover:text-slate-700 rounded-xl hover:bg-slate-100 transition"
                   >
-                    {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+                    {isExpanded ? <ChevronUp className="w-5 h-5 text-blue-600" /> : <ChevronDown className="w-5 h-5" />}
                   </button>
                 </div>
 
-                {/* Driver Stats Pill Row */}
-                <div className="px-5 pb-4 grid grid-cols-3 gap-2">
-                  <div className="p-2.5 rounded-xl bg-slate-50">
-                    <div className="text-[10px] font-semibold text-slate-500 uppercase">Today's Run</div>
-                    <div className="text-sm font-bold font-mono text-slate-900">{driver.todayMiles} mi</div>
+                {/* Driver Stats Row */}
+                <div className="px-5 sm:px-6 pb-5 grid grid-cols-3 gap-3">
+                  <div className="p-3 rounded-2xl bg-slate-50 border border-slate-100">
+                    <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">Today's Miles</div>
+                    <div className="text-base sm:text-lg font-black font-mono text-slate-900 mt-0.5">{driver.todayMiles} mi</div>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-slate-50">
-                    <div className="text-[10px] font-semibold text-slate-500 uppercase">Current Load</div>
-                    <div className="text-sm font-bold font-mono text-blue-600 truncate">
+
+                  <div className="p-3 rounded-2xl bg-slate-50 border border-slate-100">
+                    <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">Load ID</div>
+                    <div className="text-base sm:text-lg font-black font-mono text-blue-600 truncate mt-0.5">
                       {driver.currentLoadId || 'None'}
                     </div>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-slate-50">
-                    <div className="text-[10px] font-semibold text-slate-500 uppercase">Audit Status</div>
-                    <div className="text-sm font-bold truncate">
+
+                  <div className="p-3 rounded-2xl bg-slate-50 border border-slate-100">
+                    <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">Agent Audit</div>
+                    <div className="text-base sm:text-lg font-bold truncate mt-0.5">
                       {driverProblem ? (
                         <span className="text-amber-600 flex items-center gap-1">
-                          <AlertCircle className="w-3.5 h-3.5" /> 1 Flag
+                          <AlertCircle className="w-4 h-4" /> 1 Flag
                         </span>
                       ) : (
                         <span className="text-emerald-600 flex items-center gap-1">
-                          <CheckCircle className="w-3.5 h-3.5" /> Clean
+                          <CheckCircle className="w-4 h-4" /> Clean
                         </span>
                       )}
                     </div>
@@ -212,91 +228,100 @@ export const MaintainerDashboard: React.FC<MaintainerDashboardProps> = ({
 
                 {/* EXPANDABLE TOOLS ACCORDION */}
                 {isExpanded && (
-                  <div className="px-5 pb-5 pt-3 border-t border-slate-100 bg-slate-50/60 rounded-b-3xl space-y-4 animate-in fade-in duration-150">
+                  <div className="px-5 sm:px-6 pb-6 pt-4 border-t border-slate-100 bg-slate-50/70 rounded-b-3xl space-y-4 animate-in fade-in duration-150">
                     {/* Assigned Load Details */}
                     {driverLoad && (
-                      <div className="bg-white p-3.5 rounded-2xl border border-slate-200/80 shadow-xs">
-                        <div className="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1">
-                          <span className="uppercase tracking-wider font-mono">Assigned Load {driverLoad.id}</span>
-                          <span className="text-emerald-700 font-mono font-bold">${driverLoad.agreedRate.toFixed(2)}</span>
+                      <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+                        <div className="flex items-center justify-between text-xs font-bold text-slate-500 mb-1">
+                          <span className="font-mono uppercase">Assigned Load {driverLoad.id}</span>
+                          <span className="text-emerald-700 font-mono font-bold text-sm">${driverLoad.agreedRate.toFixed(2)}</span>
                         </div>
-                        <div className="text-sm font-bold text-slate-900">
+                        <div className="text-base font-bold text-slate-900">
                           {driverLoad.origin} → {driverLoad.destination}
                         </div>
-                        <div className="text-xs text-slate-500 mt-0.5">
-                          Broker: {driverLoad.broker} • Status: {driverLoad.status}
+                        <div className="text-xs text-slate-500 font-medium mt-1">
+                          Broker: <strong>{driverLoad.broker}</strong> • Status: {driverLoad.status}
                         </div>
                       </div>
                     )}
 
-                    {/* Problem Alert if applicable */}
+                    {/* Discrepancy Flag Banner */}
                     {driverProblem && (
-                      <div className="bg-amber-50/80 border border-amber-200 p-3.5 rounded-2xl flex items-center justify-between gap-3">
-                        <div className="space-y-0.5">
-                          <div className="text-xs font-bold text-amber-900 flex items-center gap-1.5">
+                      <div className="bg-amber-50 border border-amber-200 p-4 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div className="space-y-1">
+                          <div className="text-sm font-bold text-amber-950 flex items-center gap-2">
                             <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
                             {driverProblem.title}
                           </div>
-                          <div className="text-xs font-mono font-semibold text-amber-700">
-                            {driverProblem.impactFormatted}
+                          <div className="text-xs font-mono font-bold text-amber-800">
+                            Impact: {driverProblem.impactFormatted}
                           </div>
                         </div>
                         <button
                           onClick={() => setSelectedProblemForProof(driverProblem)}
-                          className="px-3 py-1.5 text-xs font-bold bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 rounded-xl transition shadow-xs whitespace-nowrap"
+                          className="px-4 py-2 text-xs font-bold bg-white hover:bg-slate-50 text-slate-900 border border-slate-200 rounded-xl transition shadow-xs flex items-center justify-center gap-1.5 shrink-0"
                         >
+                          <FileSearch className="w-3.5 h-3.5 text-blue-600" />
                           Inspect Proof
                         </button>
                       </div>
                     )}
 
-                    {/* Driver Action Tools */}
+                    {/* Expandable Action Tools */}
                     <div>
-                      <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">
+                      <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2.5">
                         Driver Action Tools
                       </div>
-                      <div className="grid grid-cols-2 gap-2">
+                      <div className="grid grid-cols-2 gap-2.5">
                         <button
                           onClick={() => handleRunToolAction('Detention Reconciler', driver.name)}
-                          className="p-2.5 rounded-xl bg-white border border-slate-200 hover:border-blue-400 text-left transition flex items-center gap-2 group shadow-xs"
+                          className="p-3.5 rounded-2xl bg-white border border-slate-200 hover:border-blue-400 text-left transition flex items-center gap-3 group shadow-xs active:scale-98"
                         >
-                          <Clock className="w-4 h-4 text-blue-600 group-hover:scale-110 transition-transform" />
+                          <div className="p-2 rounded-xl bg-blue-50 text-blue-600 group-hover:scale-110 transition-transform">
+                            <Clock className="w-5 h-5" />
+                          </div>
                           <div>
-                            <div className="text-xs font-bold text-slate-800">Detention Audit</div>
-                            <div className="text-[10px] text-slate-500">BOL vs 2hr free</div>
+                            <div className="text-sm font-bold text-slate-900">Detention Audit</div>
+                            <div className="text-xs text-slate-500 font-medium">BOL vs 2hr free</div>
                           </div>
                         </button>
 
                         <button
-                          onClick={() => handleRunToolAction('Fuel Card Telematics Check', driver.name)}
-                          className="p-2.5 rounded-xl bg-white border border-slate-200 hover:border-amber-400 text-left transition flex items-center gap-2 group shadow-xs"
+                          onClick={() => handleRunToolAction('Fuel Watchdog', driver.name)}
+                          className="p-3.5 rounded-2xl bg-white border border-slate-200 hover:border-amber-400 text-left transition flex items-center gap-3 group shadow-xs active:scale-98"
                         >
-                          <ShieldAlert className="w-4 h-4 text-amber-600 group-hover:scale-110 transition-transform" />
+                          <div className="p-2 rounded-xl bg-amber-50 text-amber-600 group-hover:scale-110 transition-transform">
+                            <ShieldAlert className="w-5 h-5" />
+                          </div>
                           <div>
-                            <div className="text-xs font-bold text-slate-800">Fuel Watchdog</div>
-                            <div className="text-[10px] text-slate-500">Audit {driver.fuelCardNumber}</div>
+                            <div className="text-sm font-bold text-slate-900">Fuel Watchdog</div>
+                            <div className="text-xs text-slate-500 font-medium">Audit {driver.fuelCardNumber}</div>
                           </div>
                         </button>
 
                         <button
-                          onClick={() => handleRunToolAction('SMS Prompt for POD', driver.name)}
-                          className="p-2.5 rounded-xl bg-white border border-slate-200 hover:border-purple-400 text-left transition flex items-center gap-2 group shadow-xs"
+                          onClick={() => handleRunToolAction('Send Driver SMS Prompt', driver.name)}
+                          className="p-3.5 rounded-2xl bg-white border border-slate-200 hover:border-purple-400 text-left transition flex items-center gap-3 group shadow-xs active:scale-98"
                         >
-                          <Send className="w-4 h-4 text-purple-600 group-hover:scale-110 transition-transform" />
+                          <div className="p-2 rounded-xl bg-purple-50 text-purple-600 group-hover:scale-110 transition-transform">
+                            <Send className="w-5 h-5" />
+                          </div>
                           <div>
-                            <div className="text-xs font-bold text-slate-800">Prompt POD Photo</div>
-                            <div className="text-[10px] text-slate-500">Send driver SMS</div>
+                            <div className="text-sm font-bold text-slate-900">Prompt POD Photo</div>
+                            <div className="text-xs text-slate-500 font-medium">Send SMS to driver</div>
                           </div>
                         </button>
 
                         <button
                           onClick={() => onSelectDriverForTruckerMode && onSelectDriverForTruckerMode(driver)}
-                          className="p-2.5 rounded-xl bg-blue-50 border border-blue-200 hover:bg-blue-100 text-left transition flex items-center gap-2 group shadow-xs"
+                          className="p-3.5 rounded-2xl bg-blue-50 border border-blue-200 hover:bg-blue-100 text-left transition flex items-center gap-3 group shadow-xs active:scale-98"
                         >
-                          <Receipt className="w-4 h-4 text-blue-700 group-hover:scale-110 transition-transform" />
+                          <div className="p-2 rounded-xl bg-blue-600 text-white group-hover:scale-110 transition-transform">
+                            <Smartphone className="w-5 h-5" />
+                          </div>
                           <div>
-                            <div className="text-xs font-bold text-blue-900">Switch to Driver UI</div>
-                            <div className="text-[10px] text-blue-700">Open mobile upload view</div>
+                            <div className="text-sm font-bold text-blue-950">Switch to Driver UI</div>
+                            <div className="text-xs text-blue-700 font-medium">Open mobile view</div>
                           </div>
                         </button>
                       </div>
@@ -309,25 +334,26 @@ export const MaintainerDashboard: React.FC<MaintainerDashboardProps> = ({
         </div>
       </div>
 
-      {/* SECTION 2: DECLUTTERED NIGHTLY BRIEFING (Focused & Clean) */}
-      <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm space-y-5">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      {/* Simplified Header 3: Nightly End-of-Day Reconciliation */}
+      <div className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-xs space-y-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-              <h2 className="text-lg font-bold text-slate-900 tracking-tight">
-                Nightly End-of-Day Reconciliation
+              <span className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse" />
+              <h2 className="text-xl font-black text-slate-900 tracking-tight">
+                Nightly Reconciliation
               </h2>
             </div>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Agents cross-checked all rate confirmations, BOL photos, and fuel transactions at 18:00 EST.
+            <p className="text-sm text-slate-500 mt-1">
+              Cross-checked rate confirmations, BOL timestamps, and fuel receipts at 18:00 EST.
             </p>
           </div>
 
-          <div className="bg-slate-50 px-4 py-2.5 rounded-2xl border border-slate-200 flex items-center gap-3 self-start sm:self-auto">
-            <div className="text-right">
-              <div className="text-[10px] font-bold uppercase text-slate-500 font-mono">Flagged Tonight</div>
-              <div className="text-lg font-black font-mono text-slate-900">
+          <div className="bg-slate-50 px-5 py-3 rounded-2xl border border-slate-200 flex items-center gap-3.5 self-start sm:self-auto">
+            <DollarSign className="w-6 h-6 text-emerald-600" />
+            <div>
+              <div className="text-xs font-bold uppercase text-slate-500 font-mono">Flagged Tonight</div>
+              <div className="text-xl font-black font-mono text-slate-900">
                 ${totalTonightAtStake.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </div>
             </div>
@@ -337,46 +363,46 @@ export const MaintainerDashboard: React.FC<MaintainerDashboardProps> = ({
         {/* Clean, Non-overwhelming Priority Cards */}
         <div className="divide-y divide-slate-100">
           {tonightProblems.map((problem) => (
-            <div key={problem.id} className="py-4 first:pt-0 last:pb-0 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div key={problem.id} className="py-4.5 first:pt-0 last:pb-0 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="space-y-1.5 flex-1">
-                <div className="flex items-center gap-2">
-                  <span className="px-2 py-0.5 text-xs font-mono font-bold rounded bg-slate-100 text-slate-700">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="px-2.5 py-0.5 text-xs font-mono font-bold rounded-md bg-slate-100 text-slate-700 border border-slate-200">
                     {problem.id}
                   </span>
-                  <span className="text-xs font-semibold text-slate-500">
+                  <span className="text-xs font-bold text-slate-600">
                     {problem.driver || problem.truckId || 'Fleet-wide'}
                   </span>
-                  <span className="text-[11px] font-mono text-slate-400">
+                  <span className="text-xs font-mono text-slate-400">
                     via {problem.agentResponsible} agent
                   </span>
                 </div>
 
-                <div className="text-sm font-bold text-slate-900">
+                <div className="text-base font-bold text-slate-900">
                   {problem.title}
                 </div>
 
-                <div className="text-xs text-slate-600 line-clamp-2 max-w-2xl">
+                <div className="text-sm text-slate-600 line-clamp-2 max-w-2xl">
                   {problem.description}
                 </div>
               </div>
 
               <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-2 shrink-0">
-                <div className="text-sm font-bold font-mono text-slate-900">
+                <div className="text-base sm:text-lg font-black font-mono text-slate-900">
                   {problem.impactFormatted}
                 </div>
 
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setSelectedProblemForProof(problem)}
-                    className="px-3 py-1.5 text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl transition flex items-center gap-1"
+                    className="px-4 py-2 text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl transition flex items-center gap-1.5"
                   >
-                    <FileSearch className="w-3.5 h-3.5" /> Proof
+                    <FileSearch className="w-4 h-4 text-blue-600" /> Proof
                   </button>
                   <button
                     onClick={() => onResolveProblem(problem.id)}
-                    className="px-3.5 py-1.5 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition shadow-xs flex items-center gap-1"
+                    className="px-4 py-2 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition shadow-xs flex items-center gap-1.5"
                   >
-                    <CheckCircle className="w-3.5 h-3.5" /> Reconcile
+                    <CheckCircle className="w-4 h-4" /> Reconcile
                   </button>
                 </div>
               </div>
@@ -384,11 +410,11 @@ export const MaintainerDashboard: React.FC<MaintainerDashboardProps> = ({
           ))}
         </div>
 
-        {/* Backlog Toggle (Keeps the page clean) */}
-        <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
+        {/* Backlog Accordion Toggle */}
+        <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
           <button
             onClick={() => setShowBacklog(!showBacklog)}
-            className="text-xs font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1.5 py-1 transition"
+            className="text-sm font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1.5 py-1 transition"
           >
             {showBacklog ? (
               <>
@@ -405,10 +431,10 @@ export const MaintainerDashboard: React.FC<MaintainerDashboardProps> = ({
         {showBacklog && (
           <div className="space-y-3 pt-3 animate-in fade-in">
             {backlogProblems.map((problem) => (
-              <div key={problem.id} className="p-3.5 bg-slate-50 rounded-2xl border border-slate-200/80 flex items-center justify-between gap-3 text-xs">
+              <div key={problem.id} className="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-between gap-3 text-sm">
                 <div>
                   <div className="font-bold text-slate-900">{problem.id}: {problem.title}</div>
-                  <div className="text-slate-500 text-[11px] mt-0.5">{problem.suggestedAction}</div>
+                  <div className="text-slate-500 text-xs mt-0.5">{problem.suggestedAction}</div>
                 </div>
                 <div className="font-mono font-bold text-slate-800">{problem.impactFormatted}</div>
               </div>
