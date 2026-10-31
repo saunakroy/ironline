@@ -107,12 +107,12 @@ export class Company extends Actor<null, null, CompanyOutgoing> {
 
     // ---------- live loads ----------
 
-    /** Find or create the load for a rate con / tender reference. Returns the carrier load id. */
-    async registerLoad(customerReference: string, pickupAppointment: string | null): Promise<string> {
+    /** Find or create the load for a rate con / tender reference. `created` means the load number is new (or reused after a reset). */
+    async registerLoad(customerReference: string, pickupAppointment: string | null): Promise<{ loadId: string; created: boolean }> {
         const existing = this.db.exec("SELECT load_id FROM live_loads WHERE ref_norm = ?", normRef(customerReference))[0] as
             | { load_id: string }
             | undefined
-        if (existing) return existing.load_id
+        if (existing) return { loadId: existing.load_id, created: false }
         if (this.nextLoadSeq === 0) this.nextLoadSeq = maxHistoryLoadSeq(this.db) + 1
         const loadId = `IRN-${this.nextLoadSeq}`
         this.nextLoadSeq = this.nextLoadSeq + 1
@@ -126,7 +126,7 @@ export class Company extends Actor<null, null, CompanyOutgoing> {
             JSON.stringify(rec),
             new Date().toISOString()
         )
-        return loadId
+        return { loadId, created: true }
     }
 
     /** Deterministic matching: reference, then BOL number. Returns null when ambiguous (goes to "unmatched"). */
@@ -295,6 +295,12 @@ export class Load extends Actor<null, null, LoadRecord> {
 
     async init(loadId: string, customerReference: string): Promise<LoadRecord> {
         if (!this.record) this.record = emptyLoad(loadId, customerReference)
+        return this.record
+    }
+
+    /** Start a brand-new load here, discarding anything left from a previous use of this load number. */
+    async start(loadId: string, customerReference: string): Promise<LoadRecord> {
+        this.record = emptyLoad(loadId, customerReference)
         return this.record
     }
 

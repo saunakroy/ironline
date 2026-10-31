@@ -19,10 +19,11 @@ export async function routeDoc(companyId: string, doc: ExtractedDoc): Promise<Ro
     if (doc.kind === "driver_texts" || doc.kind === "owner_notes") return routeMessages(companyId, doc)
 
     let loadId: string | null = null
+    let created = false
     let matchedBy = "unmatched"
     if ((doc.kind === "rate_confirmation" || doc.kind === "load_tender") && doc.reference) {
-        loadId = await company.registerLoad(doc.reference, doc.pickup?.appointment ?? null)
-        matchedBy = "new load from " + doc.kind
+        ;({ loadId, created } = await company.registerLoad(doc.reference, doc.pickup?.appointment ?? null))
+        matchedBy = created ? "new load from " + doc.kind : "existing load (" + doc.kind + ")"
     } else {
         loadId = await company.matchLoad({ reference: doc.reference, bolNumber: doc.bolNumber })
         if (loadId) matchedBy = doc.reference ? "reference" : "bol number"
@@ -35,7 +36,8 @@ export async function routeDoc(companyId: string, doc: ExtractedDoc): Promise<Ro
 
     const ref = doc.reference ?? loadId
     const load = Load.get(loadActorId(companyId, loadId))
-    await load.init(loadId, ref)
+    if (created) await load.start(loadId, ref)
+    else await load.init(loadId, ref)
     const record = await load.applyDoc(doc)
     await company.upsertLoad(record)
     await company.recordDocument(doc.file, doc.kind, loadId, matchedBy)
