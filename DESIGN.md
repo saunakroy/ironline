@@ -49,6 +49,21 @@ typography:
     fontWeight: 600
     lineHeight: 1.4
     letterSpacing: "-0.01em"
+  caption:
+    fontFamily: "JetBrains Mono, monospace"
+    fontSize: "11px"
+    fontWeight: 600
+    lineHeight: 1.3
+  caption-sm:
+    fontFamily: "JetBrains Mono, monospace"
+    fontSize: "10px"
+    fontWeight: 700
+    lineHeight: 1.2
+  caption-xs:
+    fontFamily: "JetBrains Mono, monospace"
+    fontSize: "9px"
+    fontWeight: 700
+    lineHeight: 1.2
 rounded:
   sm: "6px"
   md: "12px"

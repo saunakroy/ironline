@@ -1,5 +1,15 @@
 export type AgentType = 'extractor' | 'reconciler' | 'watchdog' | 'briefer';
 export type ActiveTab = 'home' | 'dashboard' | 'agents';
+export type UserRole = 'owner' | 'trucker';
+
+export interface DriverSession {
+  id: string;
+  name: string;
+  truckId: string;
+  currentLoadId: string;
+  route: string;
+  cardLast4: string;
+}
 
 export interface BriefingField {
   label: string;

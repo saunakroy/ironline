@@ -4,7 +4,8 @@ import {
   WATCH_ITEMS, 
   DEMO_FILES_SAMPLE, 
   AGENT_RELAY_MESSAGES, 
-  FLEET_KPIS 
+  FLEET_KPIS,
+  DEMO_DRIVERS
 } from './data/mockData';
 import { 
   ActiveTab, 
@@ -12,15 +13,22 @@ import {
   WatchItem, 
   ProcessedFile, 
   AgentMessage, 
-  FleetKPIs 
+  FleetKPIs,
+  UserRole,
+  DriverSession
 } from './types';
 import { Navbar } from './components/Navbar';
 import { HomeScreen } from './components/HomeScreen';
 import { DashboardTab } from './components/DashboardTab';
 import { AgentsTab } from './components/AgentsTab';
 import { EvidenceDrawer } from './components/EvidenceDrawer';
+import { LoginModal } from './components/LoginModal';
+import { TruckerPortal } from './components/TruckerPortal';
 
 export default function App() {
+  const [currentRole, setCurrentRole] = useState<UserRole>('owner');
+  const [activeDriver, setActiveDriver] = useState<DriverSession>(DEMO_DRIVERS[0]);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<ActiveTab>('home');
   const [briefingItems, setBriefingItems] = useState<BriefingItem[]>(BRIEFING_ITEMS);
   const [watchItems] = useState<WatchItem[]>(WATCH_ITEMS);
@@ -35,6 +43,50 @@ export default function App() {
     setTimeout(() => {
       setToastMessage(null);
     }, 3500);
+  };
+
+  const handleSelectRole = (role: UserRole, driver?: DriverSession) => {
+    setCurrentRole(role);
+    if (driver) {
+      setActiveDriver(driver);
+    }
+    showToast(
+      role === 'owner' 
+        ? '👔 Authenticated: Fleet Owner (Marcus Vance)' 
+        : `🚛 In-Cab Mode: ${(driver || activeDriver).name} (${(driver || activeDriver).truckId})`
+    );
+  };
+
+  const handleDriverUpload = (docName: string, docType: string, keyFields: Record<string, string>) => {
+    const newDoc: ProcessedFile = {
+      id: `FILE-${Date.now()}`,
+      name: docName,
+      size: '1.4 MB',
+      type: 'JPG',
+      uploadedAt: 'Just now',
+      stage: 'done',
+      docType,
+      confidence: 96,
+      loadId: activeDriver.currentLoadId,
+      keyFields,
+      isExpanded: true
+    };
+
+    setProcessedFiles((prev) => [newDoc, ...prev]);
+
+    // Also dispatch message into the agent relay stream
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const relayMsg: AgentMessage = {
+      id: `RELAY-${Date.now()}`,
+      timestamp: timeStr,
+      from: 'extractor',
+      to: 'reconciler',
+      loadId: activeDriver.currentLoadId,
+      text: `CAB INTAKE: ${activeDriver.name} uploaded ${docType}. Reconciler verifying against contract terms.`,
+      priority: 'normal'
+    };
+    setMessages((prev) => [relayMsg, ...prev]);
   };
 
   // Resolve a briefing item (e.g. from the evidence drawer)
@@ -172,6 +224,9 @@ export default function App() {
         activeTab={activeTab}
         onTabChange={setActiveTab}
         unresolvedCount={briefingItems.length}
+        currentRole={currentRole}
+        activeDriver={activeDriver}
+        onOpenLoginModal={() => setIsLoginModalOpen(true)}
       />
 
       {/* Floating Notification Toast */}
@@ -183,27 +238,39 @@ export default function App() {
 
       {/* Main Viewport */}
       <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
-        <div key={activeTab} className="animate-tab-enter">
-          {activeTab === 'home' && (
-            <HomeScreen
-              briefingItems={briefingItems}
-              watchItems={watchItems}
-              processedFiles={processedFiles}
-              onSelectBriefingItem={setSelectedBriefingItem}
-              onLoadDemoFiles={handleLoadDemoFiles}
-              onFileUpload={handleFileUpload}
-              onToggleExpandFile={handleToggleExpandFile}
+        {currentRole === 'trucker' ? (
+          <div className="animate-tab-enter">
+            <TruckerPortal
+              driver={activeDriver}
+              onSwitchToOwner={() => handleSelectRole('owner')}
+              onOpenLoginModal={() => setIsLoginModalOpen(true)}
+              onDriverUpload={handleDriverUpload}
+              recentFiles={processedFiles}
             />
-          )}
+          </div>
+        ) : (
+          <div key={activeTab} className="animate-tab-enter">
+            {activeTab === 'home' && (
+              <HomeScreen
+                briefingItems={briefingItems}
+                watchItems={watchItems}
+                processedFiles={processedFiles}
+                onSelectBriefingItem={setSelectedBriefingItem}
+                onLoadDemoFiles={handleLoadDemoFiles}
+                onFileUpload={handleFileUpload}
+                onToggleExpandFile={handleToggleExpandFile}
+              />
+            )}
 
-          {activeTab === 'dashboard' && (
-            <DashboardTab kpis={kpis} />
-          )}
+            {activeTab === 'dashboard' && (
+              <DashboardTab kpis={kpis} />
+            )}
 
-          {activeTab === 'agents' && (
-            <AgentsTab messages={messages} />
-          )}
-        </div>
+            {activeTab === 'agents' && (
+              <AgentsTab messages={messages} />
+            )}
+          </div>
+        )}
       </main>
 
       {/* Evidence Viewer Drawer (Modal / Bottom Sheet) */}
@@ -211,6 +278,16 @@ export default function App() {
         item={selectedBriefingItem}
         onClose={() => setSelectedBriefingItem(null)}
         onResolve={handleResolveItem}
+      />
+
+      {/* Interactive Terminal Login & Role Switcher Modal */}
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+        currentRole={currentRole}
+        onSelectRole={handleSelectRole}
+        demoDrivers={DEMO_DRIVERS}
+        activeDriver={activeDriver}
       />
 
       {/* Footer */}

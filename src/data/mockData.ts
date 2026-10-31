@@ -1,4 +1,4 @@
-import { BriefingItem, WatchItem, ProcessedFile, AgentMessage, FleetKPIs } from '../types';
+import { BriefingItem, WatchItem, ProcessedFile, AgentMessage, FleetKPIs, DriverSession } from '../types';
 
 export const BRIEFING_ITEMS: BriefingItem[] = [
   {
@@ -289,3 +289,30 @@ export const FLEET_KPIS: FleetKPIs = {
   unbilledDetentionLoss: 1420.00,
   monthlyIftaMiles: 28450
 };
+
+export const DEMO_DRIVERS: DriverSession[] = [
+  {
+    id: 'DRV-101',
+    name: 'Dave Kowalski',
+    truckId: 'Truck 101',
+    currentLoadId: 'LD-4088',
+    route: 'Chicago, IL → Dallas, TX',
+    cardLast4: '4412'
+  },
+  {
+    id: 'DRV-104',
+    name: 'Marcus Vance',
+    truckId: 'Truck 104',
+    currentLoadId: 'LD-4091',
+    route: 'Columbus, OH → Atlanta, GA',
+    cardLast4: '9921'
+  },
+  {
+    id: 'DRV-103',
+    name: 'Elena Rostova',
+    truckId: 'Truck 103',
+    currentLoadId: 'LD-4093',
+    route: 'Indianapolis, IN → Dallas, TX',
+    cardLast4: '5510'
+  }
+];
