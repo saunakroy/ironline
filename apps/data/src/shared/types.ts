@@ -181,5 +181,7 @@ export type RelayMessage<T = unknown> = {
     from: string
     to: string
     at: string
+    /** Follows one uploaded file through intake -> routing -> findings. */
+    traceId?: string
     payload: T
 }

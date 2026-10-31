@@ -1,11 +1,13 @@
 // Inference server: the agents (Intake, Enrichment, Briefer) + the relay hub they talk over.
 import { mkdir, readdir, readFile, writeFile } from "node:fs/promises"
+import { randomUUID } from "node:crypto"
 import { tmpdir } from "node:os"
 import { basename, join, relative } from "node:path"
 
 import express from "express"
 import multer from "multer"
 
+import { FindingsReadySchema, trafficLog, violation } from "@fleet/data/contracts"
 import type { ExtractedDoc, Finding, RelayMessage } from "@fleet/data/shared"
 
 import { writeBriefing } from "./briefer.js"
@@ -25,8 +27,15 @@ const hub = new RelayHub()
 
 hub.on("doc.extracted", async msg => {
     const { companyId, doc } = msg.payload as { companyId: string; doc: ExtractedDoc }
-    const r = await fetch(`${DATA}/api/companies/${companyId}/docs`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(doc) })
-    return r.json()
+    const r = await fetch(`${DATA}/api/companies/${companyId}/docs`, {
+        method: "POST",
+        headers: { "content-type": "application/json", "x-trace-id": msg.traceId ?? msg.id },
+        body: JSON.stringify(doc),
+        signal: AbortSignal.timeout(Number(process.env.DATA_TIMEOUT_MS ?? 15_000))
+    })
+    const body = await r.json()
+    if (!r.ok) throw new Error(`data server ${r.status}: ${body?.error ?? "routing failed"}`)
+    return body
 })
 
 hub.on("findings.ready", async msg => {
@@ -57,18 +66,19 @@ async function openLoads(companyId: string): Promise<OpenLoadHint[]> {
 }
 
 async function intakeOne(companyId: string, path: string, displayName: string, useCache: boolean, asOf?: string) {
+    const traceId = randomUUID()
     const cacheFile = join(CACHE_DIR, displayName.replace(/[\/\\]/g, "__") + ".json")
     let doc: ExtractedDoc | null = null
     if (useCache) doc = await readFile(cacheFile, "utf8").then(JSON.parse).catch(() => null)
     const cached = !!doc
     if (!doc) {
-        hub.log("intake-agent", "openai", { reading: displayName })
+        hub.log("intake-agent", "openai", { reading: displayName }, traceId)
         doc = await extractFile(path, { displayName, openLoads: phase(displayName) > 0 ? await openLoads(companyId) : [], asOf })
         await mkdir(CACHE_DIR, { recursive: true })
         await writeFile(cacheFile, JSON.stringify(doc, null, 1))
     }
-    const { delivery } = await hub.publish({ topic: "doc.extracted", from: "intake-agent", to: `company:${companyId}`, payload: { companyId, doc, cached } })
-    return { file: displayName, kind: doc.kind, cached, routed: delivery }
+    const { delivery } = await hub.publish({ topic: "doc.extracted", from: "intake-agent", to: `company:${companyId}`, traceId, payload: { companyId, doc, cached } })
+    return { file: displayName, kind: doc.kind, cached, traceId, routed: delivery }
 }
 
 async function intakeMany(companyId: string, files: { path: string; name: string }[], useCache: boolean, asOf?: string) {
@@ -92,6 +102,7 @@ async function intakeMany(companyId: string, files: { path: string; name: string
 
 const app = express()
 app.use(express.json({ limit: "20mb" }))
+app.use(trafficLog("inference"))
 app.use((_req, res, next) => {
     res.set("Access-Control-Allow-Origin", "*").set("Access-Control-Allow-Headers", "content-type")
     next()
@@ -122,8 +133,12 @@ app.post("/api/companies/:c/ingest-day", wrap(async (req, res) => {
 
 /** Relay hub: other servers publish here (data server -> findings.ready). */
 app.post("/relay/publish", wrap(async (req, res) => {
-    const { topic, from, to, payload } = req.body as Pick<RelayMessage, "topic" | "from" | "to" | "payload">
-    res.json(await hub.publish({ topic, from, to, payload }))
+    const { topic, from, to, payload, traceId } = req.body as Pick<RelayMessage, "topic" | "from" | "to" | "payload" | "traceId">
+    const TOPICS = ["doc.extracted", "load.updated", "findings.ready", "briefing.ready", "enrichment", "log"]
+    if (!TOPICS.includes(topic)) return void res.status(400).json({ error: `unknown topic ${topic}` })
+    const bad = topic === "findings.ready" ? violation(FindingsReadySchema, payload) : null
+    if (bad) return void res.status(400).json({ error: `findings.ready contract: ${bad}` })
+    res.json(await hub.publish({ topic, from, to, payload, traceId }))
 }))
 app.get("/relay/recent", (_req, res) => void res.json(hub.recent()))
 /** Live agent-message feed for the UI (Server-Sent Events). */

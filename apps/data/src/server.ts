@@ -7,10 +7,12 @@ import type { ExtractedDoc, RelayMessage } from "./shared/index.js"
 import { Company, Load } from "./actors.js"
 import { loadActorId, routeDoc } from "./router.js"
 import { seedCompany } from "./seed.js"
+import { BriefingSchema, ExtractedDocSchema, trafficLog, violation } from "./contracts.js"
 import { actors } from "../generated/index.js"
 
 const app = express()
 app.use(express.json({ limit: "20mb" }))
+app.use(trafficLog("data"))
 app.use((_req, res, next) => {
     res.set("Access-Control-Allow-Origin", "*").set("Access-Control-Allow-Headers", "content-type")
     next()
@@ -27,12 +29,14 @@ const wrap = (fn: (req: express.Request, res: express.Response) => Promise<unkno
         res.status(500).json({ error: String(err?.message ?? err) })
     })
 
-async function publish(topic: RelayMessage["topic"], to: string, payload: unknown) {
+async function publish(topic: RelayMessage["topic"], to: string, payload: unknown, traceId?: string) {
     try {
         const r = await fetch(`${HUB}/relay/publish`, {
             method: "POST",
             headers: { "content-type": "application/json" },
-            body: JSON.stringify({ topic, from: "data-server", to, payload })
+            body: JSON.stringify({ topic, from: "data-server", to, payload, traceId }),
+            // Briefer (20s) + EIA (5s) + margin. If the hub is down or slow, /check still returns findings.
+            signal: AbortSignal.timeout(Number(process.env.HUB_TIMEOUT_MS ?? 40_000))
         })
         return r.ok ? await r.json() : null
     } catch {
@@ -56,11 +60,15 @@ app.get("/api/companies/:c/loads/:id", wrap(async (req, res) => void res.json(aw
 /** Relay delivery endpoint: the Intake agent posts `doc.extracted` here. */
 app.post("/api/companies/:c/docs", wrap(async (req, res) => {
     const docs: ExtractedDoc[] = Array.isArray(req.body) ? req.body : [req.body]
+    for (const d of docs) {
+        const bad = violation(ExtractedDocSchema, d)
+        if (bad) return void res.status(400).json({ error: `doc.extracted contract: ${(d as { file?: string })?.file ?? "?"}: ${bad}` })
+    }
     const results = []
     for (const d of docs) {
         const r = await routeDoc(String(req.params.c), d)
         results.push(r)
-        void publish("load.updated", "ui", r)
+        void publish("load.updated", "ui", r, req.get("x-trace-id"))
     }
     res.json(results)
 }))
@@ -73,7 +81,12 @@ app.post("/api/companies/:c/check", wrap(async (req, res) => {
     const result = await company.runCheck(asOf)
     const snap = await company.snapshot()
     const reply = await publish("findings.ready", "briefer", { companyId, asOf, ...result, unmatched: snap.unmatched })
-    const briefing = reply?.delivery?.briefing
+    let briefing = reply?.delivery?.briefing ?? null
+    const bad = briefing && violation(BriefingSchema, briefing)
+    if (bad) {
+        console.warn(`briefing.ready contract violated, ignoring: ${bad}`)
+        briefing = null
+    }
     if (briefing) await company.setBriefing(briefing)
     res.json({ ...result, briefing: briefing ?? null })
 }))

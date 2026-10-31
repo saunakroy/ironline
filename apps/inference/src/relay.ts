@@ -32,8 +32,8 @@ export class RelayHub {
         return { message, delivery }
     }
 
-    log(from: string, to: string, payload: unknown) {
-        this.record({ id: randomUUID(), at: new Date().toISOString(), topic: "log", from, to, payload })
+    log(from: string, to: string, payload: unknown, traceId?: string) {
+        this.record({ id: randomUUID(), at: new Date().toISOString(), topic: "log", from, to, payload, traceId })
     }
 
     recent(limit = 200) {

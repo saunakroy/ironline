@@ -34,7 +34,7 @@ export async function writeBriefing(input: {
                     "Lead with total dollars at risk. Then one line per issue, biggest money first, each with the load # and the action to take today. " +
                     "Use ONLY numbers present in the findings JSON; never compute new amounts. Max ~900 characters.",
                 prompt: JSON.stringify({ asOf: input.asOf, totalAtRisk: input.totalAtRisk, findings: input.findings, unmatchedDocs: input.unmatched ?? [], diesel: input.diesel ?? null }),
-                abortSignal: AbortSignal.timeout(20000)
+                abortSignal: AbortSignal.timeout(Number(process.env.BRIEFER_TIMEOUT_MS ?? 20_000))
             })
             if (r.text.trim()) text = r.text.trim()
         } catch (e) {

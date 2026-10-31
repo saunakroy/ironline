@@ -257,7 +257,8 @@ export class Company extends Actor<null, null, CompanyOutgoing> {
                         from: `company:${this.id}`,
                         to: "briefer",
                         payload: { companyId: this.id, asOf, ...result }
-                    })
+                    }),
+                    signal: AbortSignal.timeout(40_000)
                 })
             } catch {
                 /* hub down; briefing can be regenerated from the UI */

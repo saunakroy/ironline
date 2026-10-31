@@ -10,6 +10,7 @@ import { z } from "zod"
 import type { ExtractedDoc } from "@fleet/data/shared"
 
 const MODEL = process.env.OPENAI_MODEL ?? "gpt-5-mini"
+const TIMEOUT_MS = Number(process.env.EXTRACT_TIMEOUT_MS ?? 90_000)
 
 const n = <T extends z.ZodTypeAny>(t: T) => t.nullable()
 const ts = n(z.string()).describe('Local time "YYYY-MM-DD HH:MM", or null')
@@ -77,6 +78,13 @@ export async function extractFile(path: string, opts: { displayName?: string; op
     else if (ext === ".pdf") content.push({ type: "file", data: bytes, mediaType: "application/pdf", filename: file })
     else content.push({ type: "text", text: bytes.toString("utf8") })
 
-    const { object } = await generateObject({ model: openai(MODEL), schema: Schema, system: SYSTEM, messages: [{ role: "user", content }] })
+    const { object } = await generateObject({
+        model: openai(MODEL),
+        schema: Schema,
+        system: SYSTEM,
+        messages: [{ role: "user", content }],
+        maxRetries: 1,
+        abortSignal: AbortSignal.timeout(TIMEOUT_MS)
+    })
     return { ...object, file } as ExtractedDoc
 }
