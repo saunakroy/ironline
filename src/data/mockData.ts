@@ -1,4 +1,61 @@
-import { PlantedProblem, ExtractedDocument, LoadItem, AgentRelayMessage, FleetKPIs } from '../types';
+import { PlantedProblem, ExtractedDocument, LoadItem, AgentRelayMessage, FleetKPIs, DriverProfile } from '../types';
+
+export const DRIVERS: DriverProfile[] = [
+  {
+    id: 'DRV-104',
+    name: 'Marcus Vance',
+    truckId: 'Truck 104',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80',
+    status: 'Loading / Dock',
+    currentLoadId: 'LD-4091',
+    todayMiles: 342,
+    phone: '(614) 555-0192',
+    fuelCardNumber: 'Card #9948',
+    recentUploadsCount: 3,
+    detentionTimer: {
+      location: 'Great Lakes Cold Storage, Columbus OH',
+      arrivedAt: '07:40 AM',
+      elapsedHours: 4.5,
+      isBillable: true
+    }
+  },
+  {
+    id: 'DRV-101',
+    name: 'Dave Kowalski',
+    truckId: 'Truck 101',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80',
+    status: 'Driving',
+    currentLoadId: 'LD-4088',
+    todayMiles: 489,
+    phone: '(614) 555-0144',
+    fuelCardNumber: 'Card #1019',
+    recentUploadsCount: 2
+  },
+  {
+    id: 'DRV-103',
+    name: 'Elena Rostova',
+    truckId: 'Truck 103',
+    avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=256&q=80',
+    status: 'Driving',
+    currentLoadId: 'LD-4093',
+    todayMiles: 295,
+    phone: '(614) 555-0188',
+    fuelCardNumber: 'Card #3011',
+    recentUploadsCount: 4
+  },
+  {
+    id: 'DRV-102',
+    name: 'Ben Miller',
+    truckId: 'Truck 102',
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=256&q=80',
+    status: 'Resting',
+    currentLoadId: 'LD-4085',
+    todayMiles: 512,
+    phone: '(614) 555-0177',
+    fuelCardNumber: 'Card #4412',
+    recentUploadsCount: 1
+  }
+];
 
 export const PLANTED_PROBLEMS: PlantedProblem[] = [
   {
@@ -6,15 +63,15 @@ export const PLANTED_PROBLEMS: PlantedProblem[] = [
     title: 'Unbilled Detention: 2.5 Billable Hours Missed',
     category: 'detention',
     impactAmount: 162.50,
-    impactFormatted: '$162.50 recoverable',
+    impactFormatted: '+$162.50 Recoverable',
     isTonightBriefing: true,
     severity: 'critical',
     loadId: 'LD-4091',
     truckId: 'Truck 104',
     driver: 'Marcus Vance',
-    description: 'BOL arrival time stamped 07:40, departure stamped 12:10 (4.5 hrs on-site). Signed Rate Con grants 2 free hours, then $65.00/hr.',
+    description: 'Shipper BOL stamped 07:40 IN, 12:10 OUT (4.5 hrs on-site). Signed Rate Con gives 2 free hours, then $65/hr.',
     agentResponsible: 'reconciler',
-    suggestedAction: 'Append $162.50 detention line-item to Broker Invoice #INV-4091 with signed BOL timestamp attached',
+    suggestedAction: 'Append $162.50 detention to Broker Invoice #INV-4091 with signed BOL timestamp',
     evidence: {
       type: 'comparison',
       docA: {
@@ -38,15 +95,15 @@ export const PLANTED_PROBLEMS: PlantedProblem[] = [
     title: 'Invoice Draft Uses Quote ($1,380) Instead of Signed Rate Con ($1,680)',
     category: 'billing',
     impactAmount: 300.00,
-    impactFormatted: '$300.00 underbilled',
+    impactFormatted: '+$300.00 Underbilled',
     isTonightBriefing: true,
     severity: 'critical',
     loadId: 'LD-4088',
     truckId: 'Truck 101',
     driver: 'Dave Kowalski',
-    description: 'Owner invoice draft was generated from the broker email quote ($1,380), but final signed rate confirmation was negotiated up to $1,680.',
+    description: 'Owner invoice draft was generated from initial quote ($1,380), but final signed rate confirmation was negotiated up to $1,680.',
     agentResponsible: 'reconciler',
-    suggestedAction: 'Update invoice line total to $1,680.00 before transmitting to factoring/broker',
+    suggestedAction: 'Update invoice line total to $1,680.00 before factoring transmission',
     evidence: {
       type: 'comparison',
       docA: {
@@ -61,7 +118,7 @@ export const PLANTED_PROBLEMS: PlantedProblem[] = [
         highlightText: 'Agreed Rate: $1,680.00 USD (Includes $300 driver assist bump)',
         badge: 'Signed Rate Con'
       },
-      notes: 'Broker agreed to signed rate revision. Underbilling would result in a permanent $300 loss once factored.'
+      notes: 'Broker agreed to signed rate revision. Underbilling would result in a permanent $300 loss.'
     }
   },
   {
@@ -69,13 +126,13 @@ export const PLANTED_PROBLEMS: PlantedProblem[] = [
     title: 'Unreimbursed $175 Lumper Receipt Found on Driver Phone',
     category: 'lumper',
     impactAmount: 175.00,
-    impactFormatted: '$175.00 unreimbursed',
+    impactFormatted: '+$175.00 Unreimbursed',
     isTonightBriefing: true,
     severity: 'critical',
     loadId: 'LD-4093',
     truckId: 'Truck 103',
     driver: 'Elena Rostova',
-    description: 'Driver paid $175 out-of-pocket lumper fee at cold storage facility in Dallas. Receipt was uploaded via text message but never attached to invoice.',
+    description: 'Driver paid $175 out-of-pocket lumper fee at cold storage in Dallas. Text receipt was never attached to broker invoice.',
     agentResponsible: 'extractor',
     suggestedAction: 'Add $175.00 accessorial pass-through to broker invoice with Capstone receipt proof',
     evidence: {
@@ -94,12 +151,12 @@ export const PLANTED_PROBLEMS: PlantedProblem[] = [
     title: 'Impossible Fuel Card Geo-Velocity (Amarillo vs. Kansas City)',
     category: 'fuel',
     impactAmount: 800.73,
-    impactFormatted: '$800.73 suspicious charge',
+    impactFormatted: '$800.73 Fraud Alert',
     isTonightBriefing: true,
     severity: 'critical',
     truckId: 'Truck 102',
     driver: 'Ben Miller',
-    description: 'Truck 102 fuel card was charged in Amarillo, TX at 14:15, only 3 hours after being swiped in Kansas City, MO (580 miles apart). Telematics confirms Truck 102 was in Kansas City.',
+    description: 'Truck 102 fuel card was swiped in Amarillo, TX at 14:15, only 3 hours after swiping in Kansas City, MO (580 miles apart). Telematics confirms Truck 102 was in Kansas City.',
     agentResponsible: 'watchdog',
     suggestedAction: 'Freeze Comdata Card #4412 immediately and submit card cloning fraud dispute',
     evidence: {
@@ -118,7 +175,7 @@ export const PLANTED_PROBLEMS: PlantedProblem[] = [
         highlightText: 'Vehicle Location: Kansas City, MO (Speed: 62 mph)',
         badge: 'GPS Telematics'
       },
-      notes: 'Physical distance: 580 miles. Required speed: 193 mph. Cloned card suspected.'
+      notes: 'Physical distance: 580 miles in 3 hours requires 193 mph. Cloned card suspected.'
     }
   },
   {
@@ -126,12 +183,12 @@ export const PLANTED_PROBLEMS: PlantedProblem[] = [
     title: 'Duplicate Fuel Receipt Uploaded Across Shifts',
     category: 'fuel',
     impactAmount: 1250.43,
-    impactFormatted: '$1,250.43 duplicate expense',
+    impactFormatted: '$1,250.43 Duplicate',
     isTonightBriefing: true,
     severity: 'critical',
     truckId: 'Truck 104',
     driver: 'Marcus Vance',
-    description: 'Same Pilot Flying J receipt for $1,250.43 was uploaded by driver on Monday morning and re-submitted on Thursday settlement batch.',
+    description: 'Same Pilot Flying J receipt for $1,250.43 was uploaded Monday morning and re-submitted in Thursday settlement batch.',
     agentResponsible: 'watchdog',
     suggestedAction: 'Reject duplicate entry from weekly settlement reconciliation to avoid double accounting deduction',
     evidence: {
@@ -153,16 +210,16 @@ export const PLANTED_PROBLEMS: PlantedProblem[] = [
   },
   {
     id: 'P4',
-    title: 'Delivered Load Missing POD — $2,279.65 Blocked from Billing',
+    title: 'Delivered Load Missing POD — $2,279.65 Blocked',
     category: 'pod',
     impactAmount: 2279.65,
-    impactFormatted: '$2,279.65 blocked',
+    impactFormatted: '$2,279.65 Blocked',
     isTonightBriefing: false,
     severity: 'warning',
     loadId: 'LD-4085',
     truckId: 'Truck 103',
     driver: 'Elena Rostova',
-    description: 'Driver marked load delivered in group text 48 hours ago, but no signed POD image uploaded. Broker Net 30 clock cannot start without it.',
+    description: 'Load marked delivered 48 hrs ago, but no signed POD image uploaded. Broker Net 30 clock cannot start without it.',
     agentResponsible: 'briefer',
     suggestedAction: 'Send automated SMS prompt to driver Elena Rostova to snap POD photo',
     evidence: {
@@ -174,30 +231,30 @@ export const PLANTED_PROBLEMS: PlantedProblem[] = [
     id: 'P2',
     title: 'Legal Entity Name Mismatch on Broker Invoice',
     category: 'billing',
-    impactFormatted: 'Payment rejection risk',
+    impactFormatted: 'Payment Risk',
     isTonightBriefing: false,
     severity: 'warning',
     loadId: 'LD-4090',
-    description: 'Invoice drafted to "Ridgeline Freight" instead of legal entity name "Ridgeline Freight Logistics LLC", causing automated broker EDI rejection.',
+    description: 'Invoice drafted to "Ridgeline Freight" instead of legal entity name "Ridgeline Freight Logistics LLC".',
     agentResponsible: 'reconciler',
     suggestedAction: 'Update broker billing entity name in EDI profile',
     evidence: {
       type: 'document',
-      notes: 'Broker TMS auto-rejects invoices when remit entity does not match MC lookup exactly.'
+      notes: 'Broker auto-rejects invoices when remit entity does not match MC lookup exactly.'
     }
   },
   {
     id: 'P5',
     title: 'POD Annotated "SHORT 1 PLT" With Intact Seal Notice',
     category: 'claim',
-    impactFormatted: 'Claim liability risk ($3,500)',
+    impactFormatted: '$3,500 Claim Risk',
     isTonightBriefing: false,
     severity: 'warning',
     loadId: 'LD-4087',
     driver: 'Dave Kowalski',
-    description: 'Receiver scribbled "SHORT 1 PLT" on delivery stamp, but BOL photos prove shipper seal #98421 was verified intact upon arrival.',
+    description: 'Receiver scribbled "SHORT 1 PLT", but BOL photos prove shipper seal #98421 was intact upon arrival.',
     agentResponsible: 'watchdog',
-    suggestedAction: 'Issue pre-emptive seal integrity notice to broker to protect carrier against cargo claim',
+    suggestedAction: 'Issue pre-emptive seal integrity notice to broker to protect carrier',
     evidence: {
       type: 'document',
       notes: 'Shipper load and count clause applies; seal match relieves carrier liability.'
@@ -208,13 +265,13 @@ export const PLANTED_PROBLEMS: PlantedProblem[] = [
     title: 'Aged Receivable Alert: Summit Lane Invoice at 41 Days',
     category: 'receivables',
     impactAmount: 4850.00,
-    impactFormatted: '$4,850.00 11 days past due',
+    impactFormatted: '$4,850.00 Overdue',
     isTonightBriefing: false,
     severity: 'critical',
     loadId: 'LD-3990',
-    description: 'Invoice #INV-3990 for $4,850.00 to Summit Lane Brokerage has reached 41 days on Net 30 terms without remittance.',
+    description: 'Invoice #INV-3990 for $4,850.00 to Summit Lane Brokerage has reached 41 days on Net 30 terms.',
     agentResponsible: 'briefer',
-    suggestedAction: 'Send automated past-due notice with statement of account to ap@summitlane.com',
+    suggestedAction: 'Send automated past-due notice to ap@summitlane.com',
     evidence: {
       type: 'document',
       notes: 'Credit limit warning: Hold further loads until past-due balance cleared.'
@@ -224,11 +281,11 @@ export const PLANTED_PROBLEMS: PlantedProblem[] = [
     id: 'P11',
     title: 'Driver DOT Medical Certificate Expires in 12 Days',
     category: 'compliance',
-    impactFormatted: 'Out of service risk',
+    impactFormatted: 'Compliance Risk',
     isTonightBriefing: false,
     severity: 'warning',
     driver: 'Ben Miller',
-    description: 'Ben Miller\'s FMCSA medical examiner certificate will expire on Nov 12, 2026. Truck dispatch will be blocked if not renewed.',
+    description: 'Ben Miller\'s FMCSA medical examiner certificate will expire on Nov 12, 2026.',
     agentResponsible: 'watchdog',
     suggestedAction: 'Alert safety coordinator and remind driver to upload new medical card',
     evidence: {
@@ -240,16 +297,16 @@ export const PLANTED_PROBLEMS: PlantedProblem[] = [
     id: 'P9',
     title: 'DVIR Defects Not Certified Repaired Before Re-Dispatch',
     category: 'compliance',
-    impactFormatted: 'DOT audit infraction',
+    impactFormatted: 'Audit Warning',
     isTonightBriefing: false,
     severity: 'warning',
     truckId: 'Truck 101',
-    description: 'Driver inspection report logged brake slack adjuster warning on Oct 27, but maintenance signoff stamp is missing from the record.',
+    description: 'Driver inspection logged brake slack adjuster warning on Oct 27, but maintenance signoff is missing.',
     agentResponsible: 'watchdog',
-    suggestedAction: 'Flag Truck 101 maintenance file for shop mechanic electronic signature',
+    suggestedAction: 'Flag Truck 101 maintenance file for shop mechanic signature',
     evidence: {
       type: 'document',
-      notes: '49 CFR 396.11 requires mechanic certification prior to subsequent trip dispatch.'
+      notes: '49 CFR 396.11 requires mechanic certification prior to dispatch.'
     }
   },
   {
@@ -257,15 +314,15 @@ export const PLANTED_PROBLEMS: PlantedProblem[] = [
     title: '4 Delivered Loads Awaiting Invoicing ($14,192.68 Cash Float)',
     category: 'billing',
     impactAmount: 14192.68,
-    impactFormatted: '$14,192.68 unbilled cash',
+    impactFormatted: '$14,192.68 Float',
     isTonightBriefing: false,
     severity: 'info',
-    description: '4 loads are marked completed with verified signed PODs but invoices have not been queued for factoring.',
+    description: '4 loads are marked completed with verified signed PODs but invoices have not been queued.',
     agentResponsible: 'briefer',
-    suggestedAction: 'One-click generate and push batch invoices to factoring partner',
+    suggestedAction: 'One-click batch invoices to factoring partner',
     evidence: {
       type: 'document',
-      notes: 'Faster billing cuts days sales outstanding (DSO) from 33 days to 24 hours.'
+      notes: 'Faster billing cuts DSO from 33 days to 24 hours.'
     }
   }
 ];
@@ -278,14 +335,15 @@ export const MOCK_EXTRACTED_DOCS: ExtractedDocument[] = [
     docClassification: 'BOL',
     confidenceScore: 96,
     needsReview: false,
-    uploadedAt: '10 mins ago',
+    uploadedAt: '10m ago',
     loadRef: 'LD-4091',
+    driverName: 'Marcus Vance',
     extractedFields: {
       'BOL Number': 'BOL-8849102',
-      'Shipper': 'Great Lakes Cold Storage, Columbus OH',
-      'Check-In Time': '07:40 AM',
-      'Check-Out Time': '12:10 PM',
-      'Seal Number': '#44910 (Intact)',
+      'Shipper': 'Great Lakes Cold Storage',
+      'Check-In': '07:40 AM',
+      'Check-Out': '12:10 PM',
+      'Seal': '#44910 (Intact)',
       'Total Time': '4.5 Hours'
     }
   },
@@ -296,14 +354,13 @@ export const MOCK_EXTRACTED_DOCS: ExtractedDocument[] = [
     docClassification: 'Rate Con',
     confidenceScore: 99,
     needsReview: false,
-    uploadedAt: '25 mins ago',
+    uploadedAt: '25m ago',
     loadRef: 'LD-4091',
     extractedFields: {
       'Rate Con #': 'RC-9921',
       'Broker': 'Apex Freight Logistics LLC',
       'Agreed Rate': '$2,450.00',
-      'Detention Terms': '$65/hr after 2 hrs free',
-      'Equipment': '53ft Dry Van'
+      'Detention': '$65/hr after 2 hrs free'
     }
   },
   {
@@ -313,13 +370,13 @@ export const MOCK_EXTRACTED_DOCS: ExtractedDocument[] = [
     docClassification: 'Lumper',
     confidenceScore: 92,
     needsReview: false,
-    uploadedAt: '1 hr ago',
+    uploadedAt: '1h ago',
     loadRef: 'LD-4093',
+    driverName: 'Elena Rostova',
     extractedFields: {
       'Vendor': 'Capstone Logistics',
       'Amount': '$175.00',
-      'Location': 'Dallas, TX',
-      'Payment Type': 'Driver Comdata Fleet Card'
+      'Payment': 'Driver Fleet Card'
     }
   },
   {
@@ -329,13 +386,14 @@ export const MOCK_EXTRACTED_DOCS: ExtractedDocument[] = [
     docClassification: 'Fuel Receipt',
     confidenceScore: 94,
     needsReview: false,
-    uploadedAt: '2 hrs ago',
+    uploadedAt: '2h ago',
+    driverName: 'Ben Miller',
     extractedFields: {
-      'Card Swiped': 'Card #4412 (Truck 102)',
-      'Location': 'Loves Travel Stop #411, Amarillo TX',
-      'Gallons': '138.2 gal @ $5.794/gal',
+      'Card': 'Card #4412 (Truck 102)',
+      'Location': 'Loves #411, Amarillo TX',
+      'Gallons': '138.2 gal @ $5.79/gal',
       'Total': '$800.73',
-      'Status': 'FLAGGED: Impossible Velocity'
+      'Status': 'Flagged: Velocity Anomaly'
     }
   },
   {
@@ -345,13 +403,13 @@ export const MOCK_EXTRACTED_DOCS: ExtractedDocument[] = [
     docClassification: 'POD',
     confidenceScore: 68,
     needsReview: true,
-    uploadedAt: '3 hrs ago',
+    uploadedAt: '3h ago',
     loadRef: 'LD-4087',
+    driverName: 'Dave Kowalski',
     extractedFields: {
-      'Delivery Time': '16:45 EST',
+      'Delivered': '16:45 EST',
       'Receiver Note': 'SHORT 1 PLT (Seal Verified)',
-      'Driver Signature': 'Dave Kowalski',
-      'Condition': 'Needs Human Review (Handwriting)'
+      'Condition': 'Needs Human Review'
     }
   }
 ];
@@ -366,7 +424,7 @@ export const MOCK_LOADS: LoadItem[] = [
     driver: 'Marcus Vance',
     status: 'Delivered',
     agreedRate: 2450.00,
-    invoicedRate: 2612.50, // with detention
+    invoicedRate: 2612.50,
     documentsCount: 4,
     hasDiscrepancy: true,
     durableActorState: {
@@ -384,7 +442,7 @@ export const MOCK_LOADS: LoadItem[] = [
     driver: 'Dave Kowalski',
     status: 'Delivered',
     agreedRate: 1680.00,
-    invoicedRate: 1380.00, // underbilled!
+    invoicedRate: 1380.00,
     documentsCount: 3,
     hasDiscrepancy: true,
     durableActorState: {
@@ -463,7 +521,7 @@ export const MOCK_AGENT_MESSAGES: AgentRelayMessage[] = [
     fromAgent: 'reconciler',
     toAgent: 'briefer',
     loadRef: 'LD-4091',
-    message: 'DISCREPANCY CONFIRMED: Rate con provides 2.0 hrs free at $65.00/hr. Unbilled detention detected: 2.5 hrs = $162.50.',
+    message: 'DISCREPANCY: Rate con gives 2 hrs free at $65/hr. Unbilled detention detected: 2.5 hrs = $162.50.',
     priority: 'alert'
   },
   {
@@ -471,7 +529,7 @@ export const MOCK_AGENT_MESSAGES: AgentRelayMessage[] = [
     timestamp: '12:32:15',
     fromAgent: 'watchdog',
     toAgent: 'all',
-    message: 'FRAUD ALERT: Comdata Card #4412 swiped in Amarillo, TX at 14:15. Samsara GPS telematics verifies Truck 102 in Kansas City, MO at 14:15. Flagging $800.73 charge.',
+    message: 'FRAUD ALERT: Card #4412 swiped in Amarillo, TX at 14:15. Samsara GPS verifies Truck 102 in Kansas City, MO at 14:15. Flagging $800.73 charge.',
     priority: 'urgent'
   },
   {
@@ -497,7 +555,7 @@ export const MOCK_AGENT_MESSAGES: AgentRelayMessage[] = [
     timestamp: '12:34:10',
     fromAgent: 'watchdog',
     toAgent: 'briefer',
-    message: 'DUPLICATE EXPENSE: Pilot Flying J receipt for $1,250.43 (Auth #994821) matches previous upload on Monday.',
+    message: 'DUPLICATE EXPENSE: Pilot Flying J receipt for $1,250.43 matches previous upload on Monday.',
     priority: 'alert'
   },
   {

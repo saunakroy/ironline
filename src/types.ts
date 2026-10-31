@@ -1,4 +1,25 @@
+export type UserRole = 'trucker' | 'maintainer';
+
 export type Severity = 'critical' | 'warning' | 'info';
+
+export interface DriverProfile {
+  id: string;
+  name: string;
+  truckId: string;
+  avatar: string;
+  status: 'Driving' | 'Loading / Dock' | 'Resting' | 'Off-Duty';
+  currentLoadId?: string;
+  todayMiles: number;
+  phone: string;
+  fuelCardNumber: string;
+  recentUploadsCount: number;
+  detentionTimer?: {
+    location: string;
+    arrivedAt: string;
+    elapsedHours: number;
+    isBillable: boolean;
+  };
+}
 
 export interface PlantedProblem {
   id: string; // P1 - P12
@@ -43,12 +64,13 @@ export interface ExtractedDocument {
   needsReview: boolean;
   uploadedAt: string;
   loadRef?: string;
+  driverName?: string;
   extractedFields: Record<string, string | number>;
   sourceThumbnail?: string;
 }
 
 export interface LoadItem {
-  id: string; // e.g. LOAD-8492
+  id: string;
   broker: string;
   origin: string;
   destination: string;
