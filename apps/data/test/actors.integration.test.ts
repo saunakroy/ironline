@@ -74,6 +74,13 @@ describe.skipIf(!up)("backend <-> Terse actors", () => {
         expect((await Company.get(C).snapshot()).unmatched.map(u => u.file)).toContain("mystery.jpg")
     })
 
+    test("fuel receipts belong to the fleet ledger, not the unmatched pile", async () => {
+        const fuel = { receiptNo: "1", card: "FC-7741", unitEntered: "101", datetime: "2026-10-26 05:55", city: "Columbus", state: "OH", station: "X", gallons: 10, total: 60, odometer: null }
+        const r = await routeDoc(C, doc("receipt_fuel.jpg", "fuel_receipt", { fuel }))
+        expect(r.matchedBy).toContain("fleet")
+        expect((await Company.get(C).snapshot()).unmatched.map(u => u.file)).not.toContain("receipt_fuel.jpg")
+    })
+
     test("runCheck audits state that lives in the actors", async () => {
         const { findings } = await Company.get(C).runCheck("2026-10-30")
         const det = findings.find(f => f.type === "UNBILLED_DETENTION")

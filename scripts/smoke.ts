@@ -74,7 +74,9 @@ try {
 
     step("grade against answer key")
     const findings: any[] = res.body.findings ?? []
-    const planted = truth.planted_issues.filter((p: any) => IN_SCOPE.includes(p.type))
+    // The answer key leaves P4/P12 amounts blank; the README states them. Grade those too.
+    const KNOWN: Record<string, number> = { P4: 2279.65, P12: 14192.68 }
+    const planted = truth.planted_issues.filter((p: any) => IN_SCOPE.includes(p.type)).map((p: any) => ({ ...p, amount: p.amount ?? KNOWN[p.id] ?? null }))
     for (const p of planted) {
         const hits = findings.filter(f => f.type === p.type)
         const f = hits[0]

@@ -155,12 +155,14 @@ function fuelRules(state: FleetState): Finding[] {
         }
     }
 
-    const truckByCard = new Map(state.trucks.map(t => [t.fuelCard, t]))
+    // Receipts print the card masked ("****7742"); the fleet's books say "FC-7742". Match on the last 4 digits.
+    const cardKey = (card: string) => card.replace(/\D/g, "").slice(-4)
+    const truckByCard = new Map(state.trucks.map(t => [cardKey(t.fuelCard), t]))
     for (const r of unique) {
-        const owner = truckByCard.get(r.card)
+        const owner = truckByCard.get(cardKey(r.card))
         if (!owner || owner.fleetUnit === r.unitEntered) continue
         const priorByOwner = unique
-            .filter(o => o !== r && o.card === r.card && o.unitEntered === owner.fleetUnit)
+            .filter(o => o !== r && cardKey(o.card) === cardKey(r.card) && o.unitEntered === owner.fleetUnit)
             .map(o => ({ o, gap: toMinutes(r.datetime) - toMinutes(o.datetime) }))
             .filter(x => x.gap > 0 && x.gap < 12 * 60)
             .sort((a, b) => a.gap - b.gap)[0]
@@ -169,7 +171,7 @@ function fuelRules(state: FleetState): Finding[] {
             type: "FUEL_CARD_MISMATCH",
             severity: "fraud_or_error",
             loadIds: [],
-            title: `${owner.truckId}'s card ${r.card} used with unit #${r.unitEntered} (${usd(r.total)})`,
+            title: `${owner.truckId}'s card ${owner.fuelCard} used with unit #${r.unitEntered} (${usd(r.total)})`,
             detail:
                 `${r.station}, ${r.city} ${r.state} at ${r.datetime}.` +
                 (priorByOwner

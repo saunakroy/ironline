@@ -7,7 +7,7 @@ import { generateObject, type UserContent } from "ai"
 import mammoth from "mammoth"
 import { z } from "zod"
 
-import type { ExtractedDoc } from "@fleet/data/shared"
+import { rateTotals, type ExtractedDoc } from "@fleet/data/shared"
 
 const MODEL = process.env.OPENAI_MODEL ?? "gpt-5-mini"
 const TIMEOUT_MS = Number(process.env.EXTRACT_TIMEOUT_MS ?? 90_000)
@@ -22,8 +22,10 @@ const Schema = z.object({
     bolNumber: n(z.string()),
     billToName: n(z.string()).describe("Exactly as written on the document"),
     rate: n(z.object({
-        linehaul: z.number(),
-        fuelSurcharge: z.number().describe("Total FSC dollars for the load (per-mile x miles if only a per-mile rate is given)"),
+        linehaul: n(z.number()).describe("Line haul dollar TOTAL if printed; null if only a $/mi rate is given"),
+        linehaulPerMile: n(z.number()).describe("Line haul $/mi if that's how it's quoted (e.g. 2.30); do not multiply"),
+        fuelSurcharge: n(z.number()).describe("FSC dollar TOTAL if printed; null if only a $/mi rate is given"),
+        fuelSurchargePerMile: n(z.number()).describe("FSC $/mi if that's how it's quoted (e.g. 0.875); do not multiply"),
         detentionFreeMinutes: n(z.number()),
         detentionRatePerHour: n(z.number()),
         lumperReimbursable: z.boolean()
@@ -86,5 +88,14 @@ export async function extractFile(path: string, opts: { displayName?: string; op
         maxRetries: 1,
         abortSignal: AbortSignal.timeout(TIMEOUT_MS)
     })
-    return { ...object, file } as ExtractedDoc
+    // Per-mile quotes (tenders) become totals here, in code, never in the model.
+    const { rate, ...rest } = object
+    const totals = rate ? rateTotals(rate, object.loadedMiles) : null
+    return {
+        ...rest,
+        file,
+        rate: rate && totals
+            ? { linehaul: totals.linehaul, fuelSurcharge: totals.fuelSurcharge, detentionFreeMinutes: rate.detentionFreeMinutes, detentionRatePerHour: rate.detentionRatePerHour, lumperReimbursable: rate.lumperReimbursable }
+            : null
+    } as ExtractedDoc
 }

@@ -54,3 +54,13 @@ describe("answer key", () => {
         expect(f.detail).toContain("Kansas City")
     })
 })
+
+describe("live-extraction shapes", () => {
+    test("fuel card printed masked on the receipt (****7742) still matches the truck's card FC-7742", () => {
+        const state = buildFixture()
+        state.fuelReceipts = state.fuelReceipts.map(r => ({ ...r, card: `*************${r.card.slice(-4)}` }))
+        const f = runRules(state).filter(f => f.type === "FUEL_CARD_MISMATCH")
+        expect(f.length).toBe(1)
+        expect(f[0]!.amount).toBeCloseTo(800.73, 2)
+    })
+})

@@ -274,7 +274,7 @@ export class Company extends Actor<null, null, CompanyOutgoing> {
     }
 
     async snapshot(): Promise<CompanySnapshot> {
-        const unmatched = this.db.exec("SELECT file, kind, added_at FROM live_documents WHERE load_id IS NULL ORDER BY added_at") as Row[]
+        const unmatched = this.db.exec("SELECT file, kind, added_at FROM live_documents WHERE load_id IS NULL AND matched_by = 'unmatched' ORDER BY added_at") as Row[]
         return {
             profile: this.profile,
             tables: await this.listTables(),
