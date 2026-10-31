@@ -13,7 +13,8 @@
         "dev:data": "bun run --cwd apps/data dev",
         "dev:inference": "bun run --cwd apps/inference dev",
         "test": "bun test",
-        "check": "bun run --cwd apps/data check && bun run --cwd apps/inference check"
+        "check": "bun run --cwd apps/data check && bun run --cwd apps/inference check",
+        "dev:web": "bun run --cwd apps/web dev"
     },
     "trustedDependencies": [
         "esbuild"

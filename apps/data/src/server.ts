@@ -1,6 +1,7 @@
 // Data server: HTTP front for the Terse actors. Owns state and deterministic checks; no LLM calls here.
 import express from "express"
-import { join } from "node:path"
+import { existsSync } from "node:fs"
+import { join, resolve, sep } from "node:path"
 
 import type { Briefing, ExtractedDoc, RelayMessage } from "./shared/index.js"
 
@@ -45,6 +46,14 @@ async function publish(topic: RelayMessage["topic"], to: string, payload: unknow
 }
 
 app.get("/health", (_req, res) => void res.json({ ok: true, service: "data" }))
+
+/** Source documents for the UI's evidence drawer, e.g. /api/files?path=inbox/2026-10-26/IMG_....jpg. Dataset dir only. */
+app.get("/api/files", (req, res) => {
+    const root = resolve(DATASET)
+    const file = resolve(root, String(req.query.path ?? ""))
+    if (!file.startsWith(root + sep) || !existsSync(file)) return void res.status(404).json({ error: "not found" })
+    res.sendFile(file)
+})
 
 app.post("/api/companies/:c/seed", wrap(async (req, res) => {
     const dir = req.body?.historyDir ?? join(DATASET, "history")

@@ -4,6 +4,12 @@ export type AgentName =
   | 'Rate Agent'
   | 'Detention Agent'
   | 'Watchdog'
+  // Real backend agents (live mode)
+  | 'Intake Agent'
+  | 'Enrichment Agent'
+  | 'Briefer'
+  | 'Data Server'
+  | 'Auditor'
 
 export type FieldStatus = 'ok' | 'flagged'
 
@@ -24,7 +30,8 @@ export interface BriefingItem {
   agent: AgentName
   loadId: string
   evidenceUrl: string
-  confidence: number
+  /** Extraction confidence; absent for deterministic rule findings. */
+  confidence?: number
   fields: ExtractedField[]
   severity: BriefingSeverity
   category: ProblemCategory

@@ -1,9 +1,23 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { CheckCircle2, CloudUpload, ListChecks, Sparkles } from 'lucide-react'
 import { useRef, useState } from 'react'
+import { routedFields } from '../data/adapt'
 import { buildGenericExtraction, demoFiles, guessDocKind, type DocKind, type DocStage } from '../data/intake'
 import type { ExtractedField } from '../data/types'
+import { api, type IngestResult, type RouteResult } from '../lib/backend'
 import { DOC_KIND_ICON } from '../lib/icons'
+import { useLive } from '../lib/live'
+
+const DEMO_DAYS = ['2026-10-26', '2026-10-27', '2026-10-28', '2026-10-29', '2026-10-30']
+/** Same ordering the inference server uses: rate cons/tenders create loads, texts attach last. */
+const phase = (name: string) => {
+  const n = name.toLowerCase()
+  if (n.startsWith('ratecon') || n.endsWith('.eml')) return 0
+  if (n.endsWith('.txt')) return 2
+  return 1
+}
+const firstRoute = (r: IngestResult): RouteResult | undefined => (Array.isArray(r.routed) ? r.routed[0] : r.routed)
+const isImage = (name: string) => /\.(jpe?g|png|webp)$/i.test(name)
 import type { EvidenceDrawerProps } from './EvidenceDrawer'
 
 interface QueueItem {
@@ -12,7 +26,7 @@ interface QueueItem {
   kind: DocKind
   stage: DocStage
   docType: string
-  confidence: number
+  confidence?: number
   evidenceUrl?: string
   fields: ExtractedField[]
   loadId?: string
@@ -57,6 +71,51 @@ export default function IntakeSection({
   const [expandedKey, setExpandedKey] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const counter = useRef(0)
+  const { status, ingest, ingestDay } = useLive()
+  const live = status !== 'mock'
+
+  const patch = (key: string, p: Partial<QueueItem>) => setQueue((q) => q.map((i) => (i.key === key ? { ...i, ...p } : i)))
+  const fromResult = (r: IngestResult): Partial<QueueItem> => {
+    const route = firstRoute(r)
+    if (r.error) return { stage: 'needs review', docType: 'Not processed', fields: [{ label: 'Error', value: r.error, status: 'flagged' }] }
+    const matched = !!route && (route.loadIds.length > 0 || route.matchedBy.includes('fleet') || route.matchedBy.includes('message'))
+    return {
+      stage: matched ? 'done' : 'needs review',
+      docType: (r.kind ?? 'unknown').replace(/_/g, ' '),
+      fields: routedFields(route, r.kind),
+      loadId: route?.loadIds[0],
+    }
+  }
+  const enqueue = (name: string, evidenceUrl?: string) => {
+    const key = `doc-${Date.now()}-${counter.current++}`
+    setQueue((q) => [{ key, name, kind: guessDocKind(name), stage: 'extracting', docType: 'Reading…', fields: [], evidenceUrl }, ...q])
+    return key
+  }
+
+  const uploadLive = async (files: File[]) => {
+    const ordered = [...files].sort((a, b) => phase(a.name) - phase(b.name))
+    const keys = ordered.map((f) => enqueue(f.name, isImage(f.name) ? URL.createObjectURL(f) : undefined))
+    for (let i = 0; i < ordered.length; i++) {
+      const r = await ingest(ordered[i]!).catch((e: Error) => ({ file: ordered[i]!.name, error: e.message }) as IngestResult)
+      patch(keys[i]!, fromResult(r))
+    }
+  }
+
+  const replayDemoDays = async () => {
+    for (const day of DEMO_DAYS) {
+      const key = enqueue(`Inbox ${day} (dataset)`)
+      try {
+        const rows = await ingestDay(day)
+        setQueue((q) => q.filter((i) => i.key !== key))
+        for (const r of rows) {
+          const k = enqueue(r.file.split('/').pop() ?? r.file, isImage(r.file) ? api.fileUrl(r.file) : undefined)
+          patch(k, fromResult(r))
+        }
+      } catch (e) {
+        patch(key, { stage: 'needs review', docType: 'Not processed', fields: [{ label: 'Error', value: (e as Error).message, status: 'flagged' }] })
+      }
+    }
+  }
 
   const schedule = (key: string, finalStage: 'done' | 'needs review') => {
     const delays = reduced ? [0, 0, 0] : [500, 900, 1300]
@@ -78,6 +137,7 @@ export default function IntakeSection({
 
   const loadDemoFiles = () => {
     setError(null)
+    if (live) return void replayDemoDays()
     demoFiles.forEach((doc, i) => {
       pushItem(
         {
@@ -104,6 +164,7 @@ export default function IntakeSection({
       return
     }
     setError(null)
+    if (live) return void uploadLive(files)
     files.forEach((f, i) => {
       const extraction = buildGenericExtraction(f.name)
       pushItem(
@@ -236,18 +297,20 @@ export default function IntakeSection({
                           <span className="text-[12px] font-semibold uppercase tracking-wide text-text-muted">
                             {item.docType}
                           </span>
-                          <span
-                            className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${
-                              item.confidence >= 0.85
-                                ? 'bg-success-soft text-success-text'
-                                : 'bg-warning-soft text-warning-text'
-                            }`}
-                          >
-                            {Math.round(item.confidence * 100)}% confidence
-                          </span>
+                          {item.confidence != null && (
+                            <span
+                              className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${
+                                item.confidence >= 0.85
+                                  ? 'bg-success-soft text-success-text'
+                                  : 'bg-warning-soft text-warning-text'
+                              }`}
+                            >
+                              {Math.round(item.confidence * 100)}% confidence
+                            </span>
+                          )}
                         </div>
                         <dl className="mt-2 space-y-1">
-                          {item.fields.slice(0, 3).map((f) => (
+                          {item.fields.slice(0, 4).map((f) => (
                             <div key={f.label} className="flex items-center justify-between gap-3 text-[12.5px]">
                               <dt className="text-text-muted">{f.label}</dt>
                               <dd className={f.status === 'flagged' ? 'font-medium text-critical-text' : 'text-text-secondary'}>

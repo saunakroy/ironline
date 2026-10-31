@@ -1,5 +1,4 @@
-import { briefingItems, watchItems } from './briefing'
-import type { ExtractedField } from './types'
+import type { BriefingItem, ExtractedField, WatchItem } from './types'
 
 export type TodoPriority = 'high' | 'medium' | 'low'
 
@@ -60,13 +59,14 @@ const WATCH_TASK: Record<string, { title: string; priority: TodoPriority; due: s
   },
 }
 
-export function buildTodos(): TodoItem[] {
+// Live findings have backend ids; fall back to rules by severity when a mock-specific mapping is missing.
+export function buildTodos(briefingItems: BriefingItem[], watchItems: WatchItem[]): TodoItem[] {
   const fromBriefing: TodoItem[] = briefingItems.map((item) => ({
     id: item.id,
-    title: `${BRIEFING_TASK_TITLE[item.id]} (${item.loadId})`,
+    title: BRIEFING_TASK_TITLE[item.id] ? `${BRIEFING_TASK_TITLE[item.id]} (${item.loadId})` : item.title,
     amount: item.amount,
-    priority: BRIEFING_TASK_PRIORITY[item.id],
-    due: BRIEFING_TASK_DUE[item.id],
+    priority: BRIEFING_TASK_PRIORITY[item.id] ?? (item.severity === 'critical' ? 'high' : 'medium'),
+    due: BRIEFING_TASK_DUE[item.id] ?? (item.severity === 'critical' ? 'Tonight' : 'This week'),
     loadId: item.loadId,
     evidenceUrl: item.evidenceUrl,
     confidence: item.confidence,
@@ -77,12 +77,12 @@ export function buildTodos(): TodoItem[] {
     const meta = WATCH_TASK[item.id]
     return {
       id: item.id,
-      title: meta.title,
+      title: meta?.title ?? item.title,
       amount: item.amount,
-      priority: meta.priority,
-      due: meta.due,
-      evidenceUrl: meta.evidenceUrl,
-      confidence: 0.9,
+      priority: meta?.priority ?? (item.severity === 'warning' ? 'high' : 'medium'),
+      due: meta?.due ?? 'This week',
+      evidenceUrl: meta?.evidenceUrl,
+      confidence: meta ? 0.9 : undefined,
       fields: [{ label: 'Detail', value: item.detail, status: 'flagged' }],
     }
   })

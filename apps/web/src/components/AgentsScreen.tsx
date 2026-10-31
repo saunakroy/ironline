@@ -1,7 +1,9 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import { agentMessages } from '../data/agents'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { agentMessagesFrom } from '../data/adapt'
+import { agentMessages as mockMessages, type AgentMessage } from '../data/agents'
+import { useLive } from '../lib/live'
 import { useTypewriter } from '../lib/useTypewriter'
 import AgentBadge from './AgentBadge'
 
@@ -10,15 +12,18 @@ function MessageRow({
   active,
   onDone,
   reduced,
+  instant = false,
 }: {
-  message: (typeof agentMessages)[number]
+  message: AgentMessage
   active: boolean
   onDone: () => void
   reduced: boolean
+  instant?: boolean
 }) {
-  const typed = useTypewriter(message.message, active && !reduced, onDone)
-  const text = reduced ? message.message : typed
-  const isTyping = !reduced && active && typed.length < message.message.length
+  const still = reduced || instant
+  const typed = useTypewriter(message.message, active && !still, onDone)
+  const text = still ? message.message : typed
+  const isTyping = !still && active && typed.length < message.message.length
 
   return (
     <motion.li
@@ -50,11 +55,29 @@ function MessageRow({
 
 export default function AgentsScreen() {
   const reduced = !!useReducedMotion()
+  const { feed, status } = useLive()
+  const agentMessages = useMemo(
+    () => (status === 'mock' ? mockMessages : agentMessagesFrom(feed).slice(-80)),
+    [feed, status],
+  )
+  // History (what's already in the feed ~0.5s after opening) shows instantly; only new messages are typed out.
+  const [historyIds, setHistoryIds] = useState<Set<string> | null>(status === 'mock' ? new Set() : null)
+  const latest = useRef(agentMessages)
+  latest.current = agentMessages
   const [activeIndex, setActiveIndex] = useState(reduced ? agentMessages.length - 1 : 0)
 
   useEffect(() => {
+    if (historyIds) return
+    const t = setTimeout(() => {
+      setHistoryIds(new Set(latest.current.map(m => m.id)))
+      setActiveIndex(latest.current.length)
+    }, 500)
+    return () => clearTimeout(t)
+  }, [historyIds])
+
+  useEffect(() => {
     if (reduced) setActiveIndex(agentMessages.length - 1)
-  }, [reduced])
+  }, [reduced, agentMessages.length])
 
   const advance = (i: number) => {
     setTimeout(() => setActiveIndex((cur) => Math.max(cur, i + 1)), 350)
@@ -70,6 +93,10 @@ export default function AgentsScreen() {
         </p>
       </header>
 
+      {status !== 'mock' && agentMessages.length === 0 && (
+        <p className="mt-5 text-sm text-text-faint">No agent traffic yet. Upload paperwork or run tonight&apos;s check.</p>
+      )}
+
       <ul className="mt-5 space-y-3">
         {agentMessages.map((msg, i) => (
           <MessageRow
@@ -78,6 +105,7 @@ export default function AgentsScreen() {
             active={i <= activeIndex}
             onDone={() => advance(i)}
             reduced={reduced}
+            instant={!historyIds || historyIds.has(msg.id)}
           />
         ))}
       </ul>

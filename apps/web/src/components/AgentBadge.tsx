@@ -6,6 +6,11 @@ const COLORED_STYLES: Record<AgentName, string> = {
   'Rate Agent': 'bg-accent-soft text-accent-text ring-accent/25',
   'Detention Agent': 'bg-success-soft text-success-text ring-success/25',
   Watchdog: 'bg-critical-soft text-critical-text ring-critical/25',
+  'Intake Agent': 'bg-info-soft text-info ring-info/25',
+  'Enrichment Agent': 'bg-warning-soft text-warning-text ring-warning/25',
+  Briefer: 'bg-accent-soft text-accent-text ring-accent/25',
+  'Data Server': 'bg-success-soft text-success-text ring-success/25',
+  Auditor: 'bg-critical-soft text-critical-text ring-critical/25',
 }
 
 const DOT_COLOR: Record<AgentName, string> = {
@@ -14,6 +19,11 @@ const DOT_COLOR: Record<AgentName, string> = {
   'Rate Agent': 'bg-accent',
   'Detention Agent': 'bg-success',
   Watchdog: 'bg-critical',
+  'Intake Agent': 'bg-info',
+  'Enrichment Agent': 'bg-warning',
+  Briefer: 'bg-accent',
+  'Data Server': 'bg-success',
+  Auditor: 'bg-critical',
 }
 
 export default function AgentBadge({

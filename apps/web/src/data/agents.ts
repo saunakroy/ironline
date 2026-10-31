@@ -3,7 +3,7 @@ import type { AgentName } from './types'
 export interface AgentMessage {
   id: string
   from: AgentName
-  to: AgentName | 'All'
+  to: AgentName | 'All' | string
   message: string
   loadId?: string
   time: string

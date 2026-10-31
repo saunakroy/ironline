@@ -8,7 +8,8 @@ export interface EvidenceDrawerProps {
   badge?: ReactNode
   tag?: string
   evidenceUrl: string
-  confidence: number
+  /** Omit for rule-based findings: the drawer says so instead of inventing a score. */
+  confidence?: number
   fields: ExtractedField[]
   footer?: { label: string; value: string }
   onClose: () => void
@@ -54,7 +55,7 @@ export default function EvidenceDrawer({
     }
   }, [onClose])
 
-  const confidencePct = Math.round(confidence * 100)
+  const confidencePct = confidence == null ? null : Math.round(confidence * 100)
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-6">
@@ -101,15 +102,21 @@ export default function EvidenceDrawer({
 
         <div className="flex-1 overflow-y-auto px-5 py-4">
           <div className="flex items-center justify-between rounded-xl bg-surface px-3.5 py-2.5">
-            <span className="text-[13px] font-medium text-text-secondary">Extraction confidence</span>
-            <div className="flex items-center gap-2">
-              <ConfidenceBar pct={confidencePct} />
-              <span className="text-[13px] font-semibold tabular-nums text-text">{confidencePct}%</span>
-            </div>
+            {confidencePct == null ? (
+              <span className="text-[13px] font-medium text-text-secondary">Checked by rule against the paperwork — no AI guesswork in the math</span>
+            ) : (
+              <>
+                <span className="text-[13px] font-medium text-text-secondary">Extraction confidence</span>
+                <div className="flex items-center gap-2">
+                  <ConfidenceBar pct={confidencePct} />
+                  <span className="text-[13px] font-semibold tabular-nums text-text">{confidencePct}%</span>
+                </div>
+              </>
+            )}
           </div>
 
           <div className="mt-4 overflow-hidden rounded-xl border border-border bg-white">
-            {!imgError ? (
+            {evidenceUrl && !imgError ? (
               <img
                 src={evidenceUrl}
                 alt={`Source document for ${title}`}

@@ -1,7 +1,9 @@
 import { useReducedMotion } from 'framer-motion'
 import { Check, PartyPopper } from 'lucide-react'
 import { useMemo, useState } from 'react'
+import { briefingFrom } from '../data/adapt'
 import { buildTodos, type TodoPriority } from '../data/todos'
+import { useLive } from '../lib/live'
 import { formatUsd } from '../lib/format'
 import { useLocalStorageState } from '../lib/useLocalStorage'
 import { useCountUp } from '../lib/useCountUp'
@@ -17,7 +19,11 @@ type Filter = 'all' | 'open' | 'done'
 
 export default function TodoScreen() {
   const reduced = useReducedMotion()
-  const todos = useMemo(() => buildTodos(), [])
+  const { snapshot, status } = useLive()
+  const todos = useMemo(() => {
+    const b = briefingFrom(snapshot, status === 'mock')
+    return buildTodos(b.items, b.watch)
+  }, [snapshot, status])
   const [doneIds, setDoneIds] = useLocalStorageState<string[]>('ironline-todo-done', [])
   const [filter, setFilter] = useState<Filter>('all')
   const [drawer, setDrawer] = useState<Omit<EvidenceDrawerProps, 'onClose'> | null>(null)
@@ -132,7 +138,7 @@ export default function TodoScreen() {
                               title: todo.title,
                               tag: todo.loadId ? `Load ${todo.loadId}` : undefined,
                               evidenceUrl: todo.evidenceUrl!,
-                              confidence: todo.confidence ?? 0.9,
+                              confidence: todo.confidence,
                               fields: todo.fields!,
                             })
                           }

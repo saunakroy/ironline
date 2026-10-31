@@ -1,5 +1,5 @@
 {
-  "name": "ironline-ui",
+  "name": "@fleet/web",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -13,7 +13,8 @@
     "framer-motion": "^14.9.0",
     "lucide-react": "^1.66.0",
     "react": "^19.3.1",
-    "react-dom": "^19.3.1"
+    "react-dom": "^19.3.1",
+    "@fleet/data": "workspace:*"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
