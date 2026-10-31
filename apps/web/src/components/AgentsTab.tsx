@@ -11,9 +11,13 @@ import {
 
 interface AgentsTabProps {
   messages: AgentMessage[];
+  /** Live mode: run the nightly audit now, and link to the backend's full tracker. */
+  onRunCheck?: () => void;
+  isChecking?: boolean;
+  trackerUrl?: string;
 }
 
-export const AgentsTab: React.FC<AgentsTabProps> = ({ messages }) => {
+export const AgentsTab: React.FC<AgentsTabProps> = ({ messages, onRunCheck, isChecking = false, trackerUrl }) => {
   const [displayedCount, setDisplayedCount] = useState<number>(messages.length);
   const [isStreaming, setIsStreaming] = useState<boolean>(false);
   const [activeFilter, setActiveFilter] = useState<'all' | 'alert' | 'urgent'>('all');
@@ -46,6 +50,8 @@ export const AgentsTab: React.FC<AgentsTabProps> = ({ messages }) => {
         return 'text-amber-800 dark:text-amber-400 bg-amber-100 dark:bg-amber-950/40 border-amber-300 dark:border-amber-800/50';
       case 'briefer':
         return 'text-emerald-800 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-800/50';
+      case 'enrichment':
+        return 'text-amber-800 dark:text-amber-400 bg-amber-100 dark:bg-amber-950/40 border-amber-300 dark:border-amber-800/50';
       case 'all':
       default:
         return 'text-orange-800 dark:text-orange-400 bg-orange-100 dark:bg-orange-950/40 border-orange-300 dark:border-orange-800/50';
@@ -62,13 +68,16 @@ export const AgentsTab: React.FC<AgentsTabProps> = ({ messages }) => {
         return 'Fraud Watchdog';
       case 'briefer':
         return 'Owner Briefer';
+      case 'enrichment':
+        return 'Data Enrichment';
       case 'all':
       default:
         return 'All Agents (Broadcast)';
     }
   };
 
-  const visibleMessages = messages.slice(0, displayedCount).filter((m) => {
+  // Live messages keep arriving: show them all unless a replay is running.
+  const visibleMessages = messages.slice(0, isStreaming ? displayedCount : messages.length).filter((m) => {
     if (activeFilter === 'all') return true;
     if (activeFilter === 'alert') return m.priority === 'alert' || m.priority === 'urgent';
     return m.priority === 'urgent';
@@ -91,7 +100,27 @@ export const AgentsTab: React.FC<AgentsTabProps> = ({ messages }) => {
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
+            {onRunCheck && (
+              <button
+                onClick={onRunCheck}
+                disabled={isChecking}
+                className="px-4 py-2 rounded-xl text-xs font-bold font-mono bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-200 text-white dark:text-black flex items-center gap-2 transition disabled:opacity-50"
+              >
+                <Zap className={`w-3.5 h-3.5 ${isChecking ? 'animate-spin' : ''}`} />
+                <span>{isChecking ? 'Checking…' : "Run Tonight's Check"}</span>
+              </button>
+            )}
+            {trackerUrl && (
+              <a
+                href={trackerUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="px-3 py-2 rounded-xl text-xs font-bold font-mono text-orange-600 dark:text-orange-400 hover:text-orange-700 border border-orange-300 dark:border-orange-500/40 transition"
+              >
+                Full Tracker →
+              </a>
+            )}
             <button
               onClick={handleStartStream}
               disabled={isStreaming}

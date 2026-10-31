@@ -18,7 +18,7 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({ item, onClose, o
     if (item) {
       setAnimatedConfidence(0);
       const timer = setTimeout(() => {
-        setAnimatedConfidence(item.confidence);
+        setAnimatedConfidence(item.confidence ?? 100);
       }, 100);
       return () => clearTimeout(timer);
     }
@@ -116,14 +116,15 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({ item, onClose, o
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-[11px] font-mono text-slate-500 dark:text-slate-400">Confidence Score</div>
+                <div className="text-[11px] font-mono text-slate-500 dark:text-slate-400">{item.confidence == null ? 'Checked by' : 'Confidence Score'}</div>
                 <div className="text-xl font-bold font-mono text-slate-900 dark:text-white tabular-nums">
-                  {item.confidence}%
+                  {item.confidence == null ? 'Rule' : `${item.confidence}%`}
                 </div>
               </div>
             </div>
 
             {/* Confidence Progress Meter */}
+            {item.confidence != null && (
             <div className="space-y-1.5">
               <div className="flex justify-between text-xs font-mono text-slate-500 dark:text-slate-400">
                 <span className="flex items-center gap-1.5 font-semibold text-slate-700 dark:text-slate-300">
@@ -139,6 +140,7 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({ item, onClose, o
                 />
               </div>
             </div>
+            )}
 
             {/* Document Evidence Viewer (Collapsible Dropdown) */}
             <div className="space-y-2">
@@ -169,11 +171,15 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({ item, onClose, o
               {isDocOpen && (
                 <div className="animate-in fade-in duration-150 space-y-1.5">
                   <div className="rounded-xl border border-slate-200 dark:border-slate-700/80 bg-slate-100 dark:bg-black/60 p-2 overflow-hidden shadow-inner flex items-center justify-center">
-                    <img 
-                      src={item.evidenceUrl} 
-                      alt={item.evidenceTitle}
-                      className="max-h-64 w-auto object-contain rounded border border-slate-200 dark:border-slate-800"
-                    />
+                    {item.evidenceUrl ? (
+                      <img 
+                        src={item.evidenceUrl} 
+                        alt={item.evidenceTitle}
+                        className="max-h-64 w-auto object-contain rounded border border-slate-200 dark:border-slate-800"
+                      />
+                    ) : (
+                      <div className="py-8 text-xs font-mono text-slate-500 dark:text-slate-400 text-center">No photo for this finding — see the source documents below</div>
+                    )}
                   </div>
                   <div className="text-[11px] font-mono text-slate-500 dark:text-slate-400 text-center">
                     {item.evidenceTitle}

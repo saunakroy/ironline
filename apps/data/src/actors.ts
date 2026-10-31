@@ -58,6 +58,31 @@ export type CompanySnapshot = {
     nextCheckAt: string | null
 }
 
+export type FleetDriver = {
+    driverId: string
+    name: string
+    phone: string
+    truckId: string | null
+    fleetUnit: string | null
+    fuelCard: string | null
+    medicalCardExpiration: string | null
+    cdlExpiration: string | null
+}
+
+/** Fleet KPIs computed from the company's own history tables (30 days ending asOf, unless noted). */
+export type FleetKpis = {
+    asOf: string
+    revenuePerMile: number | null
+    fuelCostPerMile: number | null
+    openReceivablesTotal: number
+    openReceivablesCount: number
+    overdueReceivablesCount: number
+    /** All history: detention the fleet incurred but never billed. */
+    unbilledDetentionLoss: number
+    iftaMonth: string | null
+    monthlyIftaMiles: number
+}
+
 type CompanyOutgoing =
     | { type: "findings"; findings: Finding[]; totalAtRisk: number }
     | { type: "load"; load: LoadRecord }
@@ -206,6 +231,11 @@ export class Company extends Actor<null, null, CompanyOutgoing> {
         } catch {
             return null
         }
+    }
+
+    /** Drivers/trucks and history KPIs straight from this company's tables (deterministic SQL). */
+    async fleetOverview(asOf: string): Promise<{ drivers: FleetDriver[]; kpis: FleetKpis }> {
+        return { drivers: fleetDrivers(this.db), kpis: fleetKpis(this.db, asOf) }
     }
 
     // ---------- the nightly audit ----------
@@ -385,6 +415,60 @@ function fleetState(db: ActorDatabase, asOf: string): FleetState {
             invoicedLoadIds: q("SELECT load_id FROM h_invoices").map(i => String(i.load_id))
         }
     }
+
+function safeRows(db: ActorDatabase, sql: string, ...args: (string | number)[]): Row[] {
+    try {
+        return db.exec(sql, ...args) as Row[]
+    } catch {
+        return [] // table not imported for this company
+    }
+}
+
+function fleetDrivers(db: ActorDatabase): FleetDriver[] {
+    const trucks = new Map(safeRows(db, "SELECT truck_id, fleet_unit, fuel_card FROM h_trucks").map(t => [String(t.truck_id), t]))
+    return safeRows(db, "SELECT * FROM h_drivers ORDER BY driver_id").map(d => {
+        const t = d.assigned_truck ? trucks.get(String(d.assigned_truck)) : undefined
+        return {
+            driverId: String(d.driver_id),
+            name: `${d.first_name} ${d.last_name}`,
+            phone: String(d.phone ?? ""),
+            truckId: d.assigned_truck ? String(d.assigned_truck) : null,
+            fleetUnit: t ? String(t.fleet_unit) : null,
+            fuelCard: t ? String(t.fuel_card) : null,
+            medicalCardExpiration: d.medical_card_expiration ? String(d.medical_card_expiration) : null,
+            cdlExpiration: d.cdl_expiration ? String(d.cdl_expiration) : null
+        }
+    })
+}
+
+function fleetKpis(db: ActorDatabase, asOf: string): FleetKpis {
+    const one = (sql: string, ...args: (string | number)[]) => safeRows(db, sql, ...args)[0] ?? {}
+    const num = (v: unknown) => (v == null ? 0 : Number(v))
+    const round = (n: number, d = 2) => Math.round(n * 10 ** d) / 10 ** d
+    const rev = one(
+        "SELECT SUM(total_billed) AS dollars, SUM(loaded_miles) AS miles FROM h_loads WHERE pickup_date > date(?, '-30 day') AND pickup_date <= ?",
+        asOf, asOf
+    )
+    const fuel = one("SELECT SUM(fuel_total) AS dollars FROM h_fuel_purchases WHERE purchase_datetime > date(?, '-30 day') AND purchase_datetime <= ?", asOf, asOf + " 23:59")
+    const driven = one("SELECT SUM(miles) AS miles FROM h_trips WHERE start_datetime > date(?, '-30 day') AND start_datetime <= ?", asOf, asOf + " 23:59")
+    const ar = one(
+        "SELECT SUM(amount) AS total, COUNT(*) AS n, SUM(CASE WHEN due_date < ? THEN 1 ELSE 0 END) AS overdue FROM h_invoices WHERE status = 'Open'",
+        asOf
+    )
+    const det = one("SELECT SUM(detention_incurred - detention_billed) AS lost FROM h_loads")
+    const ifta = one("SELECT month, SUM(miles) AS miles FROM h_ifta_state_miles GROUP BY month ORDER BY month DESC LIMIT 1")
+    return {
+        asOf,
+        revenuePerMile: num(rev.miles) ? round(num(rev.dollars) / num(rev.miles)) : null,
+        fuelCostPerMile: num(driven.miles) ? round(num(fuel.dollars) / num(driven.miles)) : null,
+        openReceivablesTotal: round(num(ar.total)),
+        openReceivablesCount: num(ar.n),
+        overdueReceivablesCount: num(ar.overdue),
+        unbilledDetentionLoss: round(num(det.lost)),
+        iftaMonth: ifta.month ? String(ifta.month) : null,
+        monthlyIftaMiles: Math.round(num(ifta.miles))
+    }
+}
 
 function coerce(v: string | number | null | undefined): string | number | null {
     if (v == null || v === "") return null

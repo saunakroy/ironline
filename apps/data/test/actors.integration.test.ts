@@ -49,6 +49,14 @@ describe.skipIf(!up)("backend <-> Terse actors", () => {
         expect(b).toEqual({ loadId: "IRN-1852", created: false })
     })
 
+    test("fleetOverview reads drivers and KPIs from the company's own tables", async () => {
+        const { drivers, kpis } = await Company.get(C).fleetOverview("2026-10-30")
+        expect(drivers).toEqual([expect.objectContaining({ driverId: "D01", name: "William Martin", truckId: "T101", medicalCardExpiration: "2027-05-20" })])
+        expect(kpis.asOf).toBe("2026-10-30")
+        expect(kpis.openReceivablesTotal).toBe(0) // no invoices imported for this test company
+        expect(kpis.revenuePerMile).toBeNull()
+    })
+
     test("rate con -> BOL (by ref) -> POD (by BOL #) all land on one Load actor", async () => {
         const [r1] = [await routeDoc(C, rateCon("RFL-482317"))]
         const loadId = r1!.loadIds[0]!

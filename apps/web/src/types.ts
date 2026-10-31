@@ -1,4 +1,4 @@
-export type AgentType = 'extractor' | 'reconciler' | 'watchdog' | 'briefer';
+export type AgentType = 'extractor' | 'reconciler' | 'watchdog' | 'briefer' | 'enrichment';
 export type ActiveTab = 'home' | 'dashboard' | 'agents';
 export type UserRole = 'owner' | 'trucker';
 export type ThemeMode = 'light' | 'dark';
@@ -31,7 +31,7 @@ export interface BriefingItem {
   evidenceUrl: string;
   evidenceType: 'image' | 'comparison' | 'telematics';
   evidenceTitle: string;
-  confidence: number; // 0 - 100
+  confidence: number | null; // 0 - 100; null = deterministic rule finding (no AI score)
   fields: BriefingField[];
   problemFields: string[]; // keys of fields that are problematic
   suggestedAction: string;

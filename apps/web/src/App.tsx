@@ -1,4 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { AS_OF, USE_MOCKS, api } from './lib/backend';
+import { useLive } from './lib/useLive';
+import { briefingFrom, driversFrom, finishedFile, kpisFrom, messagesFrom, pendingFile } from './data/adapt';
 import { 
   BRIEFING_ITEMS, 
   WATCH_ITEMS, 
@@ -27,16 +30,28 @@ import { LoginModal } from './components/LoginModal';
 import { TruckerPortal } from './components/TruckerPortal';
 
 export default function App() {
+  const live = useLive();
   const [theme, setTheme] = useState<ThemeMode>('light');
   const [currentRole, setCurrentRole] = useState<UserRole>('owner');
-  const [activeDriver, setActiveDriver] = useState<DriverSession>(DEMO_DRIVERS[0]);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<ActiveTab>('home');
-  const [briefingItems, setBriefingItems] = useState<BriefingItem[]>(BRIEFING_ITEMS);
-  const [watchItems] = useState<WatchItem[]>(WATCH_ITEMS);
+  const [mockBriefing, setBriefingItems] = useState<BriefingItem[]>(BRIEFING_ITEMS);
+  const [mockWatch] = useState<WatchItem[]>(WATCH_ITEMS);
   const [processedFiles, setProcessedFiles] = useState<ProcessedFile[]>([]);
-  const [messages, setMessages] = useState<AgentMessage[]>(AGENT_RELAY_MESSAGES);
-  const [kpis] = useState<FleetKPIs>(FLEET_KPIS);
+  const [mockMessages, setMessages] = useState<AgentMessage[]>(AGENT_RELAY_MESSAGES);
+  const [mockKpis] = useState<FleetKPIs>(FLEET_KPIS);
+  // Live mode: "resolve" hides a finding locally; the next check re-flags it if it's still true.
+  const [resolvedIds, setResolvedIds] = useState<string[]>([]);
+
+  const liveBriefing = useMemo(() => briefingFrom(live.snapshot, live.fleet), [live.snapshot, live.fleet]);
+  const briefingItems = USE_MOCKS ? mockBriefing : liveBriefing.items.filter((b) => !resolvedIds.includes(b.id));
+  const watchItems = USE_MOCKS ? mockWatch : liveBriefing.watch;
+  const messages = useMemo(() => (USE_MOCKS ? mockMessages : messagesFrom(live.feed)), [mockMessages, live.feed]);
+  const kpis = USE_MOCKS ? mockKpis : kpisFrom(live.fleet);
+  const drivers = useMemo(() => (USE_MOCKS ? DEMO_DRIVERS : driversFrom(live.snapshot, live.fleet)), [live.snapshot, live.fleet]);
+  const [activeDriverId, setActiveDriverId] = useState<string | null>(null);
+  const activeDriver = drivers.find((d) => d.id === activeDriverId) ?? drivers[0];
+  const setActiveDriver = (d: DriverSession) => setActiveDriverId(d.id);
   const [selectedBriefingItem, setSelectedBriefingItem] = useState<BriefingItem | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -61,6 +76,25 @@ export default function App() {
     }, 3500);
   };
 
+  // Live intake: one file at a time through the Intake agent (rate cons first, so loads exist before paperwork).
+  const phase = (n: string) => (/^ratecon|\.eml$/i.test(n) ? 0 : /\.txt$/i.test(n) ? 2 : 1);
+  const uploadLive = async (file: File): Promise<ProcessedFile> => {
+    const pending = pendingFile(file.name, file.size);
+    setProcessedFiles((prev) => [pending, ...prev]);
+    const result = await api.ingest(file).catch((e: Error) => ({ file: file.name, error: e.message }));
+    const done = { ...finishedFile(pending, result), isExpanded: true };
+    setProcessedFiles((prev) => prev.map((p) => (p.id === pending.id ? done : p)));
+    return done;
+  };
+  const DEMO_DAYS = ['2026-10-26', '2026-10-27', '2026-10-28', '2026-10-29', '2026-10-30'];
+  const replayDemoDays = async () => {
+    for (const day of DEMO_DAYS) {
+      const rows = await api.ingestDay(day).catch((e: Error) => [{ file: `inbox/${day}`, error: e.message }]);
+      setProcessedFiles((prev) => [...rows.map((r) => finishedFile(pendingFile(r.file), r)), ...prev]);
+    }
+    showToast(`✓ Replayed ${DEMO_DAYS.length} days of inbox through the agents — run tonight's check next`);
+  };
+
   const handleSelectRole = (role: UserRole, driver?: DriverSession) => {
     setCurrentRole(role);
     if (driver) {
@@ -68,8 +102,8 @@ export default function App() {
     }
     showToast(
       role === 'owner' 
-        ? '👔 Authenticated: Fleet Owner (Marcus Vance)' 
-        : `🚛 In-Cab Mode: ${(driver || activeDriver).name} (${(driver || activeDriver).truckId})`
+        ? `👔 Authenticated: Fleet Owner${USE_MOCKS ? ' (Marcus Vance)' : ''}` 
+        : `🚛 In-Cab Mode: ${(driver || activeDriver)?.name} (${(driver || activeDriver)?.truckId})`
     );
   };
 
@@ -110,7 +144,8 @@ export default function App() {
     const item = briefingItems.find((b) => b.id === id);
     if (!item) return;
 
-    setBriefingItems((prev) => prev.filter((b) => b.id !== id));
+    if (USE_MOCKS) setBriefingItems((prev) => prev.filter((b) => b.id !== id));
+    else setResolvedIds((prev) => [...prev, id]);
 
     // Append resolved event to Agent Relay Stream
     const now = new Date();
@@ -124,13 +159,18 @@ export default function App() {
       text: `OWNER SIGN-OFF: Reconciled ${item.id} (${item.title}). Recovered ${item.amountFormatted}. Ledger updated.`,
       priority: 'urgent'
     };
-    setMessages((prev) => [resolveMsg, ...prev]);
+    if (USE_MOCKS) setMessages((prev) => [resolveMsg, ...prev]);
 
     showToast(`✓ Resolved ${item.id}: Reconciled ${item.amountFormatted}`);
   };
 
   // Triggering the "Load demo files" action for the 3-minute pitch
   const handleLoadDemoFiles = () => {
+    if (!USE_MOCKS) {
+      showToast('⚡ Replaying the demo inbox through the agents…');
+      void replayDemoDays();
+      return;
+    }
     showToast('⚡ Ingesting Monday demo files: 4 documents queued');
 
     // Add files in 'uploaded' stage
@@ -179,6 +219,12 @@ export default function App() {
   const handleFileUpload = (files: FileList | File[]) => {
     const fileArray = Array.from(files);
     showToast(`Uploaded ${fileArray.length} file(s) for autonomous extraction`);
+    if (!USE_MOCKS) {
+      void (async () => {
+        for (const f of [...fileArray].sort((a, b) => phase(a.name) - phase(b.name))) await uploadLive(f);
+      })();
+      return;
+    }
 
     const newFiles: ProcessedFile[] = fileArray.map((f, i) => {
       const ext = f.name.split('.').pop()?.toUpperCase() || 'FILE';
@@ -233,6 +279,21 @@ export default function App() {
     );
   };
 
+  if (!USE_MOCKS && (!activeDriver || !kpis)) {
+    return (
+      <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center p-6 text-center font-mono">
+        <div>
+          <div className="text-base font-bold text-slate-900">{live.status === 'offline' ? 'Backend offline' : 'Connecting to Ironline…'}</div>
+          <div className="mt-1 text-xs text-slate-500">
+            {live.status === 'offline'
+              ? 'Start dev:actors, dev:data and dev:inference, then reload. (VITE_USE_MOCKS=1 for demo data.)'
+              : `Loading loads, drivers and findings for ${AS_OF} from the durable actors.`}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={`min-h-screen ${theme} ${theme === 'light' ? 'bg-[#f8fafc] text-[#0f172a]' : 'bg-[#070b14] text-[#f8fafc]'} flex flex-col font-sans antialiased w-full max-w-full overflow-x-hidden selection:bg-orange-500 selection:text-white`}>
       {/* Top Navigation with Profile Picture & Dropdown */}
@@ -241,8 +302,8 @@ export default function App() {
         onTabChange={setActiveTab}
         unresolvedCount={briefingItems.length}
         currentRole={currentRole}
-        activeDriver={activeDriver}
-        demoDrivers={DEMO_DRIVERS}
+        activeDriver={activeDriver!}
+        demoDrivers={drivers}
         onSelectRole={handleSelectRole}
         onOpenLoginModal={() => setIsLoginModalOpen(true)}
         theme={theme}
@@ -261,11 +322,12 @@ export default function App() {
         {currentRole === 'trucker' ? (
           <div className="animate-tab-enter">
             <TruckerPortal
-              driver={activeDriver}
+              driver={activeDriver!}
               onSwitchToOwner={() => handleSelectRole('owner')}
               onOpenLoginModal={() => setIsLoginModalOpen(true)}
               onDriverUpload={handleDriverUpload}
               recentFiles={processedFiles}
+              onUploadFile={USE_MOCKS ? undefined : uploadLive}
             />
           </div>
         ) : (
@@ -283,11 +345,16 @@ export default function App() {
             )}
 
             {activeTab === 'dashboard' && (
-              <DashboardTab kpis={kpis} />
+              <DashboardTab kpis={kpis!} />
             )}
 
             {activeTab === 'agents' && (
-              <AgentsTab messages={messages} />
+              <AgentsTab
+                messages={messages}
+                onRunCheck={USE_MOCKS ? undefined : () => void live.runCheck()}
+                isChecking={live.checking}
+                trackerUrl={USE_MOCKS ? undefined : api.trackerUrl()}
+              />
             )}
           </div>
         )}
@@ -306,8 +373,8 @@ export default function App() {
         onClose={() => setIsLoginModalOpen(false)}
         currentRole={currentRole}
         onSelectRole={handleSelectRole}
-        demoDrivers={DEMO_DRIVERS}
-        activeDriver={activeDriver}
+        demoDrivers={drivers}
+        activeDriver={activeDriver!}
       />
 
       {/* Footer */}

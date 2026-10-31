@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { DriverSession, ProcessedFile } from '../types';
 import { 
   Camera, 
@@ -19,6 +19,8 @@ interface TruckerPortalProps {
   onOpenLoginModal: () => void;
   onDriverUpload: (docName: string, docType: string, keyFields: Record<string, string>) => void;
   recentFiles: ProcessedFile[];
+  /** Live mode: the capture buttons open the camera / file picker and send the real file to the Intake agent. */
+  onUploadFile?: (file: File) => Promise<ProcessedFile>;
 }
 
 export const TruckerPortal: React.FC<TruckerPortalProps> = ({
@@ -26,12 +28,36 @@ export const TruckerPortal: React.FC<TruckerPortalProps> = ({
   onSwitchToOwner,
   onOpenLoginModal,
   onDriverUpload,
-  recentFiles
+  recentFiles,
+  onUploadFile
 }) => {
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [uploadToast, setUploadToast] = useState<string | null>(null);
+  const fileInput = useRef<HTMLInputElement>(null);
+
+  const handlePickedFiles = async (files: File[]) => {
+    if (!onUploadFile || !files.length) return;
+    setIsUploading(true);
+    try {
+      for (const f of files) {
+        const done = await onUploadFile(f);
+        setUploadToast(
+          done.stage === 'done'
+            ? `✓ ${done.docType} read & filed on ${done.keyFields?.['Filed on'] ?? 'the ledger'}`
+            : `${f.name} needs review: ${Object.values(done.keyFields ?? {})[0] ?? ''}`,
+        );
+      }
+    } finally {
+      setIsUploading(false);
+      setTimeout(() => setUploadToast(null), 4000);
+    }
+  };
 
   const handleSimulateCapture = (type: 'BOL' | 'Fuel' | 'Lumper' | 'DVIR') => {
+    if (onUploadFile) {
+      fileInput.current?.click();
+      return;
+    }
     setIsUploading(true);
 
     setTimeout(() => {
@@ -155,6 +181,19 @@ export const TruckerPortal: React.FC<TruckerPortalProps> = ({
           </span>
         </div>
 
+        <input
+          ref={fileInput}
+          type="file"
+          accept="image/*,.pdf,.docx,.eml,.txt"
+          capture="environment"
+          multiple
+          className="hidden"
+          onChange={e => {
+            const files = Array.from(e.target.files ?? []);
+            e.target.value = '';
+            void handlePickedFiles(files);
+          }}
+        />
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
           {/* Card 1: Delivery Receipt (BOL) */}
           <button
