@@ -3,149 +3,149 @@ import { BriefingItem, WatchItem, ProcessedFile, AgentMessage, FleetKPIs } from 
 export const BRIEFING_ITEMS: BriefingItem[] = [
   {
     id: 'P8',
-    title: 'Duplicate fuel receipt uploaded across shifts',
+    title: 'Duplicate fuel receipt submitted twice',
     amount: 1250.43,
     amountFormatted: '$1,250.43',
-    summary: 'Submitted twice across Monday and Thursday settlement batches.',
+    summary: 'Same $1,250 gas receipt was submitted in Monday dispatch and re-uploaded Thursday.',
     agent: 'watchdog',
     truckId: 'Truck 104',
     driver: 'Marcus Vance',
     evidenceUrl: '/evidence/fuel_receipt_p8.svg',
     evidenceType: 'image',
-    evidenceTitle: 'Pilot Travel Center #391 — Receipt Match',
+    evidenceTitle: 'Pilot Travel Center #391 — Receipt Duplicate',
     confidence: 99,
     fields: [
       { label: 'Store Location', value: 'Pilot Flying J #391, Hebron OH' },
-      { label: 'Card Swiped', value: 'Comdata ****4412' },
-      { label: 'Auth Code', value: 'AUTH-994821', isProblem: true },
+      { label: 'Card Swiped', value: 'Fleet Card ****4412' },
+      { label: 'Receipt Auth ID', value: 'AUTH-994821', isProblem: true },
       { label: 'Gallons / Price', value: '215.82 gal @ $5.794/gal' },
-      { label: 'Duplicate Check', value: 'Exact match with upload Mon 10/26 08:30', isProblem: true }
+      { label: 'Duplicate Check', value: '100% identical to upload on Mon 10/26', isProblem: true }
     ],
-    problemFields: ['Auth Code', 'Duplicate Check'],
-    suggestedAction: 'Reject duplicate settlement entry to prevent double contractor deduction',
-    notes: 'Transaction ID and pump timestamp are 100% identical. Duplicate would deduct $1,250 twice from carrier escrow.'
+    problemFields: ['Receipt Auth ID', 'Duplicate Check'],
+    suggestedAction: 'Remove duplicate expense before payroll deduction runs',
+    notes: 'Receipt numbers match exactly. Approving this would charge the carrier twice for one fill-up.'
   },
   {
     id: 'P7',
-    title: 'Fuel card used in Kansas City then Amarillo 3 hrs later',
+    title: 'Stolen card: swiped in Texas while truck was in Missouri',
     amount: 800.73,
     amountFormatted: '$800.73',
-    summary: 'Card swiped in Amarillo at 14:15 while GPS placed truck in Kansas City.',
+    summary: 'Card charged in Amarillo at 2:15 PM, but truck GPS proves it was 580 miles away in Kansas City.',
     agent: 'watchdog',
     truckId: 'Truck 102',
     driver: 'Ben Miller',
     evidenceUrl: '/evidence/fuel_card_p7.svg',
     evidenceType: 'telematics',
-    evidenceTitle: 'Telematics vs Card Geo-Velocity Anomaly',
+    evidenceTitle: 'GPS Tracker vs Fuel Card Swipe Anomaly',
     confidence: 96,
     fields: [
-      { label: 'Card Location', value: 'Love\'s #411, Amarillo TX (14:15 CST)', isProblem: true },
-      { label: 'GPS Telematics', value: 'I-35 Milepost 18, Kansas City MO (14:15 CST)', isProblem: true },
-      { label: 'Physical Distance', value: '580 miles between swipes', isProblem: true },
-      { label: 'Required Velocity', value: '193.3 mph (Physically impossible)', isProblem: true },
-      { label: 'Gallons / Pump', value: '138.2 gal @ Pump 4' }
+      { label: 'Card Swipe Location', value: 'Love\'s #411, Amarillo TX (14:15 CST)', isProblem: true },
+      { label: 'Truck GPS Location', value: 'I-35 Milepost 18, Kansas City MO (14:15 CST)', isProblem: true },
+      { label: 'Distance Between Swipes', value: '580 miles in 3 hours', isProblem: true },
+      { label: 'Required Speed', value: '193.3 mph (Physically impossible)', isProblem: true },
+      { label: 'Diesel Pumped', value: '138.2 gal @ Pump 4' }
     ],
-    problemFields: ['Card Location', 'GPS Telematics', 'Physical Distance', 'Required Velocity'],
-    suggestedAction: 'Freeze Comdata Card #4412 immediately and file automated fleet dispute',
-    notes: 'Samsara telematics proves vehicle was traveling 62 mph near KC. Card data was cloned at unauthorized pump skimmer.'
+    problemFields: ['Card Swipe Location', 'Truck GPS Location', 'Distance Between Swipes', 'Required Speed'],
+    suggestedAction: 'Freeze fuel card immediately and submit automatic fraud dispute',
+    notes: 'GPS shows the truck driving 62 mph in Kansas City. The card was cloned at an unauthorized pump.'
   },
   {
     id: 'P3',
-    title: 'Invoice used first quote ($1,380) instead of signed rate con ($1,680)',
+    title: 'Billed initial $1,380 quote instead of signed $1,680 contract',
     amount: 300.00,
     amountFormatted: '$300.00',
-    summary: 'Draft used $1,380 quote instead of $1,680 executed contract.',
+    summary: 'Customer agreed to $1,680 with driver assist, but draft invoice only billed the original $1,380 quote.',
     agent: 'reconciler',
     loadId: 'LD-4088',
     truckId: 'Truck 101',
     driver: 'Dave Kowalski',
     evidenceUrl: '/evidence/rate_con_p3.svg',
     evidenceType: 'comparison',
-    evidenceTitle: 'CH Robinson Signed Contract vs Draft Invoice',
+    evidenceTitle: 'Signed Broker Contract vs Draft Customer Invoice',
     confidence: 98,
     fields: [
-      { label: 'Draft Invoice #INV-1088', value: '$1,380.00 (Initial quote rate)', isProblem: true },
-      { label: 'Signed Rate Con', value: '$1,680.00 ($300 driver assist included)' },
-      { label: 'Broker / MC', value: 'CH Robinson (MC-109482)' },
-      { label: 'Net Discrepancy', value: '-$300.00 underbilling', isProblem: true }
+      { label: 'Draft Customer Invoice', value: '$1,380.00 (Original quote rate)', isProblem: true },
+      { label: 'Final Signed Contract', value: '$1,680.00 (Includes $300 driver assist)' },
+      { label: 'Customer / Broker', value: 'CH Robinson Logistics' },
+      { label: 'Underbilled Amount', value: '-$300.00 lost revenue', isProblem: true }
     ],
-    problemFields: ['Draft Invoice #INV-1088', 'Net Discrepancy'],
-    suggestedAction: 'Update invoice total to $1,680.00 before transmitting to factoring partner',
-    notes: 'Broker signed the addendum. Submitting at $1,380 would cause carrier to forfeit $300 permanently once factored.'
+    problemFields: ['Draft Customer Invoice', 'Underbilled Amount'],
+    suggestedAction: 'Update invoice total to $1,680.00 before sending to customer',
+    notes: 'Customer signed the rate increase. Sending at $1,380 forfeits $300 permanently.'
   },
   {
     id: 'P6',
-    title: '$175 lumper receipt not on any invoice',
+    title: 'Missing $175 warehouse unloading fee on customer bill',
     amount: 175.00,
     amountFormatted: '$175.00',
-    summary: 'Out-of-pocket unload fee missing from broker billing.',
+    summary: 'Driver paid $175 cash to unload pallets at warehouse, but fee was never added to customer invoice.',
     agent: 'extractor',
     loadId: 'LD-4093',
     truckId: 'Truck 103',
     driver: 'Elena Rostova',
     evidenceUrl: '/evidence/lumper_p6.svg',
     evidenceType: 'image',
-    evidenceTitle: 'Capstone Logistics Thermal Lumper Receipt',
+    evidenceTitle: 'Cold Storage Warehouse Unloading Receipt',
     confidence: 94,
     fields: [
-      { label: 'Vendor Facility', value: 'Capstone Logistics Cold Storage, Dallas TX' },
-      { label: 'Lumper Fee Paid', value: '$175.00 (22 pallets unstack)', isProblem: true },
-      { label: 'Invoice Status', value: 'Not found on Broker Invoice LD-4093', isProblem: true },
-      { label: 'Contract Rule', value: 'Clause 8: Lumper 100% reimbursable with receipt' }
+      { label: 'Warehouse Facility', value: 'Capstone Logistics Cold Storage, Dallas TX' },
+      { label: 'Unloading Fee Paid', value: '$175.00 (22 pallets unstacked)', isProblem: true },
+      { label: 'Customer Bill Status', value: 'Missing from invoice LD-4093', isProblem: true },
+      { label: 'Contract Rule', value: 'Clause 8: Unload fees 100% reimbursable with receipt' }
     ],
-    problemFields: ['Lumper Fee Paid', 'Invoice Status'],
-    suggestedAction: 'Append $175.00 pass-through line-item with receipt proof to broker invoice',
-    notes: 'Broker agreement explicitly guarantees 100% reimbursement when receipt is attached.'
+    problemFields: ['Unloading Fee Paid', 'Customer Bill Status'],
+    suggestedAction: 'Add $175 pass-through charge with receipt photo to customer invoice',
+    notes: 'Contract guarantees 100% reimbursement when receipt is attached.'
   },
   {
     id: 'P1',
-    title: 'Unbilled detention (in 07:40, out 12:10, 2 hrs free at $65/hr)',
+    title: 'Unbilled warehouse waiting time (4.5 hrs on dock, 2.5 billable)',
     amount: 162.50,
     amountFormatted: '$162.50',
-    summary: '4.5 hrs on dock minus 2 free hrs = 2.5 billable hours ($162.50).',
+    summary: 'Driver was stuck at warehouse dock for 4.5 hours. Contract allows 2 free hours, then $65/hr.',
     agent: 'reconciler',
     loadId: 'LD-4091',
     truckId: 'Truck 104',
     driver: 'Marcus Vance',
     evidenceUrl: '/evidence/bol_p1.svg',
     evidenceType: 'comparison',
-    evidenceTitle: 'Signed Shipper BOL Stamp vs Rate Con Clause 4',
+    evidenceTitle: 'Signed Delivery Stamp vs Contract Free-Time Clause',
     confidence: 97,
     fields: [
-      { label: 'BOL Arrival Stamp', value: '07:40 AM (Verified signature)', isProblem: true },
-      { label: 'BOL Departure Stamp', value: '12:10 PM (Verified signature)', isProblem: true },
-      { label: 'Total Elapsed Dwell', value: '4.5 Hours', isProblem: true },
-      { label: 'Contract Terms', value: '2.0 hrs free, $65.00/hr thereafter' },
-      { label: 'Unbilled Amount', value: '2.5 hrs × $65 = $162.50', isProblem: true }
+      { label: 'Dock Check-In Stamp', value: '07:40 AM (Verified signature)', isProblem: true },
+      { label: 'Dock Check-Out Stamp', value: '12:10 PM (Verified signature)', isProblem: true },
+      { label: 'Total Dock Delay', value: '4.5 Hours on-site', isProblem: true },
+      { label: 'Contract Rule', value: '2.0 hrs free, $65.00/hr thereafter' },
+      { label: 'Unbilled Delay Charge', value: '2.5 hrs × $65 = $162.50', isProblem: true }
     ],
-    problemFields: ['BOL Arrival Stamp', 'BOL Departure Stamp', 'Total Elapsed Dwell', 'Unbilled Amount'],
-    suggestedAction: 'Generate supplemental detention invoice for $162.50 with signed BOL stamp',
-    notes: 'Both arrival and departure stamps are signed by receiver supervisor. Clean audit proof.'
+    problemFields: ['Dock Check-In Stamp', 'Dock Check-Out Stamp', 'Total Dock Delay', 'Unbilled Delay Charge'],
+    suggestedAction: 'Bill customer $162.50 for warehouse delay with stamped proof',
+    notes: 'Both arrival and departure stamps are signed by warehouse manager. Clean proof.'
   }
 ];
 
 export const WATCH_ITEMS: WatchItem[] = [
   {
     id: 'W1',
-    title: '4 delivered loads with signed POD not yet invoiced',
+    title: '4 completed deliveries not yet billed ($14,192.68 unpaid float)',
     amountFormatted: '$14,192.68 float',
-    summary: 'Proof on file; unbatched factoring float.',
-    badge: 'Cash Flow',
+    summary: 'Deliveries confirmed with signed receipts, but bills haven\'t been submitted.',
+    badge: 'Unbilled Cash',
     category: 'cash'
   },
   {
     id: 'W2',
-    title: 'Past-due invoice: Summit Lane Brokerage at 41 days',
+    title: 'Customer payment 11 days overdue: Summit Lane ($4,850.00)',
     amountFormatted: '$4,850.00 overdue',
-    summary: '11 days past Net 30 agreement.',
-    badge: 'Aging Alert',
+    summary: 'Invoice is 41 days old on a Net 30 agreement without payment.',
+    badge: 'Overdue Bill',
     category: 'billing'
   },
   {
     id: 'W3',
-    title: 'Ben Miller DOT medical card expires in 12 days',
-    summary: 'DOT physical expires Nov 12. Truck blocks on expiration.',
-    badge: 'Compliance',
+    title: 'Ben Miller mandatory driver health exam expires in 12 days',
+    summary: 'Federal DOT medical card expires Nov 12. Truck cannot legally drive until renewed.',
+    badge: 'Safety Alert',
     category: 'compliance'
   }
 ];
@@ -153,41 +153,41 @@ export const WATCH_ITEMS: WatchItem[] = [
 export const DEMO_FILES_SAMPLE: ProcessedFile[] = [
   {
     id: 'FILE-1',
-    name: 'Apex_RateConfirmation_LD4091.pdf',
+    name: 'Apex_Rate_Contract_LD4091.pdf',
     size: '284 KB',
     type: 'PDF',
     uploadedAt: 'Just now',
     stage: 'done',
-    docType: 'Rate Con',
+    docType: 'Rate Contract',
     confidence: 99,
     loadId: 'LD-4091',
     keyFields: {
       'Agreed Rate': '$2,450.00',
-      'Broker': 'Apex Freight Logistics',
-      'Detention Clause': '2 hrs free, $65/hr',
-      'Lane': 'Columbus, OH → Atlanta, GA'
+      'Customer / Broker': 'Apex Freight Logistics',
+      'Dock Delay Terms': '2 hrs free, $65/hr after',
+      'Lane Route': 'Columbus, OH → Atlanta, GA'
     }
   },
   {
     id: 'FILE-2',
-    name: 'Signed_BOL_PhonePhoto_4091.jpg',
+    name: 'Signed_Delivery_Receipt_Photo.jpg',
     size: '1.8 MB',
     type: 'JPG',
     uploadedAt: 'Just now',
     stage: 'done',
-    docType: 'BOL Photo',
+    docType: 'Delivery Receipt',
     confidence: 96,
     loadId: 'LD-4091',
     keyFields: {
-      'Check-In': '07:40 AM',
-      'Check-Out': '12:10 PM',
-      'Total Dwell': '4.5 hrs',
-      'Detention Flag': '2.5 hrs unbilled ($162.50)'
+      'Warehouse Arrival': '07:40 AM',
+      'Warehouse Departure': '12:10 PM',
+      'Total Wait Time': '4.5 hrs on dock',
+      'Billable Extra Time': '2.5 hrs unbilled ($162.50)'
     }
   },
   {
     id: 'FILE-3',
-    name: 'Pilot_Diesel_Receipt_1026.png',
+    name: 'Pilot_Diesel_Gas_Receipt.png',
     size: '920 KB',
     type: 'PNG',
     uploadedAt: 'Just now',
@@ -195,25 +195,25 @@ export const DEMO_FILES_SAMPLE: ProcessedFile[] = [
     docType: 'Fuel Receipt',
     confidence: 72,
     keyFields: {
-      'Vendor': 'Pilot Flying J #391',
-      'Total': '$1,250.43',
-      'Watchdog Alert': 'Duplicate of Mon upload'
+      'Gas Station': 'Pilot Flying J #391',
+      'Total Charged': '$1,250.43',
+      'Fraud Warning': 'Duplicate: identical upload on Monday'
     }
   },
   {
     id: 'FILE-4',
-    name: 'Driver_Elena_Text_Lumper.jpg',
+    name: 'Driver_Text_Warehouse_Unload_Fee.jpg',
     size: '640 KB',
     type: 'JPG',
     uploadedAt: 'Just now',
     stage: 'done',
-    docType: 'Lumper Receipt',
+    docType: 'Unload Slip',
     confidence: 94,
     loadId: 'LD-4093',
     keyFields: {
-      'Facility': 'Capstone Dallas Cold',
-      'Fee': '$175.00',
-      'Billing': 'Missing from Invoice'
+      'Warehouse': 'Capstone Cold Storage, Dallas',
+      'Unload Fee Paid': '$175.00 cash',
+      'Billing Status': 'Missing from customer invoice'
     }
   }
 ];
@@ -225,7 +225,7 @@ export const AGENT_RELAY_MESSAGES: AgentMessage[] = [
     from: 'extractor',
     to: 'reconciler',
     loadId: 'LD-4091',
-    text: 'Extracted timestamps from driver BOL photo: In 07:40, Out 12:10. Total dwell: 4.5 hours.',
+    text: 'Extracted dock timestamps from delivery photo: In 07:40, Out 12:10 (4.5 hours on-site).',
     priority: 'normal'
   },
   {
@@ -234,7 +234,7 @@ export const AGENT_RELAY_MESSAGES: AgentMessage[] = [
     from: 'reconciler',
     to: 'watchdog',
     loadId: 'LD-4091',
-    text: 'Cross-checked Apex Rate Con. 2 hrs free allowed at $65/hr. DETENTION FLAG: 2.5 hrs = $162.50 unbilled. Preparing supplemental claim directly for broker.',
+    text: 'Matched customer contract: 2 hours free allowed, $65/hr after. FLAG: 2.5 extra hours = $162.50 owed by customer.',
     priority: 'alert'
   },
   {
@@ -242,7 +242,7 @@ export const AGENT_RELAY_MESSAGES: AgentMessage[] = [
     timestamp: '12:32:15',
     from: 'watchdog',
     to: 'all',
-    text: 'GEO-VELOCITY ALERT: Card #4412 charged in Amarillo, TX 3 hrs after Kansas City swipe (580 miles). Speed: 193 mph. Flagging $800.73.',
+    text: 'FRAUD ALERT: Card swiped in Texas just 3 hrs after Missouri swipe (580 miles apart, 193 mph). Flagging $800.73.',
     priority: 'urgent'
   },
   {
@@ -251,7 +251,7 @@ export const AGENT_RELAY_MESSAGES: AgentMessage[] = [
     from: 'reconciler',
     to: 'briefer',
     loadId: 'LD-4088',
-    text: 'Rate mismatch: Invoice draft INV-1088 has $1,380 quote. Signed rate con is $1,680. Underbilled by $300.00. Dispatch agent updating broker invoice.',
+    text: 'Underbilled contract: Draft invoice used $1,380 quote, but signed contract is $1,680. Recovering $300.00.',
     priority: 'alert'
   },
   {
@@ -260,7 +260,7 @@ export const AGENT_RELAY_MESSAGES: AgentMessage[] = [
     from: 'extractor',
     to: 'reconciler',
     loadId: 'LD-4093',
-    text: 'Driver SMS to Dispatch parsed: $175 lumper fee at Capstone Dallas. Reconciler: dispatch agent filing reimbursement addendum with broker.',
+    text: 'Driver text photo parsed: $175 cash unloading fee at warehouse. Adding reimbursable charge to customer bill.',
     priority: 'normal'
   },
   {
@@ -268,7 +268,7 @@ export const AGENT_RELAY_MESSAGES: AgentMessage[] = [
     timestamp: '12:34:10',
     from: 'watchdog',
     to: 'briefer',
-    text: 'DUPLICATE EXPENSE: Pilot Flying J receipt for $1,250.43 (Auth #994821) already ingested Monday. Blocking deduction.',
+    text: 'DUPLICATE EXPENSE: Gas receipt for $1,250.43 was already submitted Monday. Blocking double deduction.',
     priority: 'alert'
   },
   {
@@ -276,7 +276,7 @@ export const AGENT_RELAY_MESSAGES: AgentMessage[] = [
     timestamp: '12:34:55',
     from: 'briefer',
     to: 'all',
-    text: 'BRIEFING READY: 5 items compiled for owner review. Total money flagged: $2,688.66. Driver-Broker Air-Gap active: Carrier represents all claims.',
+    text: 'NIGHTLY AUDIT READY: 5 items found. Total money saved / recovered: $2,689.',
     priority: 'urgent'
   }
 ];

@@ -214,7 +214,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
                     Drop paperwork here
                   </h3>
                   <p className="text-xs text-slate-400">
-                    Rate cons, BOLs, receipts, texts (PDF, JPG, PNG)
+                    Contracts, delivery receipts, fuel slips, texts (PDF, JPG, PNG)
                   </p>
                 </div>
               </div>
@@ -420,7 +420,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
               </h1>
 
               <p className="text-xs sm:text-sm text-slate-300">
-                Cross-checked rates, detention, fuel, and telematics before settlement.
+                Cross-checked contracts, wait times, fuel receipts, and GPS before daily payout.
               </p>
             </div>
 

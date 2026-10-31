@@ -83,11 +83,11 @@ export const AgentsTab: React.FC<AgentsTabProps> = ({ messages }) => {
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
               <h2 className="text-base font-bold text-white tracking-tight font-mono uppercase">
-                Agent Relay Inter-Process Mesh
+                AI Agent Team: Live Relay
               </h2>
             </div>
             <p className="text-xs text-slate-400 mt-1">
-              Deterministic communication channels operating over persistent actor event queues
+              Watch the 4 agents collaborate in real time to audit paperwork and catch leaks
             </p>
           </div>
 
@@ -105,7 +105,7 @@ export const AgentsTab: React.FC<AgentsTabProps> = ({ messages }) => {
               ) : (
                 <>
                   <Play className="w-3.5 h-3.5 fill-current" />
-                  <span>Re-Play Live Relay Feed</span>
+                  <span>Replay Agent Chat</span>
                 </>
               )}
             </button>
@@ -130,9 +130,9 @@ export const AgentsTab: React.FC<AgentsTabProps> = ({ messages }) => {
               </span>
               <span className="w-2 h-2 rounded-full bg-emerald-400" />
             </div>
-            <div className="text-xs font-bold text-white">Document OCR Engine</div>
+            <div className="text-xs font-bold text-white">Paperwork Reader</div>
             <div className="text-[11px] text-slate-400 leading-snug">
-              Ingests BOL photos, PDFs, driver text thermal receipts.
+              Scans receipts, delivery notes, and driver text photos.
             </div>
           </div>
 
@@ -144,9 +144,9 @@ export const AgentsTab: React.FC<AgentsTabProps> = ({ messages }) => {
               </span>
               <span className="w-2 h-2 rounded-full bg-emerald-400" />
             </div>
-            <div className="text-xs font-bold text-white">Cross-Doc Verifier</div>
+            <div className="text-xs font-bold text-white">Contract Checker</div>
             <div className="text-[11px] text-slate-400 leading-snug">
-              Compares rate confirmation clauses against driver timestamps.
+              Compares customer contract terms against dock wait times.
             </div>
           </div>
 
@@ -158,9 +158,9 @@ export const AgentsTab: React.FC<AgentsTabProps> = ({ messages }) => {
               </span>
               <span className="w-2 h-2 rounded-full bg-emerald-400" />
             </div>
-            <div className="text-xs font-bold text-white">Fraud & Telematics</div>
+            <div className="text-xs font-bold text-white">Fraud Detector</div>
             <div className="text-[11px] text-slate-400 leading-snug">
-              Checks Samsara GPS vs Comdata swipes (193 mph impossible velocity).
+              Compares GPS coordinates vs fuel card swipes to catch fraud.
             </div>
           </div>
 
@@ -172,9 +172,9 @@ export const AgentsTab: React.FC<AgentsTabProps> = ({ messages }) => {
               </span>
               <span className="w-2 h-2 rounded-full bg-emerald-400" />
             </div>
-            <div className="text-xs font-bold text-white">Owner Digest Synthesizer</div>
+            <div className="text-xs font-bold text-white">Nightly Briefer</div>
             <div className="text-[11px] text-slate-400 leading-snug">
-              Aggregates high-value leaks into 5 nightly owner decisions.
+              Compiles the 5 highest-value items for the owner's review.
             </div>
           </div>
         </div>
@@ -186,7 +186,7 @@ export const AgentsTab: React.FC<AgentsTabProps> = ({ messages }) => {
           <div className="flex items-center gap-2">
             <Cpu className="w-4 h-4 text-orange-400" />
             <span className="text-xs font-mono font-bold uppercase tracking-wider text-slate-200">
-              Agent Relay Event Stream ({visibleMessages.length})
+              Live Agent Feed ({visibleMessages.length})
             </span>
           </div>
 
@@ -199,7 +199,7 @@ export const AgentsTab: React.FC<AgentsTabProps> = ({ messages }) => {
                   : 'text-slate-400 hover:text-white'
               }`}
             >
-              All Events
+              All Messages
             </button>
             <button
               onClick={() => setActiveFilter('alert')}
@@ -209,7 +209,7 @@ export const AgentsTab: React.FC<AgentsTabProps> = ({ messages }) => {
                   : 'text-slate-400 hover:text-white'
               }`}
             >
-              Alerts & Urgent
+              Alerts Only
             </button>
           </div>
         </div>

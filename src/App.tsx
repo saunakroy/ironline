@@ -124,7 +124,7 @@ export default function App() {
         type: ext,
         uploadedAt: 'Just now',
         stage: 'uploaded',
-        docType: ext === 'PDF' ? 'Rate Con / Invoice' : 'BOL / Receipt',
+        docType: ext === 'PDF' ? 'Contract / Invoice' : 'Delivery Receipt / Fuel Slip',
         confidence: 96,
         keyFields: {
           'File Name': f.name,

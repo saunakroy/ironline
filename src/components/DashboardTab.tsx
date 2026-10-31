@@ -30,7 +30,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ kpis }) => {
       driver: 'Marcus Vance',
       rate: '$2,450.00',
       status: 'Loading / Dock',
-      actor: 'Active (Detention Timer)',
+      actor: 'Dock Wait Timer Active',
       hasAlert: true
     },
     {
@@ -41,7 +41,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ kpis }) => {
       driver: 'Dave Kowalski',
       rate: '$1,680.00',
       status: 'In Transit',
-      actor: 'Rate Con Reconciled',
+      actor: 'Contract Rate Reconciled',
       hasAlert: true
     },
     {
@@ -52,7 +52,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ kpis }) => {
       driver: 'Elena Rostova',
       rate: '$2,800.00',
       status: 'Delivered',
-      actor: 'Lumper Ingestion',
+      actor: 'Unload Fee Ingested',
       hasAlert: true
     },
     {
@@ -98,7 +98,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ kpis }) => {
         {/* KPI 1: Revenue per mile */}
         <div className="rounded-xl border border-slate-800 bg-[#0f172a] p-4 space-y-3 relative overflow-hidden card-hover-glow">
           <div className="flex items-center justify-between text-slate-400">
-            <span className="text-[11px] font-mono uppercase tracking-wider font-semibold">Revenue / Mile</span>
+            <span className="text-[11px] font-mono uppercase tracking-wider font-semibold">Revenue per Mile</span>
             <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400">
               <TrendingUp className="w-4 h-4" />
             </div>
@@ -109,7 +109,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ kpis }) => {
             </div>
             <div className="flex items-center gap-1.5 mt-1.5 text-[11px] font-mono font-semibold text-emerald-400 bg-emerald-950/40 border border-emerald-800/40 px-2 py-0.5 rounded w-fit">
               <ArrowUpRight className="w-3.5 h-3.5" />
-              <span>+17.3% vs benchmark</span>
+              <span>+17.3% vs national average</span>
             </div>
           </div>
           {/* Enhanced SVG Sparkline with Gradient Fill */}
@@ -136,7 +136,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ kpis }) => {
         {/* KPI 2: Fuel cost per mile */}
         <div className="rounded-xl border border-slate-800 bg-[#0f172a] p-4 space-y-3 relative overflow-hidden card-hover-glow">
           <div className="flex items-center justify-between text-slate-400">
-            <span className="text-[11px] font-mono uppercase tracking-wider font-semibold">Fuel Cost / Mile</span>
+            <span className="text-[11px] font-mono uppercase tracking-wider font-semibold">Fuel Cost per Mile</span>
             <div className="p-1.5 rounded-lg bg-amber-500/10 text-amber-400">
               <Fuel className="w-4 h-4" />
             </div>
@@ -173,7 +173,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ kpis }) => {
         {/* KPI 3: Open Receivables & Aging */}
         <div className="rounded-xl border border-slate-800 bg-[#0f172a] p-4 space-y-3 relative overflow-hidden card-hover-glow">
           <div className="flex items-center justify-between text-slate-400">
-            <span className="text-[11px] font-mono uppercase tracking-wider font-semibold">Open Receivables</span>
+            <span className="text-[11px] font-mono uppercase tracking-wider font-semibold">Unpaid Customer Invoices</span>
             <div className="p-1.5 rounded-lg bg-sky-500/10 text-sky-400">
               <Clock className="w-4 h-4" />
             </div>
@@ -184,21 +184,21 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ kpis }) => {
             </div>
             <div className="flex items-center gap-1 mt-1.5 text-[11px] font-mono font-semibold text-amber-400 bg-amber-950/40 border border-amber-800/40 px-2 py-0.5 rounded w-fit">
               <AlertCircle className="w-3.5 h-3.5" />
-              <span>{kpis.overdueReceivablesCount} invoices &gt;30d</span>
+              <span>{kpis.overdueReceivablesCount} invoices overdue (&gt;30d)</span>
             </div>
           </div>
 
           {/* Stacked Aging Bar */}
           <div className="space-y-1.5 pt-1">
             <div className="h-2 w-full rounded-full bg-slate-800 flex overflow-hidden shadow-inner">
-              <div className="bg-emerald-500 h-full" style={{ width: '75.6%' }} title="<30d: $32,450" />
-              <div className="bg-amber-500 h-full" style={{ width: '17.7%' }} title="31-60d: $7,590" />
-              <div className="bg-red-500 h-full" style={{ width: '6.7%' }} title=">60d: $2,850" />
+              <div className="bg-emerald-500 h-full" style={{ width: '75.6%' }} title="Current (<30d): $32,450" />
+              <div className="bg-amber-500 h-full" style={{ width: '17.7%' }} title="Overdue (31-60d): $7,590" />
+              <div className="bg-red-500 h-full" style={{ width: '6.7%' }} title="Critical (>60d): $2,850" />
             </div>
             <div className="flex justify-between text-[10px] font-mono text-slate-400">
-              <span className="text-emerald-400 font-semibold">&lt;30d $32.4k</span>
-              <span className="text-amber-400 font-semibold">31-60d $7.6k</span>
-              <span className="text-red-400 font-semibold">&gt;60d $2.9k</span>
+              <span className="text-emerald-400 font-semibold">Current: $32.4k</span>
+              <span className="text-amber-400 font-semibold">31-60d: $7.6k</span>
+              <span className="text-red-400 font-semibold">&gt;60d: $2.9k</span>
             </div>
           </div>
         </div>
@@ -206,7 +206,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ kpis }) => {
         {/* KPI 4: Detention Billed vs Incurred */}
         <div className="rounded-xl border border-slate-800 bg-[#0f172a] p-4 space-y-3 relative overflow-hidden card-hover-glow">
           <div className="flex items-center justify-between text-slate-400">
-            <span className="text-[11px] font-mono uppercase tracking-wider font-semibold">Detention Leakage</span>
+            <span className="text-[11px] font-mono uppercase tracking-wider font-semibold">Lost Warehouse Delay Time</span>
             <div className="p-1.5 rounded-lg bg-red-500/10 text-red-400">
               <AlertCircle className="w-4 h-4" />
             </div>
@@ -217,20 +217,20 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ kpis }) => {
             </div>
             <div className="flex items-center gap-1.5 mt-1.5 text-[11px] font-mono font-semibold text-red-400 bg-red-950/40 border border-red-800/40 px-2 py-0.5 rounded w-fit">
               <ArrowDownRight className="w-3.5 h-3.5" />
-              <span>Unbilled dwell time</span>
+              <span>Unbilled hours stuck at docks</span>
             </div>
           </div>
           {/* Recovery Note */}
           <div className="text-[11px] text-emerald-400 font-mono flex items-center gap-1 pt-1">
             <TrendingUp className="w-3 h-3" />
-            <span>P1 reclaims +$162.50</span>
+            <span>P1 recovers +$162.50</span>
           </div>
         </div>
 
         {/* KPI 5: Miles by state (IFTA preview) */}
         <div className="rounded-xl border border-slate-800 bg-[#0f172a] p-4 space-y-3 relative overflow-hidden card-hover-glow">
           <div className="flex items-center justify-between text-slate-400">
-            <span className="text-[11px] font-mono uppercase tracking-wider font-semibold">IFTA Miles (Oct)</span>
+            <span className="text-[11px] font-mono uppercase tracking-wider font-semibold">Miles by State (Fuel Taxes)</span>
             <div className="p-1.5 rounded-lg bg-purple-500/10 text-purple-400">
               <Map className="w-4 h-4" />
             </div>
@@ -240,7 +240,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ kpis }) => {
               {kpis.monthlyIftaMiles.toLocaleString()}
             </div>
             <div className="text-[11px] font-mono text-slate-400 mt-1">
-              4 states logged via telematics
+              State highway taxes logged via GPS
             </div>
           </div>
           {/* State Proportional Bar */}
@@ -267,7 +267,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ kpis }) => {
           <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
-            placeholder="Search loads by ID, broker, driver, or lane..."
+            placeholder="Search shipments by ID, customer, driver, or route..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full bg-[#070b14] border border-slate-700/80 rounded-lg pl-10 pr-4 py-2 text-xs font-mono text-white placeholder-slate-500 focus:outline-hidden focus:border-orange-500"
@@ -283,7 +283,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ kpis }) => {
                 : 'text-slate-400 hover:text-white bg-slate-900 border border-slate-800'
             }`}
           >
-            All Loads ({demoLoads.length})
+            All Shipments ({demoLoads.length})
           </button>
           <button
             onClick={() => setStatusFilter('alert')}
@@ -305,15 +305,15 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ kpis }) => {
           <div>
             <h3 className="text-sm font-bold uppercase tracking-wider text-white font-mono flex items-center gap-2">
               <Truck className="w-4 h-4 text-orange-400" />
-              <span>Active Loads & Terse Durable Actors</span>
+              <span>Live Shipments & AI Reconciler Status</span>
             </h3>
             <p className="text-xs text-slate-400 mt-0.5">
-              Live actor processes reconciling individual load state machines
+              Autonomous agents reconciling each shipment's contract terms and timestamps
             </p>
           </div>
           <div className="text-xs font-mono text-emerald-400 bg-emerald-950/30 border border-emerald-800/40 px-2.5 py-1 rounded-lg hidden sm:flex items-center gap-1.5">
             <ShieldCheck className="w-3.5 h-3.5" />
-            <span>5 Actors Live</span>
+            <span>5 Active Monitors</span>
           </div>
         </div>
 

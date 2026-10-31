@@ -26,11 +26,11 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
             </span>
             <span className="text-slate-300">
-              <strong className="text-white font-semibold">{agentCount} agents online</strong> · 12 load actors running · next reconcile 6:00 pm
+              <strong className="text-white font-semibold">{agentCount} AI agents online</strong> · 12 shipments monitored · next audit 6:00 pm
             </span>
           </div>
           <div className="hidden sm:flex items-center gap-3 text-slate-500 text-[10px]">
-            <span>Durable Actor State: <span className="text-emerald-400 font-semibold">Active</span></span>
+            <span>Actor Engine: <span className="text-emerald-400 font-semibold">Active</span></span>
             <span>·</span>
             <span>Latency: 42ms</span>
           </div>

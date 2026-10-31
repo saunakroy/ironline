@@ -109,7 +109,7 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({ item, onClose, o
             <div className="p-4 rounded-xl bg-gradient-to-r from-orange-950/40 to-slate-900 border border-orange-500/30 flex items-center justify-between">
               <div>
                 <div className="text-[11px] font-mono uppercase tracking-wider text-orange-400 font-semibold">
-                  Flagged Margin Loss
+                  Money at Risk
                 </div>
                 <div className="text-2xl sm:text-3xl font-black font-mono text-orange-400 tabular-nums mt-0.5">
                   {item.amountFormatted}
@@ -128,7 +128,7 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({ item, onClose, o
               <div className="flex justify-between text-xs font-mono text-slate-400">
                 <span className="flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-sky-400" />
-                  Agent Extraction Confidence
+                  AI Document Confidence
                 </span>
                 <span className="font-bold text-white">{item.confidence}%</span>
               </div>
@@ -148,7 +148,7 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({ item, onClose, o
               >
                 <span className="text-xs font-mono uppercase tracking-wider text-slate-400 flex items-center gap-1.5 font-semibold">
                   <FileText className="w-3.5 h-3.5 text-orange-400" />
-                  Physical Document Proof
+                  Source Document Proof
                 </span>
                 <div className="flex items-center gap-2">
                   <a
@@ -190,7 +190,7 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({ item, onClose, o
               >
                 <div className="text-xs font-mono uppercase tracking-wider text-slate-400 font-semibold flex items-center gap-1.5">
                   <Bot className="w-3.5 h-3.5 text-sky-400" />
-                  Extracted Fields & Discrepancies ({item.fields.length})
+                  Verified Data & Discrepancies ({item.fields.length})
                 </div>
                 {isFieldsOpen ? <ChevronUp className="w-3.5 h-3.5 text-slate-400" /> : <ChevronDown className="w-3.5 h-3.5 text-slate-400" />}
               </div>
@@ -236,7 +236,7 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({ item, onClose, o
                 className="flex items-center justify-between cursor-pointer select-none"
               >
                 <div className="text-xs font-mono uppercase tracking-wider text-slate-400 font-semibold">
-                  Autonomous Agent Recommendation
+                  Recommended Fix
                 </div>
                 {isActionOpen ? <ChevronUp className="w-3.5 h-3.5 text-slate-400" /> : <ChevronDown className="w-3.5 h-3.5 text-slate-400" />}
               </div>
@@ -245,7 +245,7 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({ item, onClose, o
                 <div className="space-y-3 animate-in fade-in duration-150">
                   <div className="p-3.5 rounded-xl bg-slate-900 border border-slate-800 space-y-1.5">
                     <div className="text-[11px] font-mono uppercase tracking-wider text-orange-400 font-semibold">
-                      Proposed Resolution
+                      Action to take
                     </div>
                     <div className="text-xs text-white leading-relaxed">
                       {item.suggestedAction}
@@ -253,7 +253,7 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({ item, onClose, o
                   </div>
 
                   <div className="p-3 rounded-xl bg-[#070b14] border border-slate-800/80 text-[11px] text-slate-400 leading-relaxed font-mono">
-                    <span className="text-slate-500 font-semibold block mb-0.5">Audit Note:</span>
+                    <span className="text-slate-500 font-semibold block mb-0.5">Why it matters:</span>
                     {item.notes}
                   </div>
                 </div>
