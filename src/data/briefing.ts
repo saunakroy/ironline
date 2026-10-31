@@ -1,0 +1,112 @@
+import type { BriefingItem, WatchItem } from './types'
+
+export const briefingItems: BriefingItem[] = [
+  {
+    id: 'p8-duplicate-fuel',
+    title: 'Duplicate fuel receipt',
+    amount: 1250.43,
+    summary: 'Same fuel receipt was submitted twice and both were queued for payment.',
+    agent: 'Fuel Agent',
+    loadId: 'P8',
+    evidenceUrl: '/evidence/p8-fuel-receipt.svg',
+    confidence: 0.97,
+    fields: [
+      { label: 'Station', value: 'Pilot #412, Joplin MO', status: 'ok' },
+      { label: 'Date', value: '2026-10-24 14:12', status: 'ok' },
+      { label: 'Amount', value: '$1,250.43', status: 'flagged' },
+      { label: 'Receipt #', value: '00441-A', status: 'flagged' },
+      { label: 'Duplicate of', value: 'Receipt 00441-A (submitted 2026-10-24 14:15)', status: 'flagged' },
+    ],
+  },
+  {
+    id: 'p7-fuel-card-two-states',
+    title: 'Fuel card used in two states, 3 hours apart',
+    amount: 800.73,
+    summary: 'Card swiped in Kansas City, then Amarillo 3 hrs later — too far to drive in that time.',
+    agent: 'Fuel Agent',
+    loadId: 'P7',
+    evidenceUrl: '/evidence/p7-fuel-card.svg',
+    confidence: 0.94,
+    fields: [
+      { label: 'Swipe 1', value: 'Kansas City, MO — 09:05', status: 'flagged' },
+      { label: 'Swipe 2', value: 'Amarillo, TX — 12:08', status: 'flagged' },
+      { label: 'Distance', value: '480 mi in 3h 03m', status: 'flagged' },
+      { label: 'Card', value: '•••• 7741', status: 'ok' },
+      { label: 'Amount', value: '$800.73', status: 'flagged' },
+    ],
+  },
+  {
+    id: 'p3-rate-mismatch',
+    title: 'Invoice used the wrong rate',
+    amount: 300.0,
+    summary: 'Invoice billed the $1,380 first quote instead of the $1,680 signed rate confirmation.',
+    agent: 'Rate Agent',
+    loadId: 'P3',
+    evidenceUrl: '/evidence/p3-rate-con.svg',
+    confidence: 0.99,
+    fields: [
+      { label: 'Rate con (signed)', value: '$1,680.00', status: 'flagged' },
+      { label: 'Invoice billed', value: '$1,380.00', status: 'flagged' },
+      { label: 'Shortfall', value: '$300.00', status: 'flagged' },
+      { label: 'Broker', value: 'Summit Lane Logistics', status: 'ok' },
+      { label: 'Load date', value: '2026-10-22', status: 'ok' },
+    ],
+  },
+  {
+    id: 'p6-lumper-not-invoiced',
+    title: 'Lumper receipt not on any invoice',
+    amount: 175.0,
+    summary: 'A $175 lumper receipt exists but was never added to the load invoice.',
+    agent: 'Billing Agent',
+    loadId: 'P6',
+    evidenceUrl: '/evidence/p6-lumper-receipt.svg',
+    confidence: 0.91,
+    fields: [
+      { label: 'Receipt amount', value: '$175.00', status: 'flagged' },
+      { label: 'Location', value: 'Walmart DC 6094, Bentonville AR', status: 'ok' },
+      { label: 'Invoice line item', value: 'Not found', status: 'flagged' },
+      { label: 'Load', value: 'P6', status: 'ok' },
+    ],
+  },
+  {
+    id: 'p1-unbilled-detention',
+    title: 'Unbilled detention',
+    amount: 162.5,
+    summary: 'Driver waited 2 hrs past the 2 free hours at the dock and it was never billed.',
+    agent: 'Detention Agent',
+    loadId: 'P1',
+    evidenceUrl: '/evidence/p1-detention-log.svg',
+    confidence: 0.89,
+    fields: [
+      { label: 'Check-in', value: '07:40', status: 'ok' },
+      { label: 'Check-out', value: '12:10', status: 'ok' },
+      { label: 'Total wait', value: '4h 30m', status: 'flagged' },
+      { label: 'Free time', value: '2h 00m', status: 'ok' },
+      { label: 'Billable detention', value: '2h 30m @ $65/hr', status: 'flagged' },
+    ],
+  },
+]
+
+export const totalFlaggedAmount = briefingItems.reduce((sum, item) => sum + item.amount, 0)
+
+export const watchItems: WatchItem[] = [
+  {
+    id: 'pod-not-invoiced',
+    title: '4 delivered loads with POD, not yet invoiced',
+    detail: 'Proof of delivery is on file but no invoice has gone out.',
+    severity: 'warning',
+    amount: 14192.68,
+  },
+  {
+    id: 'summit-lane-aging',
+    title: 'Summit Lane invoice is 41 days old',
+    detail: 'Past typical 30-day terms and climbing.',
+    severity: 'warning',
+  },
+  {
+    id: 'dot-medical-card',
+    title: "Driver's DOT medical card expires in 12 days",
+    detail: 'Renew now to avoid an out-of-service driver.',
+    severity: 'info',
+  },
+]
