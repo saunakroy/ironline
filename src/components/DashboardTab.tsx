@@ -96,7 +96,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ kpis }) => {
       {/* 5 FIXED KPI CARDS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         {/* KPI 1: Revenue per mile */}
-        <div className="rounded-xl border border-slate-800 bg-[#0f172a] p-4 space-y-3 relative overflow-hidden">
+        <div className="rounded-xl border border-slate-800 bg-[#0f172a] p-4 space-y-3 relative overflow-hidden card-hover-glow">
           <div className="flex items-center justify-between text-slate-400">
             <span className="text-[11px] font-mono uppercase tracking-wider font-semibold">Revenue / Mile</span>
             <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400">
@@ -107,16 +107,23 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ kpis }) => {
             <div className="text-2xl sm:text-3xl font-black font-mono text-white tabular-nums">
               ${kpis.revenuePerMile.toFixed(2)}
             </div>
-            <div className="flex items-center gap-1.5 mt-1 text-[11px] font-mono text-emerald-400">
+            <div className="flex items-center gap-1.5 mt-1.5 text-[11px] font-mono font-semibold text-emerald-400 bg-emerald-950/40 border border-emerald-800/40 px-2 py-0.5 rounded w-fit">
               <ArrowUpRight className="w-3.5 h-3.5" />
               <span>+17.3% vs benchmark</span>
             </div>
           </div>
-          {/* Mini SVG Sparkline */}
-          <div className="h-6 w-full pt-1">
+          {/* Enhanced SVG Sparkline with Gradient Fill */}
+          <div className="h-7 w-full pt-1">
             <svg className="w-full h-full overflow-visible" viewBox="0 0 100 24" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#10b981" stopOpacity="0.3" />
+                  <stop offset="100%" stopColor="#10b981" stopOpacity="0.0" />
+                </linearGradient>
+              </defs>
+              <polygon points="0,20 20,17 40,12 65,8 85,5 100,2 100,24 0,24" fill="url(#revGrad)" />
               <path
-                d="M 0,20 Q 20,18 40,12 T 70,6 T 100,2"
+                d="M 0,20 Q 20,17 40,12 T 70,7 T 100,2"
                 fill="none"
                 stroke="#10b981"
                 strokeWidth="2"
@@ -127,7 +134,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ kpis }) => {
         </div>
 
         {/* KPI 2: Fuel cost per mile */}
-        <div className="rounded-xl border border-slate-800 bg-[#0f172a] p-4 space-y-3 relative overflow-hidden">
+        <div className="rounded-xl border border-slate-800 bg-[#0f172a] p-4 space-y-3 relative overflow-hidden card-hover-glow">
           <div className="flex items-center justify-between text-slate-400">
             <span className="text-[11px] font-mono uppercase tracking-wider font-semibold">Fuel Cost / Mile</span>
             <div className="p-1.5 rounded-lg bg-amber-500/10 text-amber-400">
@@ -138,13 +145,20 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ kpis }) => {
             <div className="text-2xl sm:text-3xl font-black font-mono text-white tabular-nums">
               ${kpis.fuelCostPerMile.toFixed(2)}
             </div>
-            <div className="flex items-center gap-1 mt-1 text-[11px] font-mono text-amber-400">
+            <div className="flex items-center gap-1 mt-1.5 text-[11px] font-mono font-semibold text-amber-400 bg-amber-950/40 border border-amber-800/40 px-2 py-0.5 rounded w-fit">
               <span>Avg $5.79/gal diesel</span>
             </div>
           </div>
-          {/* Mini Sparkline */}
-          <div className="h-6 w-full pt-1">
+          {/* Enhanced Sparkline */}
+          <div className="h-7 w-full pt-1">
             <svg className="w-full h-full overflow-visible" viewBox="0 0 100 24" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="fuelGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#f59e0b" stopOpacity="0.25" />
+                  <stop offset="100%" stopColor="#f59e0b" stopOpacity="0.0" />
+                </linearGradient>
+              </defs>
+              <polygon points="0,8 25,14 50,10 80,18 100,12 100,24 0,24" fill="url(#fuelGrad)" />
               <path
                 d="M 0,8 Q 25,14 50,10 T 80,18 T 100,12"
                 fill="none"
@@ -157,7 +171,7 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ kpis }) => {
         </div>
 
         {/* KPI 3: Open Receivables & Aging */}
-        <div className="rounded-xl border border-slate-800 bg-[#0f172a] p-4 space-y-3 relative overflow-hidden">
+        <div className="rounded-xl border border-slate-800 bg-[#0f172a] p-4 space-y-3 relative overflow-hidden card-hover-glow">
           <div className="flex items-center justify-between text-slate-400">
             <span className="text-[11px] font-mono uppercase tracking-wider font-semibold">Open Receivables</span>
             <div className="p-1.5 rounded-lg bg-sky-500/10 text-sky-400">
@@ -168,29 +182,29 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ kpis }) => {
             <div className="text-2xl sm:text-3xl font-black font-mono text-white tabular-nums">
               ${kpis.openReceivablesTotal.toLocaleString()}
             </div>
-            <div className="flex items-center gap-1 mt-1 text-[11px] font-mono text-amber-400">
-              <AlertCircle className="w-3 h-3" />
+            <div className="flex items-center gap-1 mt-1.5 text-[11px] font-mono font-semibold text-amber-400 bg-amber-950/40 border border-amber-800/40 px-2 py-0.5 rounded w-fit">
+              <AlertCircle className="w-3.5 h-3.5" />
               <span>{kpis.overdueReceivablesCount} invoices &gt;30d</span>
             </div>
           </div>
 
           {/* Stacked Aging Bar */}
-          <div className="space-y-1">
-            <div className="h-2 w-full rounded-full bg-slate-800 flex overflow-hidden">
+          <div className="space-y-1.5 pt-1">
+            <div className="h-2 w-full rounded-full bg-slate-800 flex overflow-hidden shadow-inner">
               <div className="bg-emerald-500 h-full" style={{ width: '75.6%' }} title="<30d: $32,450" />
               <div className="bg-amber-500 h-full" style={{ width: '17.7%' }} title="31-60d: $7,590" />
               <div className="bg-red-500 h-full" style={{ width: '6.7%' }} title=">60d: $2,850" />
             </div>
-            <div className="flex justify-between text-[9px] font-mono text-slate-500">
-              <span>&lt;30d 76%</span>
-              <span>31-60d 18%</span>
-              <span className="text-red-400">&gt;60d 7%</span>
+            <div className="flex justify-between text-[10px] font-mono text-slate-400">
+              <span className="text-emerald-400 font-semibold">&lt;30d $32.4k</span>
+              <span className="text-amber-400 font-semibold">31-60d $7.6k</span>
+              <span className="text-red-400 font-semibold">&gt;60d $2.9k</span>
             </div>
           </div>
         </div>
 
         {/* KPI 4: Detention Billed vs Incurred */}
-        <div className="rounded-xl border border-slate-800 bg-[#0f172a] p-4 space-y-3 relative overflow-hidden">
+        <div className="rounded-xl border border-slate-800 bg-[#0f172a] p-4 space-y-3 relative overflow-hidden card-hover-glow">
           <div className="flex items-center justify-between text-slate-400">
             <span className="text-[11px] font-mono uppercase tracking-wider font-semibold">Detention Leakage</span>
             <div className="p-1.5 rounded-lg bg-red-500/10 text-red-400">
@@ -201,19 +215,20 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ kpis }) => {
             <div className="text-2xl sm:text-3xl font-black font-mono text-red-400 tabular-nums">
               -${kpis.unbilledDetentionLoss.toLocaleString()}
             </div>
-            <div className="flex items-center gap-1.5 mt-1 text-[11px] font-mono text-red-400">
+            <div className="flex items-center gap-1.5 mt-1.5 text-[11px] font-mono font-semibold text-red-400 bg-red-950/40 border border-red-800/40 px-2 py-0.5 rounded w-fit">
               <ArrowDownRight className="w-3.5 h-3.5" />
               <span>Unbilled dwell time</span>
             </div>
           </div>
           {/* Recovery Note */}
-          <div className="text-[10px] text-slate-500 font-mono">
-            P1 adds +$162.50 to recovery
+          <div className="text-[11px] text-emerald-400 font-mono flex items-center gap-1 pt-1">
+            <TrendingUp className="w-3 h-3" />
+            <span>P1 reclaims +$162.50</span>
           </div>
         </div>
 
         {/* KPI 5: Miles by state (IFTA preview) */}
-        <div className="rounded-xl border border-slate-800 bg-[#0f172a] p-4 space-y-3 relative overflow-hidden">
+        <div className="rounded-xl border border-slate-800 bg-[#0f172a] p-4 space-y-3 relative overflow-hidden card-hover-glow">
           <div className="flex items-center justify-between text-slate-400">
             <span className="text-[11px] font-mono uppercase tracking-wider font-semibold">IFTA Miles (Oct)</span>
             <div className="p-1.5 rounded-lg bg-purple-500/10 text-purple-400">
@@ -228,15 +243,20 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({ kpis }) => {
               4 states logged via telematics
             </div>
           </div>
-          {/* Mini State Breakdown */}
-          <div className="flex items-center gap-1 text-[10px] font-mono text-slate-400">
-            <span className="text-orange-400">OH 39%</span>
-            <span>·</span>
-            <span className="text-sky-400">IN 28%</span>
-            <span>·</span>
-            <span className="text-purple-400">IL 18%</span>
-            <span>·</span>
-            <span className="text-emerald-400">KY 15%</span>
+          {/* State Proportional Bar */}
+          <div className="space-y-1.5 pt-1">
+            <div className="h-2 w-full rounded-full bg-slate-800 flex overflow-hidden shadow-inner">
+              <div className="bg-orange-500 h-full" style={{ width: '39.5%' }} title="OH: 11,240 mi" />
+              <div className="bg-sky-400 h-full" style={{ width: '27.7%' }} title="IN: 7,890 mi" />
+              <div className="bg-purple-400 h-full" style={{ width: '18.0%' }} title="IL: 5,120 mi" />
+              <div className="bg-emerald-400 h-full" style={{ width: '14.8%' }} title="KY: 4,200 mi" />
+            </div>
+            <div className="flex items-center justify-between text-[10px] font-mono">
+              <span className="text-orange-400 font-semibold">OH 39%</span>
+              <span className="text-sky-400 font-semibold">IN 28%</span>
+              <span className="text-purple-400 font-semibold">IL 18%</span>
+              <span className="text-emerald-400 font-semibold">KY 15%</span>
+            </div>
           </div>
         </div>
       </div>

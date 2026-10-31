@@ -18,7 +18,9 @@ import {
   FileSpreadsheet, 
   Coins, 
   ExternalLink,
-  Play
+  Play,
+  X,
+  AlertTriangle
 } from 'lucide-react';
 
 interface HomeScreenProps {
@@ -41,6 +43,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   onToggleExpandFile
 }) => {
   const [isDragging, setIsDragging] = useState(false);
+  const [dropError, setDropError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Animated Count-Up for $2,689
@@ -89,14 +92,34 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
     e.preventDefault();
     setIsDragging(false);
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      onFileUpload(e.dataTransfer.files);
+      validateAndProcess(e.dataTransfer.files);
     }
   };
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      onFileUpload(e.target.files);
+      validateAndProcess(e.target.files);
     }
+  };
+
+  const validateAndProcess = (files: FileList) => {
+    const validExtensions = ['pdf', 'docx', 'jpg', 'jpeg', 'png', 'eml', 'txt'];
+    const invalidNames: string[] = [];
+
+    Array.from(files).forEach((f) => {
+      const ext = f.name.split('.').pop()?.toLowerCase() || '';
+      if (!validExtensions.includes(ext)) {
+        invalidNames.push(f.name);
+      }
+    });
+
+    if (invalidNames.length > 0) {
+      setDropError(`Unsupported file format for "${invalidNames[0]}". Please drop PDF, DOCX, JPG, EML, or TXT.`);
+      return;
+    }
+
+    setDropError(null);
+    onFileUpload(files);
   };
 
   const getProblemIcon = (id: string) => {
@@ -196,6 +219,24 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             </div>
           </div>
         </div>
+
+        {/* Drop Error Alert State */}
+        {dropError && (
+          <div className="p-3.5 rounded-xl bg-red-950/40 border border-red-500/40 flex items-center justify-between gap-3 text-xs font-mono text-red-300 animate-in fade-in duration-200">
+            <div className="flex items-center gap-2">
+              <AlertTriangle className="w-4 h-4 text-red-400 shrink-0" />
+              <span>{dropError}</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setDropError(null)}
+              className="p-1 text-red-400 hover:text-white rounded hover:bg-red-900/50 transition"
+              aria-label="Dismiss error"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        )}
 
         {/* SECTION 1B: LIVE "JUST PROCESSED" STRIP */}
         {processedFiles.length > 0 && (
