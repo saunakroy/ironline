@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   BRIEFING_ITEMS, 
   WATCH_ITEMS, 
@@ -15,7 +15,8 @@ import {
   AgentMessage, 
   FleetKPIs,
   UserRole,
-  DriverSession
+  DriverSession,
+  ThemeMode
 } from './types';
 import { Navbar } from './components/Navbar';
 import { HomeScreen } from './components/HomeScreen';
@@ -26,6 +27,7 @@ import { LoginModal } from './components/LoginModal';
 import { TruckerPortal } from './components/TruckerPortal';
 
 export default function App() {
+  const [theme, setTheme] = useState<ThemeMode>('light');
   const [currentRole, setCurrentRole] = useState<UserRole>('owner');
   const [activeDriver, setActiveDriver] = useState<DriverSession>(DEMO_DRIVERS[0]);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
@@ -37,6 +39,20 @@ export default function App() {
   const [kpis] = useState<FleetKPIs>(FLEET_KPIS);
   const [selectedBriefingItem, setSelectedBriefingItem] = useState<BriefingItem | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (theme === 'light') {
+      document.documentElement.classList.add('light');
+      document.documentElement.classList.remove('dark');
+      document.body.classList.add('light');
+      document.body.classList.remove('dark');
+    } else {
+      document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
+      document.body.classList.add('dark');
+      document.body.classList.remove('light');
+    }
+  }, [theme]);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -218,7 +234,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#070b14] text-[#f8fafc] flex flex-col font-sans antialiased w-full max-w-full overflow-x-hidden selection:bg-orange-500 selection:text-black">
+    <div className={`min-h-screen ${theme} ${theme === 'light' ? 'bg-[#f8fafc] text-[#0f172a]' : 'bg-[#070b14] text-[#f8fafc]'} flex flex-col font-sans antialiased w-full max-w-full overflow-x-hidden selection:bg-orange-500 selection:text-white`}>
       {/* Top Navigation with Profile Picture & Dropdown */}
       <Navbar
         activeTab={activeTab}
@@ -229,6 +245,8 @@ export default function App() {
         demoDrivers={DEMO_DRIVERS}
         onSelectRole={handleSelectRole}
         onOpenLoginModal={() => setIsLoginModalOpen(true)}
+        theme={theme}
+        onToggleTheme={() => setTheme((t) => (t === 'light' ? 'dark' : 'light'))}
       />
 
       {/* Floating Notification Toast */}

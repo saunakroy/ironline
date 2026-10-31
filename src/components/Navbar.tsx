@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ActiveTab, UserRole, DriverSession } from '../types';
+import { ActiveTab, UserRole, DriverSession, ThemeMode } from '../types';
 import { 
   Truck, 
   LayoutDashboard, 
@@ -9,7 +9,9 @@ import {
   ChevronDown, 
   Building2, 
   ShieldCheck, 
-  KeyRound
+  KeyRound,
+  Sun,
+  Moon
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -22,6 +24,8 @@ interface NavbarProps {
   demoDrivers?: DriverSession[];
   onSelectRole: (role: UserRole, driver?: DriverSession) => void;
   onOpenLoginModal?: () => void;
+  theme: ThemeMode;
+  onToggleTheme: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -33,7 +37,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   activeDriver,
   demoDrivers = [],
   onSelectRole,
-  onOpenLoginModal
+  onOpenLoginModal,
+  theme,
+  onToggleTheme
 }) => {
   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
 
@@ -145,8 +151,25 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         )}
 
-        {/* Profile Picture & Account Menu (Replacing Login / Logout) */}
-        <div className="relative">
+        {/* Profile & Theme Actions */}
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          {/* Quick Theme Toggle (Sun / Moon) */}
+          <button
+            type="button"
+            onClick={onToggleTheme}
+            className="p-2 rounded-xl text-slate-400 hover:text-orange-500 hover:bg-slate-800/40 transition border border-transparent hover:border-slate-700/60 min-h-[40px] min-w-[40px] flex items-center justify-center select-none"
+            title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
+            aria-label="Toggle Theme"
+          >
+            {theme === 'light' ? (
+              <Moon className="w-4 h-4 text-slate-600 hover:text-slate-900 transition-colors" />
+            ) : (
+              <Sun className="w-4 h-4 text-amber-400 hover:text-amber-300 transition-colors" />
+            )}
+          </button>
+
+          {/* Profile Picture & Account Menu (Replacing Login / Logout) */}
+          <div className="relative">
           <button
             type="button"
             onClick={() => setIsProfileOpen(!isProfileOpen)}
@@ -326,6 +349,23 @@ export const Navbar: React.FC<NavbarProps> = ({
                   </div>
                 )}
 
+                {/* Theme Mode Toggle row in profile menu */}
+                <div className="flex items-center justify-between p-2 rounded-xl bg-[#070b14] border border-slate-800/80 text-[11px] font-mono">
+                  <span className="text-slate-400 flex items-center gap-1.5 font-semibold">
+                    {theme === 'light' ? <Sun className="w-3.5 h-3.5 text-amber-500" /> : <Moon className="w-3.5 h-3.5 text-sky-400" />}
+                    <span>Theme: {theme === 'light' ? 'Light Mode' : 'Dark Mode'}</span>
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onToggleTheme();
+                    }}
+                    className="px-2 py-1 rounded-md text-[10px] font-bold uppercase transition bg-slate-800 text-slate-200 hover:text-white"
+                  >
+                    Switch to {theme === 'light' ? 'Dark' : 'Light'}
+                  </button>
+                </div>
+
                 {/* Optional NFC Terminal Scanner trigger */}
                 {onOpenLoginModal && (
                   <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono">
@@ -350,6 +390,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </>
           )}
         </div>
+      </div>
       </div>
     </header>
   );

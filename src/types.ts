@@ -1,6 +1,7 @@
 export type AgentType = 'extractor' | 'reconciler' | 'watchdog' | 'briefer';
 export type ActiveTab = 'home' | 'dashboard' | 'agents';
 export type UserRole = 'owner' | 'trucker';
+export type ThemeMode = 'light' | 'dark';
 
 export interface DriverSession {
   id: string;
