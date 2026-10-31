@@ -7,6 +7,7 @@
   -webkit-tap-highlight-color: transparent;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  color-scheme: dark;
 }
 
 html, body {
@@ -15,6 +16,8 @@ html, body {
   overflow-x: hidden;
   margin: 0;
   padding: 0;
+  background-color: #070b14;
+  color: #f8fafc;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
@@ -22,33 +25,92 @@ html, body {
 #root {
   width: 100%;
   max-width: 100%;
+  min-height: 100vh;
   overflow-x: hidden;
+  background-color: #070b14;
 }
 
 code, pre, .font-mono {
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* Smooth light mode scrollbar */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Custom dark scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f8fafc;
+  background: #0f172a;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #334155;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #475569;
 }
 
 /* Touch targets and mobile optimizations */
 button, input, select, textarea {
   touch-action: manipulation;
+}
+
+/* Shimmer animation for extracting stage */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(30, 41, 59, 0.4) 0%,
+    rgba(56, 189, 248, 0.15) 50%,
+    rgba(30, 41, 59, 0.4) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s infinite linear;
+}
+
+/* Problem fields pulsing highlight in evidence drawer */
+@keyframes problemPulse {
+  0%, 100% {
+    border-color: rgba(249, 115, 22, 0.5);
+    box-shadow: 0 0 0 0 rgba(249, 115, 22, 0);
+  }
+  50% {
+    border-color: #f97316;
+    box-shadow: 0 0 14px 2px rgba(249, 115, 22, 0.35);
+  }
+}
+
+.animate-problem-pulse {
+  animation: problemPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Subtle card hover glow */
+.card-hover-glow {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-hover-glow:hover {
+  transform: translateY(-2px);
+  border-color: rgba(249, 115, 22, 0.45);
+  box-shadow: 0 10px 25px -5px rgba(249, 115, 22, 0.12), 0 0 0 1px rgba(249, 115, 22, 0.25);
+}
+
+/* Hero background glow */
+.hero-glow {
+  background: radial-gradient(circle at 50% 0%, rgba(249, 115, 22, 0.12) 0%, rgba(15, 23, 42, 0) 70%);
 }
