@@ -6,12 +6,14 @@ import { basename, join, relative } from "node:path"
 import express from "express"
 import multer from "multer"
 
-import type { ExtractedDoc, Finding, RelayMessage } from "@fleet/data/shared"
+import type { ExtractedDoc } from "@fleet/data/shared"
 
-import { writeBriefing } from "./briefer.js"
 import { impliedFscPerMile, weeklyDiesel } from "./eia.js"
 import { extractFile, type OpenLoadHint } from "./extract.js"
 import { RelayHub } from "./relay.js"
+import { AgentRelayTransport } from "./agent-relay-transport.js"
+import { registerAgents } from "./agents.js"
+import { envelopeSchema, validateSender } from "./relay-protocol.js"
 
 const PORT = Number(process.env.INFERENCE_PORT ?? 4100)
 const DATA = process.env.DATA_URL ?? "http://127.0.0.1:4000"
@@ -19,24 +21,14 @@ const ROOT = join(import.meta.dir, "../../..")
 const DATASET = process.env.DATASET_DIR ?? join(ROOT, "data/fleet_demo")
 const CACHE_DIR = join(ROOT, "data/cache/extractions")
 
-const hub = new RelayHub()
+const mode = process.env.RELAY_TRANSPORT ?? "local"
+if (!["local", "agent-relay"].includes(mode)) throw new Error("RELAY_TRANSPORT must be local or agent-relay")
+const hub = new RelayHub(mode === "agent-relay" ? new AgentRelayTransport() : undefined)
 
 // ---------- agents subscribed on the relay ----------
 
-hub.on("doc.extracted", async msg => {
-    const { companyId, doc } = msg.payload as { companyId: string; doc: ExtractedDoc }
-    const r = await fetch(`${DATA}/api/companies/${companyId}/docs`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(doc) })
-    return r.json()
-})
-
-hub.on("findings.ready", async msg => {
-    const p = msg.payload as { companyId: string; asOf: string; findings: Finding[]; totalAtRisk: number; unmatched?: { file: string }[] }
-    const diesel = await weeklyDiesel()
-    await hub.publish({ topic: "enrichment", from: "enrichment-agent", to: "briefer", payload: { diesel, impliedFscPerMile: impliedFscPerMile(diesel.pricePerGallon) } })
-    const briefing = await writeBriefing({ ...p, diesel })
-    await hub.publish({ topic: "briefing.ready", from: "briefer", to: `owner:${p.companyId}`, payload: briefing })
-    return { briefing }
-})
+registerAgents(hub, DATA)
+await hub.start()
 
 // ---------- intake ----------
 
@@ -62,7 +54,7 @@ async function intakeOne(companyId: string, path: string, displayName: string, u
     if (useCache) doc = await readFile(cacheFile, "utf8").then(JSON.parse).catch(() => null)
     const cached = !!doc
     if (!doc) {
-        hub.log("intake-agent", "openai", { reading: displayName })
+        await hub.log("intake-agent", "openai", { reading: displayName })
         doc = await extractFile(path, { displayName, openLoads: phase(displayName) > 0 ? await openLoads(companyId) : [], asOf })
         await mkdir(CACHE_DIR, { recursive: true })
         await writeFile(cacheFile, JSON.stringify(doc, null, 1))
@@ -83,6 +75,8 @@ async function intakeMany(companyId: string, files: { path: string; name: string
                 )
             )
             results.push(...chunk)
+            // A failed prerequisite must not let later phases run against an incomplete load set.
+            if (chunk.some(result => "error" in result)) return results
         }
     }
     return results
@@ -105,7 +99,7 @@ const wrap = (fn: (req: express.Request, res: express.Response) => Promise<unkno
         res.status(500).json({ error: String(err?.message ?? err) })
     })
 
-app.get("/health", (_req, res) => void res.json({ ok: true, service: "inference", openai: !!process.env.OPENAI_API_KEY }))
+app.get("/health", (_req, res) => void res.json({ ok: true, service: "inference", openai: !!process.env.OPENAI_API_KEY, relay: mode }))
 
 /** Drop zone: multipart field "files". ?cache=1 reuses earlier extractions of the same file name. */
 app.post("/api/companies/:c/ingest", upload.array("files", 100), wrap(async (req, res) => {
@@ -122,8 +116,14 @@ app.post("/api/companies/:c/ingest-day", wrap(async (req, res) => {
 
 /** Relay hub: other servers publish here (data server -> findings.ready). */
 app.post("/relay/publish", wrap(async (req, res) => {
-    const { topic, from, to, payload } = req.body as Pick<RelayMessage, "topic" | "from" | "to" | "payload">
-    res.json(await hub.publish({ topic, from, to, payload }))
+    const parsed = envelopeSchema.omit({ id: true, at: true }).extend({ id: envelopeSchema.shape.id.optional() }).parse(req.body)
+    validateSender({ ...parsed, id: parsed.id ?? "pending", at: "" })
+    const published = hub.publish(parsed)
+    if (req.body.wait === false) {
+        // Actor alarms must return before the data-side briefing callback can enter the Company actor.
+        void published.catch(() => console.warn("Background relay delivery failed; check transport journal."))
+        res.status(202).json({ accepted: true })
+    } else res.json(await published)
 }))
 app.get("/relay/recent", (_req, res) => void res.json(hub.recent()))
 /** Live agent-message feed for the UI (Server-Sent Events). */
@@ -139,4 +139,9 @@ app.get("/api/enrich/diesel", wrap(async (_req, res) => {
     res.json({ diesel, impliedFscPerMile: impliedFscPerMile(diesel.pricePerGallon) })
 }))
 
-app.listen(PORT, "127.0.0.1", () => console.log(`inference server: http://127.0.0.1:${PORT}`))
+const server = app.listen(PORT, "127.0.0.1", () => console.log(`inference server: http://127.0.0.1:${PORT} (${mode})`))
+for (const signal of ["SIGINT", "SIGTERM"] as const) process.once(signal, async () => {
+    server.close()
+    await hub.close()
+    process.exit(0)
+})

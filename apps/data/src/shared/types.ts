@@ -177,9 +177,11 @@ export type Briefing = { asOf: string; text: string; totalAtRisk: number; findin
 /** Relay envelope used between the two servers (swap transport for Agent Relay). */
 export type RelayMessage<T = unknown> = {
     id: string
-    topic: "doc.extracted" | "load.updated" | "findings.ready" | "briefing.ready" | "enrichment" | "log"
+    topic: "doc.extracted" | "load.updated" | "findings.ready" | "briefing.ready" | "enrichment.requested" | "enrichment" | "log"
     from: string
     to: string
     at: string
     payload: T
+    /** Application message ID, independent of the Relay provider's message ID. */
+    inReplyTo?: string
 }

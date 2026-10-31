@@ -19,8 +19,8 @@ the owner about the money they're about to lose.
 - **The LLM reads; code decides.** Extraction is the only LLM step that touches data. Every dollar amount
   comes from `apps/data/src/shared/rules.ts`, which is deterministic and tested against the answer key.
 - **Relay topics:** `doc.extracted` (intake → company), `load.updated` (data → ui), `findings.ready`
-  (company → briefer), `enrichment` (enrichment → briefer), `briefing.ready` (briefer → owner).
-  The transport is local HTTP behind `Transport` in `apps/inference/src/relay.ts`. Swap in Agent Relay there.
+  (company → briefer), `enrichment.requested` (briefer → enrichment), `enrichment` (enrichment → briefer),
+  `briefing.ready` (briefer → owner). Choose in-process or Agent Relay delivery with `RELAY_TRANSPORT`.
 
 ## Run it
 
@@ -72,196 +72,99 @@ Types for everything are in `apps/data/src/shared/types.ts`. The UI can import t
 
 ## Agent communication network (Agent Relay)
 
-Today every agent message goes through an in-process hub (`apps/inference/src/relay.ts`) with a local
-transport. This section explains how to move that traffic onto **[Agent Relay](https://agentrelay.com/docs/typescript-sdk)**
-(`@agent-relay/sdk`, v15), so every handoff becomes a durable, visible message between named agents.
+The inference server supports **local** and **agent-relay** transports. The network transport uses
+`@agent-relay/sdk@15.0.1` and the existing Intake, Enrichment, Briefer and data-server bridge. Terse actors
+remain SDK-free. No internet research or route-planning agent is included.
 
-> **Status:** not implemented yet. The code below is a guide written against the `@agent-relay/sdk@15.0.1`
-> types, and it hasn't been run. The local transport keeps working until `RELAY_TRANSPORT=agent-relay` is set.
+The agents execute inside the local inference server on your Mac; their Relay identities are not separate
+cloud workers. The data server and Terse storage also run locally. Agent Relay carries messages through its
+cloud service, and configured OpenAI calls use OpenAI's cloud. Moving execution to the cloud would require
+deploying these services and persistent storage separately.
 
-### 1. Participants
-
-Each role registers as its own Agent Relay identity (`relay.workspace.register({ name, type: "agent" })`):
-
-| Identity | Lives in | Role |
-|---|---|---|
-| `intake-agent` | inference server | Reads each uploaded file and posts `doc.extracted` |
-| `data-server` | inference server (bridge) or data server | Receives `doc.extracted` and forwards it to `POST :4000/api/companies/:c/docs`. Posts `findings.ready` after a check. **Not inside Terse actors**: actors stay thin and talk HTTP |
-| `enrichment-agent` | inference server | Pulls outside facts (EIA diesel today) and posts `enrichment` |
-| `briefer` | inference server | Turns `findings.ready` into the owner's text and replies with `briefing.ready` |
-| `owner-ui` *(optional)* | UI | Read-only observer of the channels, if the UI talks to Agent Relay directly instead of `/relay/feed` |
-
-### 2. Channels: one per topic
-
-| Channel | Topic(s) | Posted by | Joined by |
-|---|---|---|---|
-| `#fleet-intake` | `doc.extracted` | intake-agent | data-server |
-| `#fleet-findings` | `findings.ready`, with `briefing.ready` as a **thread reply** | data-server, briefer | briefer, data-server |
-| `#fleet-enrichment` | `enrichment` | enrichment-agent | briefer |
-| `#fleet-activity` | `load.updated`, `log` | everyone | owner-ui |
-
-Putting the briefing in the findings message's thread means judges can open one thread and watch:
-findings → enrichment → briefing.
-
-### 3. Message format
-
-Keep the existing `RelayMessage` envelope (`apps/data/src/shared/types.ts`) so no payload changes:
-
-- `text`: a one-line human summary (for example `INV-3252 under-bills IRN-1856 by $300.00 (+8 more)`), which is what people see in Agent Relay
-- `metadata.fleet`: the full `RelayMessage` (`{id, topic, from, to, at, payload, inReplyTo?}`), which is what agents read
-- `idempotencyKey`: `envelope.id`. For `doc.extracted`, use `doc:<companyId>:<file>` so retries never duplicate a doc
-
-### 4. One-time setup
+### Setup
 
 ```sh
-bun add --cwd apps/inference @agent-relay/sdk
+bun install
+bun run --cwd apps/inference relay:setup
 ```
 
-```ts
-// apps/inference/scripts/relay-setup.ts — run once, then copy the printed key into apps/inference/.env
-import { AgentRelay } from "@agent-relay/sdk"
+Setup creates a uniquely named workspace, registers `intake-agent`, `data-server`, `enrichment-agent` and
+`briefer`, creates four channels, and joins the participants. It saves credentials with mode `0600` in
+`data/cache/relay/credentials.json`, and sets `RELAY_TRANSPORT=agent-relay` in `apps/inference/.env`.
+It preserves existing model/API-key settings. Rerunning setup resumes incomplete work or reconnects existing
+identities; it does not rotate their tokens. Credentials are never printed. Keep the credential file private.
 
-const relay = await AgentRelay.createWorkspace({ name: "fleet-agents" })
-const admin = await relay.workspace.register({ name: "fleet-admin", type: "agent" })
-for (const [name, topic] of [
-    ["fleet-intake", "Extracted documents → data server"],
-    ["fleet-findings", "Nightly findings; briefings reply in thread"],
-    ["fleet-enrichment", "Outside data for the briefer"],
-    ["fleet-activity", "Load updates and agent logs"]
-]) await admin.channels.create({ name, topic })
-console.log(`RELAY_WORKSPACE_KEY=${relay.workspaceKey}`)
-```
+Optional setup settings: `RELAY_WORKSPACE_NAME`, `RELAY_BASE_URL` (provider endpoint), and
+`RELAY_CREDENTIALS_FILE` (absolute private credential-file path). Use one active inference process per workspace.
 
-Add the following to `apps/inference/.env`:
-
-```
-RELAY_TRANSPORT=agent-relay
-RELAY_WORKSPACE_KEY=...
-```
-
-### 5. Implement the transport
-
-`relay.ts` already isolates the transport behind `Transport.deliver(msg, handler)`. Two small changes make it fit a
-real network:
-
-1. Add `RelayHub.dispatch(msg)`. It runs the handler registered for `msg.topic` and records the message in the feed.
-   Inbound Agent Relay messages call this, so `/relay/feed` keeps working for the UI.
-2. Add `apps/inference/src/agent-relay-transport.ts`:
-
-```ts
-import { AgentRelay, type RelayAgentClient } from "@agent-relay/sdk"
-import type { RelayMessage } from "@fleet/data/shared"
-import type { RelayHub, Transport } from "./relay.js"
-
-const CHANNEL: Record<RelayMessage["topic"], string> = {
-    "doc.extracted": "fleet-intake", "findings.ready": "fleet-findings", "briefing.ready": "fleet-findings",
-    enrichment: "fleet-enrichment", "load.updated": "fleet-activity", log: "fleet-activity"
-}
-const REQUEST_REPLY = new Set(["findings.ready"]) // /check waits for the briefing
-type Envelope = RelayMessage & { inReplyTo?: string }
-
-export class AgentRelayTransport implements Transport {
-    private relay = new AgentRelay({ workspaceKey: process.env.RELAY_WORKSPACE_KEY! })
-    private clients = new Map<string, RelayAgentClient>()
-    private waiting = new Map<string, (v: unknown) => void>()
-    private relayIds = new Map<string, string>() // envelope id -> Agent Relay messageId (for thread replies)
-
-    async start(hub: RelayHub) {
-        for (const name of ["intake-agent", "data-server", "enrichment-agent", "briefer"]) {
-            const client = await this.relay.workspace.register({ name, type: "agent" })
-            for (const ch of new Set(Object.values(CHANNEL))) await client.channels.join(ch)
-            this.clients.set(name, client)
-        }
-        this.relay.addListener("message.created", async ({ message }) => this.inbound(hub, message))
-        this.relay.addListener("thread.reply", async ({ message }) => this.inbound(hub, message))
-    }
-
-    private async inbound(hub: RelayHub, message: { messageId: string; metadata?: Record<string, unknown> }) {
-        const env = message.metadata?.fleet as Envelope | undefined
-        if (!env) return
-        this.relayIds.set(env.id, message.messageId)
-        if (env.inReplyTo && this.waiting.has(env.inReplyTo)) {   // a reply we are waiting for
-            this.waiting.get(env.inReplyTo)!({ briefing: env.payload })
-            this.waiting.delete(env.inReplyTo)
-            return
-        }
-        const result = await hub.dispatch(env)                    // runs the hub.on(topic) handler
-        if (REQUEST_REPLY.has(env.topic) && result) {             // briefer replies in-thread
-            const briefing = (result as { briefing: unknown }).briefing
-            await this.clients.get("briefer")!.reply({
-                messageId: message.messageId,
-                text: (briefing as { text: string }).text,
-                metadata: { fleet: { ...env, id: crypto.randomUUID(), topic: "briefing.ready", from: "briefer", payload: briefing, inReplyTo: env.id } }
-            })
-        }
-    }
-
-    async deliver(msg: Envelope): Promise<unknown> {
-        const sender = this.clients.get(msg.from) ?? this.clients.get("data-server")!
-        const reply = REQUEST_REPLY.has(msg.topic)
-            ? new Promise(resolve => {
-                  this.waiting.set(msg.id, resolve)
-                  setTimeout(() => this.waiting.delete(msg.id) && resolve(null), 30_000) // /check falls back to no briefing
-              })
-            : null
-        await sender.sendMessage({
-            to: `#${CHANNEL[msg.topic]}`,
-            text: summarize(msg),
-            idempotencyKey: msg.topic === "doc.extracted" ? `doc:${(msg.payload as any).companyId}:${(msg.payload as any).doc.file}` : msg.id,
-            metadata: { fleet: msg }
-        })
-        return reply ?? { accepted: true }
-    }
-}
-
-function summarize(m: RelayMessage): string {
-    const p = m.payload as any
-    if (m.topic === "doc.extracted") return `${p.doc.kind}: ${p.doc.file}${p.doc.reference ? ` (ref ${p.doc.reference})` : ""}`
-    if (m.topic === "findings.ready") return `${p.findings.length} findings, $${p.totalAtRisk} at risk (${p.asOf})`
-    return `${m.topic} from ${m.from}`
-}
-```
-
-Wire it up in `apps/inference/src/server.ts`:
-
-```ts
-const transport = process.env.RELAY_TRANSPORT === "agent-relay" ? new AgentRelayTransport() : undefined
-const hub = new RelayHub(transport)
-if (transport) await transport.start(hub)
-```
-
-### 6. Rules the network must keep
-
-1. **`findings.ready` is request/reply.** `POST :4000/.../check` expects `{delivery: {briefing}}` back from
-   `/relay/publish`. The transport above does this by waiting for the Briefer's thread reply (`inReplyTo`) for up to 30 seconds.
-2. **Keep `doc.extracted` ordered per company.** Rate cons must arrive before the BOL, POD and invoice for that load, or those
-   docs end up unmatched. Intake already sends in phases. The `data-server` subscriber should forward one doc at a time per
-   `companyId` (a simple per-company promise chain).
-3. **Delivery is at-least-once, and that's safe.** Routing on the data server is idempotent by file name, and `idempotencyKey`
-   stops duplicate sends. Don't add dedupe on the data side.
-4. **Data server and actors stay LLM-free and SDK-free.** The Terse `Company` alarm still publishes through
-   `POST :4100/relay/publish`, and the hub forwards it onto Agent Relay. Keep `RELAY_HUB_URL` pointing at the inference server.
-5. **New agents join the network the same way:** register an identity, join channels, read `metadata.fleet`, and post with an
-   envelope. Money math stays in `apps/data/src/shared/rules.ts`.
-
-### 7. Check that it works
+Start the project in three terminals:
 
 ```sh
-# terminals: dev:actors, dev:data, dev:inference (with RELAY_TRANSPORT=agent-relay)
-curl -X POST localhost:4000/api/companies/ironline/seed -H 'content-type: application/json' -d '{}'
-for d in 2026-10-26 2026-10-27 2026-10-28 2026-10-29 2026-10-30; do   # cached extractions → no OpenAI calls
-  curl -s -X POST localhost:4100/api/companies/ironline/ingest-day -H 'content-type: application/json' -d "{\"day\":\"$d\"}" >/dev/null; done
-curl -s -X POST localhost:4000/api/companies/ironline/check -H 'content-type: application/json' -d '{"asOf":"2026-10-30"}' | head -c 400
+bun run dev:actors
+# Once Terse is Ready, generate bindings (also needed after actor method changes):
+bun run --cwd apps/data generate
+bun run dev:data
+bun run dev:inference
 ```
 
-What you should see:
-- the `doc.extracted` messages in `#fleet-intake`
-- one `findings.ready` post in `#fleet-findings`, with the briefing in its thread
-- `/check` returning a non-null `briefing`
-- `GET :4000/api/companies/ironline/snapshot` with `unmatched: []`
+`GET http://127.0.0.1:4100/health` reports `relay: "agent-relay"`. Startup fails if Relay credentials cannot be
+loaded or connected; it never silently switches to local mode. Set `RELAY_TRANSPORT=local` explicitly to use
+in-process delivery without network access.
 
-If docs show up as unmatched, ordering is broken (see rule 2). Note that `bun apps/data/test/replay-truth.ts`
-posts directly to the data server and **skips** the relay, so it's the fallback when the network is down, not a test of the network.
+### Channels and execution
+
+| Channel | Traffic |
+|---|---|
+| `fleet-intake` | `doc.extracted`, followed by the data bridge's completion receipt |
+| `fleet-findings` | `findings.ready`; the generated `briefing.ready` is a thread reply |
+| `fleet-enrichment` | Briefer's `enrichment.requested`, Enrichment's EIA result, and completion receipt |
+| `fleet-activity` | `load.updated` and `log` |
+
+Each post includes a human summary and the original envelope in `metadata.fleet`. Logical `company:<id>`
+senders use the `data-server` identity. Incoming records must match their authenticated sender and topic.
+Agent replies are correlated by application message ID; Relay message acceptance is not handler completion.
+
+`/relay/publish`, `/relay/recent`, and `/relay/feed` remain available. `/check` still waits for and returns
+`{findings, totalAtRisk, briefing}`. Enrichment now runs through its own request and result exchange. The Briefer
+uses the returned EIA data and its existing model/template fallback. The `briefing.ready` handler writes through
+`POST :4000/api/companies/:c/briefing`, so both manual and scheduled briefings are persisted in Terse.
+
+### Ordering and recovery
+
+- Intake waits for document routing completion before advancing to the next phase. The receiver serializes documents
+  per company. Keep rate confirmations before dependent paperwork when publishing from another client.
+- The SDK's realtime events and REST retrieval share one receiver. REST retrieval catches an accepted message whose
+  realtime notification was missed. The receiving role reads the persisted Relay record before executing the handler.
+- `data/cache/relay/deliveries.sqlite` journals pending envelopes, provider IDs and completed handler results. On restart,
+  pending deliveries resume; completed handlers are not rerun for the same message ID. Preserve this directory alongside
+  Terse state. This is transport state, not a second business database.
+- Retries use the same idempotency key. An optional `id` on `/relay/publish` lets callers safely repeat a request; reusing
+  that ID with different content is rejected. New intentional processing uses a new ID.
+- A crash between a business write and the completion checkpoint can still redeliver: handlers must remain idempotent.
+  This is at-least-once processing, not an exactly-once transaction across Relay and Terse.
+- Alarm checks retain their findings and message ID in Terse until the hub accepts them. `wait:false` acknowledges durable
+  transport acceptance without holding the actor open during the briefing callback. If acceptance fails, the alarm retries
+  after one minute. In local mode there is no durable transport journal.
+- Requests time out after 60 seconds without fabricating success; pending work remains available for retry. The journal
+  supports this application's accepted jobs, not arbitrary historical workspace messages authored while it was offline.
+
+### Verification
+
+```sh
+bun test
+bun run check
+# With actors, data, and inference running in agent-relay mode:
+bun run --cwd apps/inference relay:smoke
+curl -N http://127.0.0.1:4100/relay/feed
+```
+
+The smoke test creates a NEW fictional company, sends answer-key extractions through Relay, runs an audit, and verifies
+that the briefing was persisted. It does not reset the existing Ironline company. It exercises networking without paid
+extraction calls; the Briefer uses its configured model if a key is present, otherwise its template.
+
+Unit tests cover recipient completion, duplicate delivery, ordering, restart recovery, sender validation, failed-handler
+retry, the Enrichment exchange, and local transport compatibility. The older `replay-truth.ts` script bypasses Relay and
+resets its target company; use `relay:smoke` to verify the network.
 
 ## What it catches (answer key)
 
