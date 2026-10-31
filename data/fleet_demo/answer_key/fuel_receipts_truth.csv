@@ -1,0 +1,13 @@
+receipt_no,truck_id,card,card_assigned_truck,unit_entered,datetime,city,state,station,gallons,price_per_gallon,fuel_total,def_gallons,def_price,def_total,odometer,driver_id,total,file
+834956,T101,FC-7741,T101,101,2026-10-26 05:55,Columbus,OH,Crossroads Travel Center #118,168.4,6.526,1098.98,0.0,0.0,0.0,889541,D01,1098.98,inbox/2026-10-26/receipt_1026_0555_101.jpg
+698164,T103,FC-7743,T103,103,2026-10-26 17:48,Gary,IN,Big Iron Fuel Stop #22,141.7,6.631,939.61,6.2,4.19,25.98,824075,D03,965.59,inbox/2026-10-26/receipt_1026_1748_103.jpg
+677742,T104,FC-7744,T104,104,2026-10-26 06:30,Columbus,OH,Crossroads Travel Center #118,176.9,6.526,1154.45,0.0,0.0,0.0,973198,D04,1154.45,inbox/2026-10-26/receipt_1026_0630_104.jpg
+141435,T102,FC-7742,T102,102,2026-10-27 09:55,Kingdom City,MO,Prairie Star Truck Plaza,96.3,6.126,589.93,0.0,0.0,0.0,1012544,D02,589.93,inbox/2026-10-27/receipt_1027_0955_102.jpg
+136403,T104,FC-7744,T104,104,2026-10-27 12:35,Joplin,MO,Prairie Star Truck Plaza #4,121.8,6.163,750.65,7.5,4.19,31.43,973955,D04,782.08,inbox/2026-10-27/receipt_1027_1235_104.jpg
+988982,T101,FC-7741,T101,101,2026-10-27 14:22,Carlisle,PA,Keystone Truck Stop,148.2,7.062,1046.59,0.0,0.0,0.0,890155,D01,1046.59,inbox/2026-10-27/receipt_1027_1422_101.jpg
+429272,T102,FC-7742,T102,102,2026-10-28 06:10,Kansas City,MO,Big Iron Fuel Stop #31,104.6,6.194,647.89,5.1,4.19,21.37,1012858,D02,669.26,inbox/2026-10-28/receipt_1028_0610_102.jpg
+434192,T104,FC-7742,T102,104,2026-10-28 09:20,Amarillo,TX,Lone Mesa Travel Plaza,128.9,6.212,800.73,0.0,0.0,0.0,974473,D04,800.73,inbox/2026-10-28/receipt_1028_0920_104.jpg
+148263,T103,FC-7743,T103,103,2026-10-28 22:50,Whiteland,IN,Crossroads Travel Center #64,186.3,6.532,1216.91,8.0,4.19,33.52,825068,D03,1250.43,inbox/2026-10-28/receipt_1028_2250_103.jpg
+947493,T104,FC-7744,T104,104,2026-10-29 06:45,Flagstaff,AZ,Ponderosa Fuel & Diner,117.4,6.907,810.88,0.0,0.0,0.0,975072,D04,810.88,inbox/2026-10-29/receipt_1029_0645_104.jpg
+491158,T104,FC-7744,T104,104,2026-10-29 13:40,Barstow,CA,Desert Rose Truck Stop,64.2,8.501,545.76,0.0,0.0,0.0,975352,D04,545.76,inbox/2026-10-29/receipt_1029_1340_104.jpg
+759704,T102,FC-7742,T102,102,2026-10-29 09:40,Whiteland,IN,Crossroads Travel Center #64,88.5,6.558,580.38,0.0,0.0,0.0,1013394,D02,580.38,inbox/2026-10-29/receipt_1029_0940_102.jpg

@@ -1,0 +1,200 @@
+maintenance_id,truck_id,date,maintenance_type,description,odometer,location,labor_cost,parts_cost,total_cost,downtime_hours
+M00001,T101,2024-11-13,Inspection,Annual DOT inspection (49 CFR 396.17),617976,"Columbus, OH",95.23,96.78,192.01,2.8
+M00002,T101,2024-12-10,Preventive,"PM-A service: oil, filters, lube, inspection",628237,"Columbus, OH",440.1,506.02,946.12,4.7
+M00003,T101,2024-12-20,Repair,Clutch adjustment,631722,"Columbus, OH",872.49,1072.28,1944.77,8.3
+M00004,T101,2025-01-08,Repair,Exhaust aftertreatment (DPF) cleaning,638984,"Columbus, OH",352.97,636.6,989.57,5.7
+M00005,T101,2025-01-30,Repair,Air leak / brake chamber replaced,646475,"Houston, TX",475.49,601.38,1076.87,3.5
+M00006,T101,2025-02-24,Preventive,"PM-A service: oil, filters, lube, inspection",658344,"Columbus, OH",458.4,447.04,905.44,5.1
+M00007,T101,2025-02-24,Repair,APU service,658344,"Columbus, OH",338.13,626.61,964.74,4.2
+M00008,T101,2025-03-01,Tire,Roadside tire replacement (1 drive tire),659083,"Minneapolis, MN",360.46,425.73,786.19,2.4
+M00009,T101,2025-03-13,Tire,Replace 8 drive/steer tires,665250,"Columbus, OH",657.54,4423.52,5081.06,4.9
+M00010,T101,2025-03-20,Repair,Trailer light harness repair,667588,"Los Angeles, CA",170.12,229.1,399.22,2.8
+M00011,T101,2025-04-09,Repair,Fifth wheel rebuild,675505,"Columbus, OH",345.62,444.83,790.45,8.4
+M00012,T101,2025-05-09,Preventive,"PM-A service: oil, filters, lube, inspection",688303,"Columbus, OH",264.5,435.01,699.51,5.3
+M00013,T101,2025-05-09,Repair,Starter replaced,688303,"Columbus, OH",1052.78,1425.75,2478.53,10.7
+M00014,T101,2025-06-03,Tire,Roadside tire replacement (1 drive tire),697239,"Atlanta, GA",435.38,371.72,807.1,4.0
+M00015,T101,2025-06-08,Repair,Air leak / brake chamber replaced,699129,"Philadelphia, PA",393.76,336.95,730.71,5.9
+M00016,T101,2025-06-26,Repair,Alternator replaced,704928,"Columbus, OH",280.83,396.76,677.59,5.8
+M00017,T101,2025-07-22,Preventive,"PM-A service: oil, filters, lube, inspection",714882,"Columbus, OH",460.46,379.96,840.42,4.3
+M00018,T101,2025-08-31,Repair,"Coolant leak repaired, hoses replaced",731344,"Columbus, OH",399.52,377.9,777.42,3.2
+M00019,T101,2025-09-06,Tire,Roadside tire replacement (1 drive tire),732995,"Charlotte, NC",257.25,441.82,699.07,2.6
+M00020,T101,2025-09-26,Preventive,"PM-A service: oil, filters, lube, inspection",740601,"Columbus, OH",416.01,364.39,780.4,4.7
+M00021,T101,2025-10-13,Tire,Replace 8 drive/steer tires,748277,"Columbus, OH",579.95,3934.77,4514.72,2.5
+M00022,T101,2025-10-13,Inspection,Annual DOT inspection (49 CFR 396.17),748277,"Columbus, OH",101.85,134.11,235.96,2.9
+M00023,T101,2025-11-01,Repair,Air leak / brake chamber replaced,753093,"Los Angeles, CA",336.01,290.96,626.97,4.8
+M00024,T101,2025-11-09,Brake,"Brake shoes, drums and slack adjusters (drive axles)",756509,"Columbus, OH",867.1,1478.67,2345.77,9.5
+M00025,T101,2025-11-19,Repair,Trailer light harness repair,759591,"Minneapolis, MN",74.41,80.7,155.11,2.5
+M00026,T101,2025-11-28,Repair,Turbo actuator / DEF sensor repair,763051,"Columbus, OH",998.29,1016.09,2014.38,9.9
+M00027,T101,2025-12-06,Repair,Turbo actuator / DEF sensor repair,765725,"Atlanta, GA",1442.83,2423.46,3866.29,19.8
+M00028,T101,2025-12-16,Preventive,"PM-A service: oil, filters, lube, inspection",770769,"Columbus, OH",297.54,396.41,693.95,6.0
+M00029,T101,2025-12-16,Repair,Fifth wheel rebuild,770769,"Columbus, OH",625.9,910.11,1536.01,4.3
+M00030,T101,2026-01-19,Repair,Alternator replaced,784195,"Minneapolis, MN",531.5,550.48,1081.98,3.7
+M00031,T101,2026-01-24,Repair,Turbo actuator / DEF sensor repair,785763,"Columbus, OH",662.66,592.56,1255.22,7.3
+M00032,T101,2026-02-12,Repair,Trailer light harness repair,793736,"Miami, FL",141.74,129.02,270.76,3.0
+M00033,T101,2026-03-06,Preventive,"PM-A service: oil, filters, lube, inspection",801890,"Columbus, OH",425.6,492.63,918.23,5.9
+M00034,T101,2026-03-15,Repair,Alternator replaced,804418,"Miami, FL",565.68,543.59,1109.27,7.9
+M00035,T101,2026-04-25,Repair,Air leak / brake chamber replaced,819716,"Columbus, OH",490.21,540.02,1030.23,5.8
+M00036,T101,2026-04-30,Repair,Turbo actuator / DEF sensor repair,822112,"Portland, OR",1391.52,1919.22,3310.74,20.8
+M00037,T101,2026-05-23,Preventive,"PM-A service: oil, filters, lube, inspection",830629,"Columbus, OH",347.24,617.33,964.57,4.6
+M00038,T101,2026-05-23,Repair,Wheel seal replaced,830629,"Columbus, OH",769.04,677.3,1446.34,11.0
+M00039,T101,2026-07-01,Tire,Replace 2 drive/steer tires,845765,"Columbus, OH",153.67,1129.02,1282.69,3.4
+M00040,T101,2026-07-25,Tire,Roadside tire replacement (1 drive tire),854499,"Houston, TX",343.82,347.15,690.97,2.5
+M00041,T101,2026-07-28,Preventive,"PM-A service: oil, filters, lube, inspection",855981,"Columbus, OH",485.53,471.74,957.27,3.2
+M00042,T101,2026-08-18,Repair,"Coolant leak repaired, hoses replaced",864803,"Columbus, OH",668.44,1070.54,1738.98,9.9
+M00043,T101,2026-09-02,Repair,Trailer light harness repair,869792,"Columbus, OH",120.73,221.92,342.65,1.5
+M00044,T101,2026-09-13,Inspection,Annual DOT inspection (49 CFR 396.17),874847,"Columbus, OH",112.79,111.0,223.79,2.1
+M00045,T101,2026-09-24,Repair,Alternator replaced,878253,"Miami, FL",341.63,336.17,677.8,4.9
+M00046,T101,2026-09-30,Repair,APU service,881658,"Columbus, OH",944.4,1062.87,2007.27,6.8
+M00047,T101,2026-10-17,Preventive,"PM-A service: oil, filters, lube, inspection",889537,"Columbus, OH",287.93,445.99,733.92,5.9
+M00048,T101,2026-10-17,Repair,APU service,889537,"Columbus, OH",1226.95,1726.59,2953.54,5.3
+M00049,T101,2026-10-22,Repair,"Coolant leak repaired, hoses replaced",889537,"Columbus, OH",931.93,934.8,1866.73,10.2
+M00050,T102,2024-11-10,Inspection,Annual DOT inspection (49 CFR 396.17),739876,"Columbus, OH",135.35,122.41,257.76,2.9
+M00051,T102,2024-11-10,Repair,Fifth wheel rebuild,739876,"Columbus, OH",1045.29,1175.37,2220.66,4.2
+M00052,T102,2024-11-22,Repair,"Coolant leak repaired, hoses replaced",744716,"Columbus, OH",1452.17,1343.31,2795.48,11.0
+M00053,T102,2024-12-02,Repair,Alternator replaced,747114,"Memphis, TN",433.12,464.6,897.72,5.1
+M00054,T102,2024-12-04,Repair,Turbo actuator / DEF sensor repair,747946,"Minneapolis, MN",1772.66,1466.91,3239.57,25.7
+M00055,T102,2024-12-29,Preventive,"PM-A service: oil, filters, lube, inspection",758392,"Columbus, OH",316.77,453.81,770.58,3.2
+M00056,T102,2024-12-29,Repair,Fifth wheel rebuild,758392,"Columbus, OH",801.72,662.73,1464.45,9.8
+M00057,T102,2025-01-19,Repair,APU service,766714,"Columbus, OH",264.27,221.24,485.51,11.4
+M00058,T102,2025-01-22,Repair,Trailer light harness repair,766714,"Columbus, OH",182.23,199.58,381.81,1.1
+M00059,T102,2025-01-30,Repair,Fifth wheel rebuild,771606,"Columbus, OH",845.53,1406.12,2251.65,5.3
+M00060,T102,2025-02-09,Repair,Clutch adjustment,775071,"Columbus, OH",1121.77,1766.83,2888.6,3.4
+M00061,T102,2025-02-22,Tire,Replace 4 drive/steer tires,780164,"Columbus, OH",457.24,2184.59,2641.83,2.0
+M00062,T102,2025-02-22,Brake,"Brake shoes, drums and slack adjusters (drive axles)",780164,"Columbus, OH",932.17,913.91,1846.08,7.2
+M00063,T102,2025-03-11,Preventive,"PM-A service: oil, filters, lube, inspection",786276,"Columbus, OH",502.28,436.54,938.82,3.7
+M00064,T102,2025-03-22,Repair,Starter replaced,789707,"Columbus, OH",1021.35,1752.58,2773.93,8.4
+M00065,T102,2025-04-01,Repair,Exhaust aftertreatment (DPF) cleaning,793175,"Columbus, OH",473.52,579.06,1052.58,11.5
+M00066,T102,2025-04-09,Repair,Alternator replaced,795038,"Kansas City, MO",594.4,748.22,1342.62,7.8
+M00067,T102,2025-04-11,Repair,Starter replaced,795757,"Columbus, OH",782.0,1137.97,1919.97,5.0
+M00068,T102,2025-05-22,Preventive,"PM-A service: oil, filters, lube, inspection",811574,"Columbus, OH",355.68,329.56,685.24,4.2
+M00069,T102,2025-05-22,Repair,Starter replaced,811574,"Columbus, OH",1009.2,1653.39,2662.59,8.1
+M00070,T102,2025-07-25,Repair,Turbo actuator / DEF sensor repair,834284,"Minneapolis, MN",1742.43,1872.33,3614.76,22.4
+M00071,T102,2025-07-31,Repair,Turbo actuator / DEF sensor repair,836042,"Chicago, IL",990.44,1077.09,2067.53,18.8
+M00072,T102,2025-08-08,Preventive,"PM-A service: oil, filters, lube, inspection",839852,"Columbus, OH",403.17,370.94,774.11,4.7
+M00073,T102,2025-09-29,Repair,Exhaust aftertreatment (DPF) cleaning,860408,"Columbus, OH",1039.47,1726.98,2766.45,10.6
+M00074,T102,2025-10-08,Inspection,Annual DOT inspection (49 CFR 396.17),861962,"Columbus, OH",77.35,105.55,182.9,1.3
+M00075,T102,2025-10-22,Repair,Air leak / brake chamber replaced,866703,"Seattle, WA",489.87,407.4,897.27,4.5
+M00076,T102,2025-10-27,Preventive,"PM-A service: oil, filters, lube, inspection",869838,"Columbus, OH",368.79,529.75,898.54,3.4
+M00077,T102,2025-12-04,Tire,Replace 8 drive/steer tires,884350,"Columbus, OH",402.16,4862.74,5264.9,3.7
+M00078,T102,2025-12-12,Tire,Roadside tire replacement (1 drive tire),886702,"Portland, OR",399.04,487.16,886.2,3.0
+M00079,T102,2025-12-23,Repair,Turbo actuator / DEF sensor repair,890836,"Atlanta, GA",918.18,1203.66,2121.84,18.2
+M00080,T102,2026-01-02,Repair,APU service,894962,"Columbus, OH",876.69,1466.77,2343.46,4.5
+M00081,T102,2026-01-14,Preventive,"PM-A service: oil, filters, lube, inspection",899207,"Columbus, OH",326.73,530.77,857.5,3.2
+M00082,T102,2026-03-14,Repair,Alternator replaced,920106,"Houston, TX",327.36,476.9,804.26,7.5
+M00083,T102,2026-03-23,Preventive,"PM-A service: oil, filters, lube, inspection",924975,"Columbus, OH",329.24,580.18,909.42,5.9
+M00084,T102,2026-03-29,Repair,Alternator replaced,926119,"Columbus, OH",365.87,431.62,797.49,3.6
+M00085,T102,2026-04-24,Repair,Trailer light harness repair,936614,"Minneapolis, MN",153.65,144.67,298.32,2.8
+M00086,T102,2026-06-03,Preventive,"PM-A service: oil, filters, lube, inspection",953947,"Columbus, OH",378.81,504.36,883.17,4.5
+M00087,T102,2026-06-03,Repair,APU service,953947,"Columbus, OH",759.67,883.36,1643.03,7.8
+M00088,T102,2026-06-16,Brake,"Brake shoes, drums and slack adjusters (drive axles)",958540,"Columbus, OH",1078.06,1141.89,2219.95,7.2
+M00089,T102,2026-07-05,Repair,Trailer light harness repair,964093,"Philadelphia, PA",143.55,119.53,263.08,1.5
+M00090,T102,2026-07-14,Repair,"Coolant leak repaired, hoses replaced",969258,"Columbus, OH",220.5,239.56,460.06,7.4
+M00091,T102,2026-07-27,Repair,Alternator replaced,974547,"Charlotte, NC",686.02,645.8,1331.82,7.0
+M00092,T102,2026-08-04,Preventive,"PM-A service: oil, filters, lube, inspection",979635,"Columbus, OH",344.49,603.89,948.38,5.5
+M00093,T102,2026-08-04,Repair,Exhaust aftertreatment (DPF) cleaning,979635,"Columbus, OH",367.85,444.59,812.44,5.5
+M00094,T102,2026-08-21,Repair,APU service,986166,"Columbus, OH",181.43,313.4,494.83,6.4
+M00095,T102,2026-09-09,Tire,Replace 4 drive/steer tires,994405,"Columbus, OH",123.76,2239.98,2363.74,4.6
+M00096,T102,2026-09-09,Inspection,Annual DOT inspection (49 CFR 396.17),994405,"Columbus, OH",132.32,122.26,254.58,1.1
+M00097,T102,2026-09-24,Repair,Exhaust aftertreatment (DPF) cleaning,1000106,"Columbus, OH",557.42,805.74,1363.16,5.4
+M00098,T102,2026-10-08,Tire,Roadside tire replacement (1 drive tire),1006004,"Houston, TX",366.28,352.62,718.9,3.7
+M00099,T102,2026-10-11,Preventive,"PM-A service: oil, filters, lube, inspection",1007346,"Columbus, OH",473.15,456.17,929.32,5.2
+M00100,T103,2024-11-10,Inspection,Annual DOT inspection (49 CFR 396.17),552808,"Columbus, OH",126.48,130.87,257.35,1.7
+M00101,T103,2024-11-23,Repair,APU service,557463,"Columbus, OH",898.53,1307.32,2205.85,6.5
+M00102,T103,2024-12-14,Preventive,"PM-A service: oil, filters, lube, inspection",565611,"Columbus, OH",386.24,404.38,790.62,4.6
+M00103,T103,2024-12-16,Tire,Roadside tire replacement (1 drive tire),565611,"Columbus, OH",409.02,448.48,857.5,2.8
+M00104,T103,2024-12-26,Repair,Turbo actuator / DEF sensor repair,570095,"Los Angeles, CA",1564.35,2491.37,4055.72,24.3
+M00105,T103,2025-01-30,Tire,Roadside tire replacement (1 drive tire),586093,"New York, NY",445.63,483.56,929.19,2.0
+M00106,T103,2025-02-19,Preventive,"PM-A service: oil, filters, lube, inspection",594340,"Columbus, OH",524.69,446.66,971.35,5.6
+M00107,T103,2025-02-19,Repair,Starter replaced,594340,"Columbus, OH",323.63,498.59,822.22,7.6
+M00108,T103,2025-04-25,Preventive,"PM-A service: oil, filters, lube, inspection",622106,"Columbus, OH",334.92,366.89,701.81,4.1
+M00109,T103,2025-05-11,Tire,Replace 8 drive/steer tires,627469,"Columbus, OH",869.08,4279.83,5148.91,4.8
+M00110,T103,2025-06-06,Repair,APU service,636285,"Columbus, OH",1149.85,1136.89,2286.74,4.6
+M00111,T103,2025-06-17,Repair,Alternator replaced,639886,"Portland, OR",443.62,523.32,966.94,3.7
+M00112,T103,2025-07-05,Preventive,"PM-A service: oil, filters, lube, inspection",647994,"Columbus, OH",473.05,492.88,965.93,4.7
+M00113,T103,2025-07-17,Brake,"Brake shoes, drums and slack adjusters (drive axles)",652893,"Columbus, OH",926.32,1266.91,2193.23,7.3
+M00114,T103,2025-07-17,Repair,APU service,652893,"Columbus, OH",286.72,382.93,669.65,6.1
+M00115,T103,2025-08-23,Repair,Fifth wheel rebuild,665943,"Columbus, OH",1342.64,1231.12,2573.76,10.8
+M00116,T103,2025-09-20,Preventive,"PM-A service: oil, filters, lube, inspection",677285,"Columbus, OH",268.76,397.28,666.04,5.7
+M00117,T103,2025-09-30,Repair,Trailer light harness repair,680784,"Dallas, TX",107.04,123.7,230.74,2.3
+M00118,T103,2025-10-14,Inspection,Annual DOT inspection (49 CFR 396.17),686457,"Columbus, OH",92.35,167.07,259.42,1.0
+M00119,T103,2025-10-16,Repair,Turbo actuator / DEF sensor repair,686457,"Columbus, OH",2115.89,2064.88,4180.77,24.8
+M00120,T103,2025-11-07,Repair,Wheel seal replaced,696154,"Columbus, OH",1384.82,1510.28,2895.1,7.9
+M00121,T103,2025-11-14,Tire,Roadside tire replacement (1 drive tire),698502,"Los Angeles, CA",431.97,464.64,896.61,2.3
+M00122,T103,2025-11-21,Preventive,"PM-A service: oil, filters, lube, inspection",701902,"Columbus, OH",432.6,519.14,951.74,4.9
+M00123,T103,2025-11-21,Repair,APU service,701902,"Columbus, OH",190.67,270.78,461.45,9.2
+M00124,T103,2025-12-25,Repair,Air leak / brake chamber replaced,713860,"Atlanta, GA",488.23,460.36,948.59,5.0
+M00125,T103,2026-01-04,Tire,Replace 4 drive/steer tires,719108,"Columbus, OH",209.61,2384.95,2594.56,3.3
+M00126,T103,2026-01-16,Repair,APU service,724099,"Columbus, OH",1000.04,1051.89,2051.93,6.7
+M00127,T103,2026-02-02,Preventive,"PM-A service: oil, filters, lube, inspection",729835,"Columbus, OH",464.83,481.92,946.75,5.1
+M00128,T103,2026-02-24,Tire,Roadside tire replacement (1 drive tire),736378,"New York, NY",443.4,456.5,899.9,3.4
+M00129,T103,2026-03-06,Repair,Alternator replaced,739111,"Atlanta, GA",438.35,506.95,945.3,6.7
+M00130,T103,2026-03-11,Repair,Turbo actuator / DEF sensor repair,741004,"Philadelphia, PA",1530.95,1956.66,3487.61,12.7
+M00131,T103,2026-03-13,Repair,Starter replaced,741890,"Columbus, OH",459.88,747.2,1207.08,11.7
+M00132,T103,2026-04-17,Tire,Roadside tire replacement (1 drive tire),753230,"Atlanta, GA",322.22,416.48,738.7,2.1
+M00133,T103,2026-04-28,Preventive,"PM-A service: oil, filters, lube, inspection",759440,"Columbus, OH",367.09,359.84,726.93,5.0
+M00134,T103,2026-05-09,Repair,"Coolant leak repaired, hoses replaced",762915,"Columbus, OH",604.71,842.47,1447.18,10.4
+M00135,T103,2026-05-21,Repair,"Coolant leak repaired, hoses replaced",768094,"Columbus, OH",1193.2,1589.71,2782.91,6.7
+M00136,T103,2026-06-07,Repair,Air leak / brake chamber replaced,773247,"Philadelphia, PA",549.73,573.07,1122.8,5.9
+M00137,T103,2026-06-27,Repair,Exhaust aftertreatment (DPF) cleaning,781450,"Columbus, OH",573.27,997.31,1570.58,3.3
+M00138,T103,2026-07-07,Repair,Clutch adjustment,784921,"Columbus, OH",168.83,265.2,434.03,9.5
+M00139,T103,2026-07-20,Preventive,"PM-A service: oil, filters, lube, inspection",789563,"Columbus, OH",351.01,491.39,842.4,5.0
+M00140,T103,2026-09-02,Repair,Fifth wheel rebuild,806604,"Columbus, OH",403.68,480.32,884.0,9.9
+M00141,T103,2026-09-15,Inspection,Annual DOT inspection (49 CFR 396.17),811188,"Columbus, OH",85.86,157.73,243.59,2.9
+M00142,T103,2026-09-27,Preventive,"PM-A service: oil, filters, lube, inspection",815991,"Columbus, OH",510.88,467.86,978.74,3.3
+M00143,T103,2026-10-07,Repair,Turbo actuator / DEF sensor repair,819408,"Los Angeles, CA",946.91,1264.92,2211.83,18.9
+M00144,T103,2026-10-16,Tire,Replace 8 drive/steer tires,822787,"Columbus, OH",747.26,4026.92,4774.18,3.4
+M00145,T103,2026-10-16,Brake,"Brake shoes, drums and slack adjusters (drive axles)",822787,"Columbus, OH",995.69,1189.18,2184.87,9.4
+M00146,T103,2026-10-16,Repair,Fifth wheel rebuild,822787,"Columbus, OH",759.09,1085.06,1844.15,11.9
+M00147,T104,2024-11-13,Inspection,Annual DOT inspection (49 CFR 396.17),695330,"Columbus, OH",139.48,118.25,257.73,2.8
+M00148,T104,2024-12-01,Preventive,"PM-A service: oil, filters, lube, inspection",703382,"Columbus, OH",461.59,509.45,971.04,4.8
+M00149,T104,2024-12-01,Repair,APU service,703382,"Columbus, OH",1277.65,1130.51,2408.16,4.8
+M00150,T104,2024-12-08,Tire,Roadside tire replacement (1 drive tire),704897,"Atlanta, GA",354.44,428.5,782.94,3.1
+M00151,T104,2024-12-17,Repair,APU service,710168,"Columbus, OH",1367.59,1587.71,2955.3,11.2
+M00152,T104,2025-01-16,Tire,Roadside tire replacement (1 drive tire),720872,"Los Angeles, CA",473.44,441.14,914.58,3.2
+M00153,T104,2025-01-27,Repair,Turbo actuator / DEF sensor repair,724828,"Charlotte, NC",1169.25,1377.45,2546.7,14.1
+M00154,T104,2025-02-07,Preventive,"PM-A service: oil, filters, lube, inspection",730257,"Columbus, OH",361.54,373.56,735.1,3.6
+M00155,T104,2025-02-07,Tire,Replace 4 drive/steer tires,730257,"Columbus, OH",122.21,2271.26,2393.47,4.3
+M00156,T104,2025-04-21,Preventive,"PM-A service: oil, filters, lube, inspection",759029,"Columbus, OH",446.94,532.44,979.38,5.6
+M00157,T104,2025-04-21,Repair,Wheel seal replaced,759029,"Columbus, OH",645.01,1125.93,1770.94,4.7
+M00158,T104,2025-04-29,Repair,Turbo actuator / DEF sensor repair,761529,"Portland, OR",1207.65,1559.7,2767.35,13.1
+M00159,T104,2025-05-05,Repair,Fifth wheel rebuild,764082,"Columbus, OH",453.95,632.92,1086.87,7.0
+M00160,T104,2025-05-08,Repair,Alternator replaced,764082,"Columbus, OH",456.3,430.81,887.11,6.4
+M00161,T104,2025-06-02,Repair,Turbo actuator / DEF sensor repair,774381,"Denver, CO",1502.13,1636.08,3138.21,24.2
+M00162,T104,2025-06-07,Repair,Starter replaced,775747,"Columbus, OH",970.5,830.27,1800.77,6.7
+M00163,T104,2025-06-09,Repair,Alternator replaced,775747,"Columbus, OH",407.12,468.51,875.63,7.4
+M00164,T104,2025-06-26,Preventive,"PM-A service: oil, filters, lube, inspection",783485,"Columbus, OH",254.5,468.69,723.19,5.0
+M00165,T104,2025-07-26,Repair,Exhaust aftertreatment (DPF) cleaning,793873,"Columbus, OH",992.3,1756.01,2748.31,6.2
+M00166,T104,2025-08-22,Repair,"Coolant leak repaired, hoses replaced",804897,"Columbus, OH",542.5,571.22,1113.72,3.3
+M00167,T104,2025-09-01,Preventive,"PM-A service: oil, filters, lube, inspection",809224,"Columbus, OH",401.04,440.45,841.49,4.0
+M00168,T104,2025-09-01,Brake,"Brake shoes, drums and slack adjusters (drive axles)",809224,"Columbus, OH",915.71,1171.91,2087.62,5.1
+M00169,T104,2025-09-01,Repair,Fifth wheel rebuild,809224,"Columbus, OH",911.78,845.31,1757.09,5.6
+M00170,T104,2025-09-30,Repair,Turbo actuator / DEF sensor repair,820996,"Kansas City, MO",975.28,1220.94,2196.22,17.1
+M00171,T104,2025-10-10,Tire,Roadside tire replacement (1 drive tire),825341,"Kansas City, MO",359.51,319.46,678.97,3.2
+M00172,T104,2025-10-12,Tire,Replace 4 drive/steer tires,826685,"Columbus, OH",229.5,2080.49,2309.99,3.1
+M00173,T104,2025-10-12,Inspection,Annual DOT inspection (49 CFR 396.17),826685,"Columbus, OH",68.93,119.64,188.57,1.3
+M00174,T104,2025-10-12,Repair,Exhaust aftertreatment (DPF) cleaning,826685,"Columbus, OH",1013.74,1809.03,2822.77,7.0
+M00175,T104,2025-10-25,Repair,Trailer light harness repair,831523,"Charlotte, NC",129.04,148.14,277.18,2.0
+M00176,T104,2025-10-30,Preventive,"PM-A service: oil, filters, lube, inspection",834492,"Columbus, OH",371.55,310.13,681.68,3.9
+M00177,T104,2025-11-29,Repair,Exhaust aftertreatment (DPF) cleaning,847138,"Columbus, OH",746.55,1084.85,1831.4,6.1
+M00178,T104,2025-12-26,Repair,Alternator replaced,856808,"Kansas City, MO",496.38,437.3,933.68,5.8
+M00179,T104,2025-12-31,Preventive,"PM-A service: oil, filters, lube, inspection",859401,"Columbus, OH",411.78,457.4,869.18,3.7
+M00180,T104,2025-12-31,Repair,Starter replaced,859401,"Columbus, OH",1139.42,1446.18,2585.6,3.5
+M00181,T104,2026-01-02,Tire,Roadside tire replacement (1 drive tire),859401,"Columbus, OH",290.54,381.8,672.34,2.9
+M00182,T104,2026-02-25,Repair,Trailer light harness repair,880633,"Philadelphia, PA",123.6,182.17,305.77,2.8
+M00183,T104,2026-03-05,Preventive,"PM-A service: oil, filters, lube, inspection",884521,"Columbus, OH",417.56,555.99,973.55,4.0
+M00184,T104,2026-03-20,Repair,APU service,890351,"Columbus, OH",1396.43,1412.62,2809.05,3.2
+M00185,T104,2026-04-01,Repair,Turbo actuator / DEF sensor repair,893841,"Columbus, OH",2050.53,1963.08,4013.61,24.2
+M00186,T104,2026-04-15,Repair,Wheel seal replaced,900597,"Columbus, OH",1398.22,1451.69,2849.91,9.1
+M00187,T104,2026-05-14,Preventive,"PM-A service: oil, filters, lube, inspection",912378,"Columbus, OH",495.39,439.58,934.97,6.0
+M00188,T104,2026-06-10,Tire,Replace 2 drive/steer tires,923227,"Columbus, OH",197.34,976.49,1173.83,3.8
+M00189,T104,2026-06-10,Repair,Fifth wheel rebuild,923227,"Columbus, OH",669.05,815.37,1484.42,7.1
+M00190,T104,2026-06-27,Repair,Air leak / brake chamber replaced,928886,"Minneapolis, MN",485.46,585.48,1070.94,3.0
+M00191,T104,2026-07-05,Repair,Starter replaced,932523,"Columbus, OH",565.41,553.84,1119.25,4.9
+M00192,T104,2026-07-18,Repair,Trailer light harness repair,937470,"Dallas, TX",98.73,90.19,188.92,1.3
+M00193,T104,2026-08-03,Preventive,"PM-A service: oil, filters, lube, inspection",944303,"Columbus, OH",309.29,510.08,819.37,5.2
+M00194,T104,2026-08-12,Repair,Air leak / brake chamber replaced,946799,"Chicago, IL",361.18,362.22,723.4,2.6
+M00195,T104,2026-09-05,Brake,"Brake shoes, drums and slack adjusters (drive axles)",956809,"Columbus, OH",1266.99,1056.12,2323.11,8.1
+M00196,T104,2026-09-23,Inspection,Annual DOT inspection (49 CFR 396.17),963419,"Columbus, OH",95.42,89.32,184.74,2.7
+M00197,T104,2026-09-23,Repair,Starter replaced,963419,"Columbus, OH",724.79,904.68,1629.47,11.7
+M00198,T104,2026-10-10,Preventive,"PM-A service: oil, filters, lube, inspection",969451,"Columbus, OH",354.73,421.65,776.38,3.8
+M00199,T104,2026-10-23,Repair,Fifth wheel rebuild,973192,"Columbus, OH",1702.88,1406.95,3109.83,11.8

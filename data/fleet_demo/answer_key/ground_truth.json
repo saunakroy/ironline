@@ -1,0 +1,1066 @@
+{
+  "as_of": "2026-10-30",
+  "carrier": {
+    "name": "Ironline Freight LLC",
+    "address": "2250 Refugee Rd, Columbus, OH 43207",
+    "phone": "(614) 555-0142",
+    "email": "dispatch@ironlinefreight.example",
+    "mc": "MC-900417",
+    "usdot": "USDOT 3900417"
+  },
+  "fuel_surcharge_per_mile": 0.875,
+  "loads": [
+    {
+      "load_id": "IRN-1852",
+      "key": "L1",
+      "truck_id": "T101",
+      "driver_id": "D01",
+      "bill_to_id": "BRK001",
+      "bill_to_name": "Ridgeline Freight Logistics LLC",
+      "customer_reference": "RFL-482317",
+      "bol_number": "GLH-7718204",
+      "seal": "0044817",
+      "origin": {
+        "name": "Great Lakes Housewares DC",
+        "address": "4900 Alum Creek Dr",
+        "city_state_zip": "Obetz, OH 43207",
+        "appointment": "2026-10-26 07:30",
+        "check_in": "2026-10-26 07:40",
+        "check_out": "2026-10-26 12:10"
+      },
+      "destination": {
+        "name": "Liberty Home Supply DC",
+        "address": "2700 Red Lion Rd",
+        "city_state_zip": "Philadelphia, PA 19114",
+        "appointment": "2026-10-27 06:00",
+        "check_in": "2026-10-27 05:35",
+        "check_out": "2026-10-27 07:10"
+      },
+      "commodity": "Housewares",
+      "weight_lbs": 31840,
+      "pallets": 20,
+      "loaded_miles": 482,
+      "linehaul": 1150.0,
+      "fuel_surcharge": 421.75,
+      "rate_total": 1571.75,
+      "accessorials": [
+        {
+          "type": "detention",
+          "amount": 162.5,
+          "minutes": 150,
+          "stop": "pickup"
+        }
+      ],
+      "amount_to_invoice": 1734.25,
+      "pod_received": true,
+      "pod_exception": null,
+      "status": "Delivered"
+    },
+    {
+      "load_id": "IRN-1853",
+      "key": "L2",
+      "truck_id": "T101",
+      "driver_id": "D01",
+      "bill_to_id": "BRK003",
+      "bill_to_name": "Coastal Load Partners LLC",
+      "customer_reference": "CLP-226905",
+      "bol_number": "DVF-0938812",
+      "seal": "2290431",
+      "origin": {
+        "name": "Delaware Valley Foods",
+        "address": "7400 State Rd",
+        "city_state_zip": "Philadelphia, PA 19136",
+        "appointment": "2026-10-27 10:00",
+        "check_in": "2026-10-27 09:20",
+        "check_out": "2026-10-27 11:05"
+      },
+      "destination": {
+        "name": "Crossroads Grocery DC",
+        "address": "5900 W Raymond St",
+        "city_state_zip": "Indianapolis, IN 46241",
+        "appointment": "2026-10-28 08:00",
+        "check_in": "2026-10-28 07:25",
+        "check_out": "2026-10-28 09:35"
+      },
+      "commodity": "Packaged dry foods",
+      "weight_lbs": 40120,
+      "pallets": 24,
+      "loaded_miles": 676,
+      "linehaul": 1700.0,
+      "fuel_surcharge": 591.5,
+      "rate_total": 2291.5,
+      "accessorials": [
+        {
+          "type": "lumper",
+          "amount": 175.0
+        }
+      ],
+      "amount_to_invoice": 2466.5,
+      "pod_received": true,
+      "pod_exception": null,
+      "status": "Delivered"
+    },
+    {
+      "load_id": "IRN-1854",
+      "key": "L3",
+      "truck_id": "T102",
+      "driver_id": "D02",
+      "bill_to_id": "C001",
+      "bill_to_name": "Buckeye Paper Products",
+      "customer_reference": "PO 4410-88213",
+      "bol_number": "BPP-221093",
+      "seal": "5518370",
+      "origin": {
+        "name": "Buckeye Paper Products",
+        "address": "1850 Williams Rd",
+        "city_state_zip": "Columbus, OH 43207",
+        "appointment": "2026-10-26 14:00",
+        "check_in": "2026-10-26 13:35",
+        "check_out": "2026-10-26 15:20"
+      },
+      "destination": {
+        "name": "Blue Valley Office Products",
+        "address": "1800 Universal Ave",
+        "city_state_zip": "Kansas City, MO 64120",
+        "appointment": "2026-10-27 13:00",
+        "check_in": "2026-10-27 12:40",
+        "check_out": "2026-10-27 14:05"
+      },
+      "commodity": "Paper products",
+      "weight_lbs": 36500,
+      "pallets": 22,
+      "loaded_miles": 718,
+      "linehaul": 1651.4,
+      "fuel_surcharge": 628.25,
+      "rate_total": 2279.65,
+      "accessorials": [],
+      "amount_to_invoice": 2279.65,
+      "pod_received": false,
+      "pod_exception": null,
+      "status": "Delivered - POD missing"
+    },
+    {
+      "load_id": "IRN-1855",
+      "key": "L4",
+      "truck_id": "T102",
+      "driver_id": "D02",
+      "bill_to_id": "BRK002",
+      "bill_to_name": "Summit Lane Logistics Inc",
+      "customer_reference": "SLL-2457710",
+      "bol_number": "HMD-55120-7",
+      "seal": "7730125",
+      "origin": {
+        "name": "Heartland Mills Distribution",
+        "address": "3200 Gardner Ave",
+        "city_state_zip": "Kansas City, MO 64120",
+        "appointment": "2026-10-28 07:00",
+        "check_in": "2026-10-28 06:40",
+        "check_out": "2026-10-28 08:15"
+      },
+      "destination": {
+        "name": "Hoosier Hardware Supply DC",
+        "address": "2200 S Holt Rd",
+        "city_state_zip": "Indianapolis, IN 46241",
+        "appointment": "2026-10-29 06:00",
+        "check_in": "2026-10-29 05:45",
+        "check_out": "2026-10-29 07:30"
+      },
+      "commodity": "Hardware / tools",
+      "weight_lbs": 38400,
+      "pallets": 22,
+      "loaded_miles": 524,
+      "linehaul": 1250.0,
+      "fuel_surcharge": 458.5,
+      "rate_total": 1708.5,
+      "accessorials": [],
+      "amount_to_invoice": 1708.5,
+      "pod_received": true,
+      "pod_exception": "SHORT 1 PLT - rec'd 21 of 22",
+      "status": "Delivered"
+    },
+    {
+      "load_id": "IRN-1856",
+      "key": "L5",
+      "truck_id": "T103",
+      "driver_id": "D03",
+      "bill_to_id": "BRK001",
+      "bill_to_name": "Ridgeline Freight Logistics LLC",
+      "customer_reference": "RFL-482355",
+      "bol_number": "WCP-0661204",
+      "seal": "1182906",
+      "origin": {
+        "name": "Westbelt Consumer Products",
+        "address": "3800 Westbelt Dr",
+        "city_state_zip": "Columbus, OH 43228",
+        "appointment": "2026-10-26 09:00",
+        "check_in": "2026-10-26 08:30",
+        "check_out": "2026-10-26 10:15"
+      },
+      "destination": {
+        "name": "North Star Retail DC",
+        "address": "600 Industrial Blvd NE",
+        "city_state_zip": "Minneapolis, MN 55413",
+        "appointment": "2026-10-27 08:00",
+        "check_in": "2026-10-27 07:40",
+        "check_out": "2026-10-27 09:05"
+      },
+      "commodity": "Pet food",
+      "weight_lbs": 42150,
+      "pallets": 26,
+      "loaded_miles": 726,
+      "linehaul": 1680.0,
+      "fuel_surcharge": 635.25,
+      "rate_total": 2315.25,
+      "accessorials": [],
+      "amount_to_invoice": 2315.25,
+      "pod_received": true,
+      "pod_exception": null,
+      "status": "Delivered"
+    },
+    {
+      "load_id": "IRN-1857",
+      "key": "L6",
+      "truck_id": "T103",
+      "driver_id": "D03",
+      "bill_to_id": "BRK003",
+      "bill_to_name": "Coastal Load Partners LLC",
+      "customer_reference": "CLP-227118",
+      "bol_number": "TCB-339021",
+      "seal": "6604413",
+      "origin": {
+        "name": "Twin Cities Box Co",
+        "address": "2100 Kennedy St NE",
+        "city_state_zip": "Minneapolis, MN 55413",
+        "appointment": "2026-10-28 08:00",
+        "check_in": "2026-10-28 07:45",
+        "check_out": "2026-10-28 09:20"
+      },
+      "destination": {
+        "name": "Peachtree Distribution Center",
+        "address": "4500 Fulton Industrial Blvd SW",
+        "city_state_zip": "Atlanta, GA 30336",
+        "appointment": "2026-10-30 07:00",
+        "check_in": "2026-10-30 06:30",
+        "check_out": "2026-10-30 08:10"
+      },
+      "commodity": "Corrugated packaging",
+      "weight_lbs": 24600,
+      "pallets": 26,
+      "loaded_miles": 1058,
+      "linehaul": 2420.0,
+      "fuel_surcharge": 925.75,
+      "rate_total": 3345.75,
+      "accessorials": [],
+      "amount_to_invoice": 3345.75,
+      "pod_received": true,
+      "pod_exception": null,
+      "status": "Delivered"
+    },
+    {
+      "load_id": "IRN-1858",
+      "key": "L7",
+      "truck_id": "T104",
+      "driver_id": "D04",
+      "bill_to_id": "C002",
+      "bill_to_name": "Scioto Valley Foods",
+      "customer_reference": "SVF-ORD-77104",
+      "bol_number": "SVF-1104887",
+      "seal": "3391760",
+      "origin": {
+        "name": "Scioto Valley Foods",
+        "address": "2900 Rohr Rd",
+        "city_state_zip": "Groveport, OH 43125",
+        "appointment": "2026-10-26 10:00",
+        "check_in": "2026-10-26 09:40",
+        "check_out": "2026-10-26 11:30"
+      },
+      "destination": {
+        "name": "Pacific Gateway Distribution",
+        "address": "1600 S Mateo St",
+        "city_state_zip": "Los Angeles, CA 90021",
+        "appointment": "2026-10-30 08:00",
+        "check_in": "2026-10-30 07:20",
+        "check_out": "2026-10-30 09:15"
+      },
+      "commodity": "Packaged dry foods",
+      "weight_lbs": 41300,
+      "pallets": 24,
+      "loaded_miles": 2281,
+      "linehaul": 4676.05,
+      "fuel_surcharge": 1995.88,
+      "rate_total": 6671.93,
+      "accessorials": [],
+      "amount_to_invoice": 6671.93,
+      "pod_received": true,
+      "pod_exception": null,
+      "status": "Delivered"
+    }
+  ],
+  "fuel_receipts": [
+    {
+      "receipt_no": "834956",
+      "truck_id": "T101",
+      "card": "FC-7741",
+      "card_assigned_truck": "T101",
+      "unit_entered": "101",
+      "datetime": "2026-10-26 05:55",
+      "city": "Columbus",
+      "state": "OH",
+      "station": "Crossroads Travel Center #118",
+      "gallons": 168.4,
+      "price_per_gallon": 6.526,
+      "fuel_total": 1098.98,
+      "def_gallons": 0,
+      "def_price": 0,
+      "def_total": 0,
+      "odometer": 889541,
+      "driver_id": "D01",
+      "total": 1098.98,
+      "file": "inbox/2026-10-26/receipt_1026_0555_101.jpg"
+    },
+    {
+      "receipt_no": "698164",
+      "truck_id": "T103",
+      "card": "FC-7743",
+      "card_assigned_truck": "T103",
+      "unit_entered": "103",
+      "datetime": "2026-10-26 17:48",
+      "city": "Gary",
+      "state": "IN",
+      "station": "Big Iron Fuel Stop #22",
+      "gallons": 141.7,
+      "price_per_gallon": 6.631,
+      "fuel_total": 939.61,
+      "def_gallons": 6.2,
+      "def_price": 4.19,
+      "def_total": 25.98,
+      "odometer": 824075,
+      "driver_id": "D03",
+      "total": 965.59,
+      "file": "inbox/2026-10-26/receipt_1026_1748_103.jpg"
+    },
+    {
+      "receipt_no": "677742",
+      "truck_id": "T104",
+      "card": "FC-7744",
+      "card_assigned_truck": "T104",
+      "unit_entered": "104",
+      "datetime": "2026-10-26 06:30",
+      "city": "Columbus",
+      "state": "OH",
+      "station": "Crossroads Travel Center #118",
+      "gallons": 176.9,
+      "price_per_gallon": 6.526,
+      "fuel_total": 1154.45,
+      "def_gallons": 0,
+      "def_price": 0,
+      "def_total": 0,
+      "odometer": 973198,
+      "driver_id": "D04",
+      "total": 1154.45,
+      "file": "inbox/2026-10-26/receipt_1026_0630_104.jpg"
+    },
+    {
+      "receipt_no": "141435",
+      "truck_id": "T102",
+      "card": "FC-7742",
+      "card_assigned_truck": "T102",
+      "unit_entered": "102",
+      "datetime": "2026-10-27 09:55",
+      "city": "Kingdom City",
+      "state": "MO",
+      "station": "Prairie Star Truck Plaza",
+      "gallons": 96.3,
+      "price_per_gallon": 6.126,
+      "fuel_total": 589.93,
+      "def_gallons": 0,
+      "def_price": 0,
+      "def_total": 0,
+      "odometer": 1012544,
+      "driver_id": "D02",
+      "total": 589.93,
+      "file": "inbox/2026-10-27/receipt_1027_0955_102.jpg"
+    },
+    {
+      "receipt_no": "136403",
+      "truck_id": "T104",
+      "card": "FC-7744",
+      "card_assigned_truck": "T104",
+      "unit_entered": "104",
+      "datetime": "2026-10-27 12:35",
+      "city": "Joplin",
+      "state": "MO",
+      "station": "Prairie Star Truck Plaza #4",
+      "gallons": 121.8,
+      "price_per_gallon": 6.163,
+      "fuel_total": 750.65,
+      "def_gallons": 7.5,
+      "def_price": 4.19,
+      "def_total": 31.43,
+      "odometer": 973955,
+      "driver_id": "D04",
+      "total": 782.08,
+      "file": "inbox/2026-10-27/receipt_1027_1235_104.jpg"
+    },
+    {
+      "receipt_no": "988982",
+      "truck_id": "T101",
+      "card": "FC-7741",
+      "card_assigned_truck": "T101",
+      "unit_entered": "101",
+      "datetime": "2026-10-27 14:22",
+      "city": "Carlisle",
+      "state": "PA",
+      "station": "Keystone Truck Stop",
+      "gallons": 148.2,
+      "price_per_gallon": 7.062,
+      "fuel_total": 1046.59,
+      "def_gallons": 0,
+      "def_price": 0,
+      "def_total": 0,
+      "odometer": 890155,
+      "driver_id": "D01",
+      "total": 1046.59,
+      "file": "inbox/2026-10-27/receipt_1027_1422_101.jpg"
+    },
+    {
+      "receipt_no": "429272",
+      "truck_id": "T102",
+      "card": "FC-7742",
+      "card_assigned_truck": "T102",
+      "unit_entered": "102",
+      "datetime": "2026-10-28 06:10",
+      "city": "Kansas City",
+      "state": "MO",
+      "station": "Big Iron Fuel Stop #31",
+      "gallons": 104.6,
+      "price_per_gallon": 6.194,
+      "fuel_total": 647.89,
+      "def_gallons": 5.1,
+      "def_price": 4.19,
+      "def_total": 21.37,
+      "odometer": 1012858,
+      "driver_id": "D02",
+      "total": 669.26,
+      "file": "inbox/2026-10-28/receipt_1028_0610_102.jpg"
+    },
+    {
+      "receipt_no": "434192",
+      "truck_id": "T104",
+      "card": "FC-7742",
+      "card_assigned_truck": "T102",
+      "unit_entered": "104",
+      "datetime": "2026-10-28 09:20",
+      "city": "Amarillo",
+      "state": "TX",
+      "station": "Lone Mesa Travel Plaza",
+      "gallons": 128.9,
+      "price_per_gallon": 6.212,
+      "fuel_total": 800.73,
+      "def_gallons": 0,
+      "def_price": 0,
+      "def_total": 0,
+      "odometer": 974473,
+      "driver_id": "D04",
+      "total": 800.73,
+      "file": "inbox/2026-10-28/receipt_1028_0920_104.jpg"
+    },
+    {
+      "receipt_no": "148263",
+      "truck_id": "T103",
+      "card": "FC-7743",
+      "card_assigned_truck": "T103",
+      "unit_entered": "103",
+      "datetime": "2026-10-28 22:50",
+      "city": "Whiteland",
+      "state": "IN",
+      "station": "Crossroads Travel Center #64",
+      "gallons": 186.3,
+      "price_per_gallon": 6.532,
+      "fuel_total": 1216.91,
+      "def_gallons": 8.0,
+      "def_price": 4.19,
+      "def_total": 33.52,
+      "odometer": 825068,
+      "driver_id": "D03",
+      "total": 1250.43,
+      "file": "inbox/2026-10-28/receipt_1028_2250_103.jpg"
+    },
+    {
+      "receipt_no": "947493",
+      "truck_id": "T104",
+      "card": "FC-7744",
+      "card_assigned_truck": "T104",
+      "unit_entered": "104",
+      "datetime": "2026-10-29 06:45",
+      "city": "Flagstaff",
+      "state": "AZ",
+      "station": "Ponderosa Fuel & Diner",
+      "gallons": 117.4,
+      "price_per_gallon": 6.907,
+      "fuel_total": 810.88,
+      "def_gallons": 0,
+      "def_price": 0,
+      "def_total": 0,
+      "odometer": 975072,
+      "driver_id": "D04",
+      "total": 810.88,
+      "file": "inbox/2026-10-29/receipt_1029_0645_104.jpg"
+    },
+    {
+      "receipt_no": "491158",
+      "truck_id": "T104",
+      "card": "FC-7744",
+      "card_assigned_truck": "T104",
+      "unit_entered": "104",
+      "datetime": "2026-10-29 13:40",
+      "city": "Barstow",
+      "state": "CA",
+      "station": "Desert Rose Truck Stop",
+      "gallons": 64.2,
+      "price_per_gallon": 8.501,
+      "fuel_total": 545.76,
+      "def_gallons": 0,
+      "def_price": 0,
+      "def_total": 0,
+      "odometer": 975352,
+      "driver_id": "D04",
+      "total": 545.76,
+      "file": "inbox/2026-10-29/receipt_1029_1340_104.jpg"
+    },
+    {
+      "receipt_no": "759704",
+      "truck_id": "T102",
+      "card": "FC-7742",
+      "card_assigned_truck": "T102",
+      "unit_entered": "102",
+      "datetime": "2026-10-29 09:40",
+      "city": "Whiteland",
+      "state": "IN",
+      "station": "Crossroads Travel Center #64",
+      "gallons": 88.5,
+      "price_per_gallon": 6.558,
+      "fuel_total": 580.38,
+      "def_gallons": 0,
+      "def_price": 0,
+      "def_total": 0,
+      "odometer": 1013394,
+      "driver_id": "D02",
+      "total": 580.38,
+      "file": "inbox/2026-10-29/receipt_1029_0940_102.jpg"
+    }
+  ],
+  "documents": [
+    {
+      "day": "2026-10-26",
+      "file": "inbox/2026-10-26/RateCon_RFL-482317.pdf",
+      "kind": "rate_confirmation",
+      "load": "IRN-1852"
+    },
+    {
+      "day": "2026-10-26",
+      "file": "inbox/2026-10-26/RateCon_RFL-482355.pdf",
+      "kind": "rate_confirmation",
+      "load": "IRN-1856"
+    },
+    {
+      "day": "2026-10-27",
+      "file": "inbox/2026-10-27/RateCon_CLP-226905.pdf",
+      "kind": "rate_confirmation",
+      "load": "IRN-1853"
+    },
+    {
+      "day": "2026-10-27",
+      "file": "inbox/2026-10-27/RateCon_SLL-2457710.pdf",
+      "kind": "rate_confirmation",
+      "load": "IRN-1855"
+    },
+    {
+      "day": "2026-10-27",
+      "file": "inbox/2026-10-27/RateCon_CLP-227118.pdf",
+      "kind": "rate_confirmation",
+      "load": "IRN-1857"
+    },
+    {
+      "day": "2026-10-26",
+      "file": "inbox/2026-10-26/email_tender_PO_4410-88213.eml",
+      "kind": "load_tender_email",
+      "load": "IRN-1854"
+    },
+    {
+      "day": "2026-10-26",
+      "file": "inbox/2026-10-26/email_tender_SVF-ORD-77104.eml",
+      "kind": "load_tender_email",
+      "load": "IRN-1858"
+    },
+    {
+      "day": "2026-10-26",
+      "file": "inbox/2026-10-26/IMG_20261026_121027.jpg",
+      "kind": "bol_photo",
+      "load": "IRN-1852",
+      "uploaded_by": "D01"
+    },
+    {
+      "day": "2026-10-27",
+      "file": "inbox/2026-10-27/IMG_20261027_071035.jpg",
+      "kind": "pod_photo",
+      "load": "IRN-1852",
+      "uploaded_by": "D01"
+    },
+    {
+      "day": "2026-10-27",
+      "file": "inbox/2026-10-27/IMG_20261027_110513.jpg",
+      "kind": "bol_photo",
+      "load": "IRN-1853",
+      "uploaded_by": "D01"
+    },
+    {
+      "day": "2026-10-28",
+      "file": "inbox/2026-10-28/IMG_20261028_093521.jpg",
+      "kind": "pod_photo",
+      "load": "IRN-1853",
+      "uploaded_by": "D01"
+    },
+    {
+      "day": "2026-10-26",
+      "file": "inbox/2026-10-26/IMG_20261026_152054.jpg",
+      "kind": "bol_photo",
+      "load": "IRN-1854",
+      "uploaded_by": "D02"
+    },
+    {
+      "day": "2026-10-28",
+      "file": "inbox/2026-10-28/IMG_20261028_081512.jpg",
+      "kind": "bol_photo",
+      "load": "IRN-1855",
+      "uploaded_by": "D02"
+    },
+    {
+      "day": "2026-10-29",
+      "file": "inbox/2026-10-29/IMG_20261029_073055.jpg",
+      "kind": "pod_photo",
+      "load": "IRN-1855",
+      "uploaded_by": "D02"
+    },
+    {
+      "day": "2026-10-26",
+      "file": "inbox/2026-10-26/IMG_20261026_101512.jpg",
+      "kind": "bol_photo",
+      "load": "IRN-1856",
+      "uploaded_by": "D03"
+    },
+    {
+      "day": "2026-10-27",
+      "file": "inbox/2026-10-27/IMG_20261027_090520.jpg",
+      "kind": "pod_photo",
+      "load": "IRN-1856",
+      "uploaded_by": "D03"
+    },
+    {
+      "day": "2026-10-28",
+      "file": "inbox/2026-10-28/IMG_20261028_092040.jpg",
+      "kind": "bol_photo",
+      "load": "IRN-1857",
+      "uploaded_by": "D03"
+    },
+    {
+      "day": "2026-10-30",
+      "file": "inbox/2026-10-30/IMG_20261030_081036.jpg",
+      "kind": "pod_photo",
+      "load": "IRN-1857",
+      "uploaded_by": "D03"
+    },
+    {
+      "day": "2026-10-26",
+      "file": "inbox/2026-10-26/IMG_20261026_113032.jpg",
+      "kind": "bol_photo",
+      "load": "IRN-1858",
+      "uploaded_by": "D04"
+    },
+    {
+      "day": "2026-10-30",
+      "file": "inbox/2026-10-30/IMG_20261030_091547.jpg",
+      "kind": "pod_photo",
+      "load": "IRN-1858",
+      "uploaded_by": "D04"
+    },
+    {
+      "day": "2026-10-26",
+      "file": "inbox/2026-10-26/receipt_1026_0555_101.jpg",
+      "kind": "fuel_receipt",
+      "load": null,
+      "receipt_no": "834956",
+      "truck_id": "T101"
+    },
+    {
+      "day": "2026-10-26",
+      "file": "inbox/2026-10-26/receipt_1026_1748_103.jpg",
+      "kind": "fuel_receipt",
+      "load": null,
+      "receipt_no": "698164",
+      "truck_id": "T103"
+    },
+    {
+      "day": "2026-10-26",
+      "file": "inbox/2026-10-26/receipt_1026_0630_104.jpg",
+      "kind": "fuel_receipt",
+      "load": null,
+      "receipt_no": "677742",
+      "truck_id": "T104"
+    },
+    {
+      "day": "2026-10-27",
+      "file": "inbox/2026-10-27/receipt_1027_0955_102.jpg",
+      "kind": "fuel_receipt",
+      "load": null,
+      "receipt_no": "141435",
+      "truck_id": "T102"
+    },
+    {
+      "day": "2026-10-27",
+      "file": "inbox/2026-10-27/receipt_1027_1235_104.jpg",
+      "kind": "fuel_receipt",
+      "load": null,
+      "receipt_no": "136403",
+      "truck_id": "T104"
+    },
+    {
+      "day": "2026-10-27",
+      "file": "inbox/2026-10-27/receipt_1027_1422_101.jpg",
+      "kind": "fuel_receipt",
+      "load": null,
+      "receipt_no": "988982",
+      "truck_id": "T101"
+    },
+    {
+      "day": "2026-10-28",
+      "file": "inbox/2026-10-28/receipt_1028_0610_102.jpg",
+      "kind": "fuel_receipt",
+      "load": null,
+      "receipt_no": "429272",
+      "truck_id": "T102"
+    },
+    {
+      "day": "2026-10-28",
+      "file": "inbox/2026-10-28/receipt_1028_0920_104.jpg",
+      "kind": "fuel_receipt",
+      "load": null,
+      "receipt_no": "434192",
+      "truck_id": "T104"
+    },
+    {
+      "day": "2026-10-28",
+      "file": "inbox/2026-10-28/receipt_1028_2250_103.jpg",
+      "kind": "fuel_receipt",
+      "load": null,
+      "receipt_no": "148263",
+      "truck_id": "T103"
+    },
+    {
+      "day": "2026-10-29",
+      "file": "inbox/2026-10-29/IMG_20261029_071228.jpg",
+      "kind": "fuel_receipt",
+      "load": null,
+      "receipt_no": "148263",
+      "truck_id": "T103",
+      "duplicate_of": "inbox/2026-10-28/receipt_1028_2250_103.jpg"
+    },
+    {
+      "day": "2026-10-29",
+      "file": "inbox/2026-10-29/receipt_1029_0645_104.jpg",
+      "kind": "fuel_receipt",
+      "load": null,
+      "receipt_no": "947493",
+      "truck_id": "T104"
+    },
+    {
+      "day": "2026-10-29",
+      "file": "inbox/2026-10-29/receipt_1029_1340_104.jpg",
+      "kind": "fuel_receipt",
+      "load": null,
+      "receipt_no": "491158",
+      "truck_id": "T104"
+    },
+    {
+      "day": "2026-10-29",
+      "file": "inbox/2026-10-29/receipt_1029_0940_102.jpg",
+      "kind": "fuel_receipt",
+      "load": null,
+      "receipt_no": "759704",
+      "truck_id": "T102"
+    },
+    {
+      "day": "2026-10-28",
+      "file": "inbox/2026-10-28/IMG_20261028_093644.jpg",
+      "kind": "lumper_receipt",
+      "load": "IRN-1853",
+      "amount": 175.0
+    },
+    {
+      "day": "2026-10-27",
+      "file": "inbox/2026-10-27/IMG_20261027_194812.jpg",
+      "kind": "dvir_photo",
+      "load": null,
+      "truck_id": "T102"
+    },
+    {
+      "day": "2026-10-27",
+      "file": "inbox/2026-10-27/INV-3252_Ridgeline_MPLS.docx",
+      "kind": "invoice_draft",
+      "load": "IRN-1856",
+      "invoice_no": "INV-3252",
+      "total": 2015.25
+    },
+    {
+      "day": "2026-10-28",
+      "file": "inbox/2026-10-28/INV-3253_ridgeline.docx",
+      "kind": "invoice_draft",
+      "load": "IRN-1852",
+      "invoice_no": "INV-3253",
+      "total": 1571.75
+    },
+    {
+      "day": "2026-10-26",
+      "file": "inbox/2026-10-26/texts_2026-10-26.txt",
+      "kind": "driver_texts",
+      "load": null
+    },
+    {
+      "day": "2026-10-27",
+      "file": "inbox/2026-10-27/texts_2026-10-27.txt",
+      "kind": "driver_texts",
+      "load": null
+    },
+    {
+      "day": "2026-10-28",
+      "file": "inbox/2026-10-28/texts_2026-10-28.txt",
+      "kind": "driver_texts",
+      "load": null
+    },
+    {
+      "day": "2026-10-29",
+      "file": "inbox/2026-10-29/texts_2026-10-29.txt",
+      "kind": "driver_texts",
+      "load": null
+    },
+    {
+      "day": "2026-10-30",
+      "file": "inbox/2026-10-30/texts_2026-10-30.txt",
+      "kind": "driver_texts",
+      "load": null
+    },
+    {
+      "day": "2026-10-26",
+      "file": "inbox/2026-10-26/notes_2026-10-26.txt",
+      "kind": "owner_notes",
+      "load": null
+    },
+    {
+      "day": "2026-10-27",
+      "file": "inbox/2026-10-27/notes_2026-10-27.txt",
+      "kind": "owner_notes",
+      "load": null
+    },
+    {
+      "day": "2026-10-28",
+      "file": "inbox/2026-10-28/notes_2026-10-28.txt",
+      "kind": "owner_notes",
+      "load": null
+    },
+    {
+      "day": "2026-10-29",
+      "file": "inbox/2026-10-29/notes_2026-10-29.txt",
+      "kind": "owner_notes",
+      "load": null
+    },
+    {
+      "day": "2026-10-30",
+      "file": "inbox/2026-10-30/notes_2026-10-30.txt",
+      "kind": "owner_notes",
+      "load": null
+    }
+  ],
+  "planted_issues": [
+    {
+      "id": "P1",
+      "type": "UNBILLED_DETENTION",
+      "severity": "money",
+      "load": "IRN-1852",
+      "detail": "BOL shows check-in 07:40 / out 12:10 at pickup (270 min). Rate con: 2 hrs free, $65/hr. Billable 150 min = $162.50. Owner notified broker at 10:05 (within 30 min of free-time expiry at 09:40). Invoice draft INV-3253 omits it.",
+      "amount": 162.5,
+      "evidence": [
+        "BOL photo 10/26",
+        "texts 10/26",
+        "notes 10/26",
+        "INV-3253 draft"
+      ]
+    },
+    {
+      "id": "P2",
+      "type": "BILL_TO_NAME_VARIANT",
+      "severity": "data",
+      "load": "IRN-1852",
+      "detail": "Invoice draft INV-3253 is addressed to 'Ridgeline Freight, Chicago IL'; legal name on rate con and in customers table is 'Ridgeline Freight Logistics LLC' (BRK001). Same entity - merge, use full name and billing address."
+    },
+    {
+      "id": "P3",
+      "type": "RATE_MISMATCH",
+      "severity": "money",
+      "load": "IRN-1856",
+      "detail": "Invoice draft INV-3252 bills line haul $1,380.00 (the first quote in owner notes); signed rate con RFL-482355 says $1,680.00. Draft total $2,015.25 vs rate con $2,315.25 -> under-billed $300.00.",
+      "amount": 300.0
+    },
+    {
+      "id": "P4",
+      "type": "MISSING_POD",
+      "severity": "cash",
+      "load": "IRN-1854",
+      "detail": "Driver texted 'delivered, receiver signed' on 10/27 14:10 but no POD photo was ever uploaded. Cannot invoice Buckeye Paper Products until POD is received.",
+      "amount_blocked": 2279.65
+    },
+    {
+      "id": "P5",
+      "type": "POD_EXCEPTION_SHORTAGE",
+      "severity": "money",
+      "load": "IRN-1855",
+      "detail": "POD notes 'SHORT 1 PLT - rec'd 21 of 22'. BOL shows 22 pallets and seal 7730125; driver says seal intact. Rate con: shortage claims deducted unless resolved - open an OS&D dispute with Summit Lane now (seal intact = shipper count issue)."
+    },
+    {
+      "id": "P6",
+      "type": "UNINVOICED_LUMPER",
+      "severity": "money",
+      "load": "IRN-1853",
+      "detail": "Driver paid $175.00 lumper at Crossroads Grocery DC (receipt photo 10/28). Rate con reimburses lumper at cost with receipt. Invoice for CLP-226905 should total $2,466.50.",
+      "amount": 175.0
+    },
+    {
+      "id": "P7",
+      "type": "FUEL_CARD_MISMATCH",
+      "severity": "fraud_or_error",
+      "detail": "Card FC-7742 is assigned to T102, but was used at Lone Mesa Travel Plaza, Amarillo TX on 2026-10-28 09:20 with unit # 104 entered ($800.73). The same card was used by T102 in Kansas City at 06:10 that morning (~560 mi apart). T104 was in Amarillo then - driver D04 likely used the wrong card ('card acting weird'). Reassign the purchase to T104 for cost/IFTA and check card custody.",
+      "amount": 800.73
+    },
+    {
+      "id": "P8",
+      "type": "DUPLICATE_RECEIPT",
+      "severity": "data",
+      "detail": "Same fuel receipt #148263 (T103, Whiteland IN, $1,250.43) uploaded twice (inbox/2026-10-28/receipt_1028_2250_103.jpg and inbox/2026-10-29/IMG_20261029_071228.jpg). Count once.",
+      "amount": 1250.43
+    },
+    {
+      "id": "P9",
+      "type": "DVIR_DEFECT_NOT_CERTIFIED",
+      "severity": "compliance",
+      "detail": "T102 post-trip DVIR 10/27 19:40 lists trailer marker lamp out and missing mud flap. 'Defects corrected' / mechanic signature blank, yet T102 was dispatched 10/28 07:00 (49 CFR 396.11 requires certification of repair before the vehicle is operated again)."
+    },
+    {
+      "id": "P10",
+      "type": "AR_PAST_DUE",
+      "severity": "cash",
+      "detail": "Open invoices past due as of 2026-10-30. Headline: INV for Summit Lane dated 2026-09-19 (Net 30, due 10/19) still unpaid - 41 days since invoice. Owner notes ask about it twice.",
+      "invoices": [
+        {
+          "invoice_id": "INV-3214",
+          "load_id": "IRN-1812",
+          "customer_id": "BRK002",
+          "invoice_date": "2026-09-19",
+          "due_date": "2026-10-19",
+          "amount": 3751.36,
+          "days_since_invoice": 41,
+          "days_past_due": 11,
+          "customer_name": "Summit Lane Logistics Inc"
+        },
+        {
+          "invoice_id": "INV-3219",
+          "load_id": "IRN-1821",
+          "customer_id": "BRK001",
+          "invoice_date": "2026-09-23",
+          "due_date": "2026-10-23",
+          "amount": 3592.15,
+          "days_since_invoice": 37,
+          "days_past_due": 7,
+          "customer_name": "Ridgeline Freight Logistics LLC"
+        },
+        {
+          "invoice_id": "INV-3220",
+          "load_id": "IRN-1822",
+          "customer_id": "C002",
+          "invoice_date": "2026-09-23",
+          "due_date": "2026-10-23",
+          "amount": 4899.59,
+          "days_since_invoice": 37,
+          "days_past_due": 7,
+          "customer_name": "Scioto Valley Foods"
+        },
+        {
+          "invoice_id": "INV-3221",
+          "load_id": "IRN-1820",
+          "customer_id": "C002",
+          "invoice_date": "2026-09-24",
+          "due_date": "2026-10-24",
+          "amount": 7027.55,
+          "days_since_invoice": 36,
+          "days_past_due": 6,
+          "customer_name": "Scioto Valley Foods"
+        },
+        {
+          "invoice_id": "INV-3188",
+          "load_id": "IRN-1789",
+          "customer_id": "C001",
+          "invoice_date": "2026-08-28",
+          "due_date": "2026-10-27",
+          "amount": 3295.98,
+          "days_since_invoice": 63,
+          "days_past_due": 3,
+          "customer_name": "Buckeye Paper Products"
+        },
+        {
+          "invoice_id": "INV-3224",
+          "load_id": "IRN-1819",
+          "customer_id": "BRK001",
+          "invoice_date": "2026-09-28",
+          "due_date": "2026-10-28",
+          "amount": 9367.53,
+          "days_since_invoice": 32,
+          "days_past_due": 2,
+          "customer_name": "Ridgeline Freight Logistics LLC"
+        },
+        {
+          "invoice_id": "INV-3209",
+          "load_id": "IRN-1811",
+          "customer_id": "C008",
+          "invoice_date": "2026-09-14",
+          "due_date": "2026-10-29",
+          "amount": 2198.94,
+          "days_since_invoice": 46,
+          "days_past_due": 1,
+          "customer_name": "Prairie Pet Nutrition"
+        },
+        {
+          "invoice_id": "INV-3226",
+          "load_id": "IRN-1826",
+          "customer_id": "C002",
+          "invoice_date": "2026-09-29",
+          "due_date": "2026-10-29",
+          "amount": 5656.82,
+          "days_since_invoice": 31,
+          "days_past_due": 1,
+          "customer_name": "Scioto Valley Foods"
+        }
+      ]
+    },
+    {
+      "id": "P11",
+      "type": "MEDICAL_CARD_EXPIRING",
+      "severity": "compliance",
+      "driver": "D04",
+      "detail": "John Davis's DOT medical card expires 2026-11-11 (12 days). He is in Los Angeles needing a reload - schedule the physical."
+    },
+    {
+      "id": "P12",
+      "type": "READY_TO_INVOICE",
+      "severity": "cash",
+      "detail": "Delivered with POD, no invoice yet: IRN-1853 (CLP-226905, $2,466.50), IRN-1855 (SLL-2457710, $1,708.50), IRN-1857 (CLP-227118, $3,345.75), IRN-1858 (SVF-ORD-77104, $6,671.93). L4 should be invoiced together with the shortage dispute."
+    }
+  ]
+}
