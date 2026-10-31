@@ -39,16 +39,16 @@ export const AgentsTab: React.FC<AgentsTabProps> = ({ messages }) => {
   const getAgentColor = (agent: AgentType | 'all') => {
     switch (agent) {
       case 'extractor':
-        return 'text-sky-400 bg-sky-950/40 border-sky-800/50';
+        return 'text-sky-800 dark:text-sky-400 bg-sky-100 dark:bg-sky-950/40 border-sky-300 dark:border-sky-800/50';
       case 'reconciler':
-        return 'text-purple-400 bg-purple-950/40 border-purple-800/50';
+        return 'text-purple-800 dark:text-purple-400 bg-purple-100 dark:bg-purple-950/40 border-purple-300 dark:border-purple-800/50';
       case 'watchdog':
-        return 'text-amber-400 bg-amber-950/40 border-amber-800/50';
+        return 'text-amber-800 dark:text-amber-400 bg-amber-100 dark:bg-amber-950/40 border-amber-300 dark:border-amber-800/50';
       case 'briefer':
-        return 'text-emerald-400 bg-emerald-950/40 border-emerald-800/50';
+        return 'text-emerald-800 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-800/50';
       case 'all':
       default:
-        return 'text-orange-400 bg-orange-950/40 border-orange-800/50';
+        return 'text-orange-800 dark:text-orange-400 bg-orange-100 dark:bg-orange-950/40 border-orange-300 dark:border-orange-800/50';
     }
   };
 
@@ -77,16 +77,16 @@ export const AgentsTab: React.FC<AgentsTabProps> = ({ messages }) => {
   return (
     <div className="space-y-6 pb-16">
       {/* 4 ACTIVE AGENT SYSTEM OVERVIEW */}
-      <div className="rounded-2xl border border-slate-800 bg-[#0f172a] p-5 sm:p-6 space-y-4">
+      <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0f172a] p-5 sm:p-6 space-y-4 shadow-xs dark:shadow-none">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
-              <h2 className="text-base font-bold text-white tracking-tight font-mono uppercase">
+              <h2 className="text-base font-bold text-slate-900 dark:text-white tracking-tight font-mono uppercase">
                 AI Agent Team: Live Relay
               </h2>
             </div>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
               Watch the 4 agents collaborate in real time to audit paperwork and catch leaks
             </p>
           </div>
@@ -112,7 +112,7 @@ export const AgentsTab: React.FC<AgentsTabProps> = ({ messages }) => {
 
             <button
               onClick={() => setDisplayedCount(messages.length)}
-              className="p-2 rounded-xl text-xs font-mono bg-slate-800 text-slate-300 hover:text-white border border-slate-700 transition"
+              className="p-2 rounded-xl text-xs font-mono bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 dark:hover:text-white border border-slate-200 dark:border-slate-700 transition"
               title="Show all messages"
             >
               <RotateCcw className="w-4 h-4" />
@@ -123,57 +123,57 @@ export const AgentsTab: React.FC<AgentsTabProps> = ({ messages }) => {
         {/* 4 Agent Actor Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-2">
           {/* Agent 1: Extractor */}
-          <div className="p-3.5 rounded-xl border border-slate-800 bg-[#0b1120] space-y-2">
+          <div className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#0b1120] space-y-2">
             <div className="flex items-center justify-between">
-              <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase text-sky-400 bg-sky-950/40 border border-sky-800/50">
+              <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase text-sky-800 dark:text-sky-400 bg-sky-100 dark:bg-sky-950/40 border border-sky-300 dark:border-sky-800/50">
                 Extractor
               </span>
-              <span className="w-2 h-2 rounded-full bg-emerald-400" />
+              <span className="w-2 h-2 rounded-full bg-emerald-500" />
             </div>
-            <div className="text-xs font-bold text-white">Paperwork Reader</div>
-            <div className="text-[11px] text-slate-400 leading-snug">
+            <div className="text-xs font-bold text-slate-900 dark:text-white">Paperwork Reader</div>
+            <div className="text-[11px] text-slate-600 dark:text-slate-400 leading-snug">
               Scans receipts, delivery notes, and driver text photos.
             </div>
           </div>
 
           {/* Agent 2: Reconciler */}
-          <div className="p-3.5 rounded-xl border border-slate-800 bg-[#0b1120] space-y-2">
+          <div className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#0b1120] space-y-2">
             <div className="flex items-center justify-between">
-              <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase text-purple-400 bg-purple-950/40 border border-purple-800/50">
+              <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase text-purple-800 dark:text-purple-400 bg-purple-100 dark:bg-purple-950/40 border border-purple-300 dark:border-purple-800/50">
                 Reconciler
               </span>
-              <span className="w-2 h-2 rounded-full bg-emerald-400" />
+              <span className="w-2 h-2 rounded-full bg-emerald-500" />
             </div>
-            <div className="text-xs font-bold text-white">Contract Checker</div>
-            <div className="text-[11px] text-slate-400 leading-snug">
+            <div className="text-xs font-bold text-slate-900 dark:text-white">Contract Checker</div>
+            <div className="text-[11px] text-slate-600 dark:text-slate-400 leading-snug">
               Compares customer contract terms against dock wait times.
             </div>
           </div>
 
           {/* Agent 3: Watchdog */}
-          <div className="p-3.5 rounded-xl border border-slate-800 bg-[#0b1120] space-y-2">
+          <div className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#0b1120] space-y-2">
             <div className="flex items-center justify-between">
-              <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase text-amber-400 bg-amber-950/40 border border-amber-800/50">
+              <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase text-amber-800 dark:text-amber-400 bg-amber-100 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800/50">
                 Watchdog
               </span>
-              <span className="w-2 h-2 rounded-full bg-emerald-400" />
+              <span className="w-2 h-2 rounded-full bg-emerald-500" />
             </div>
-            <div className="text-xs font-bold text-white">Fraud Detector</div>
-            <div className="text-[11px] text-slate-400 leading-snug">
+            <div className="text-xs font-bold text-slate-900 dark:text-white">Fraud Detector</div>
+            <div className="text-[11px] text-slate-600 dark:text-slate-400 leading-snug">
               Compares GPS coordinates vs fuel card swipes to catch fraud.
             </div>
           </div>
 
           {/* Agent 4: Briefer */}
-          <div className="p-3.5 rounded-xl border border-slate-800 bg-[#0b1120] space-y-2">
+          <div className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#0b1120] space-y-2">
             <div className="flex items-center justify-between">
-              <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase text-emerald-400 bg-emerald-950/40 border border-emerald-800/50">
+              <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase text-emerald-800 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800/50">
                 Briefer
               </span>
-              <span className="w-2 h-2 rounded-full bg-emerald-400" />
+              <span className="w-2 h-2 rounded-full bg-emerald-500" />
             </div>
-            <div className="text-xs font-bold text-white">Nightly Briefer</div>
-            <div className="text-[11px] text-slate-400 leading-snug">
+            <div className="text-xs font-bold text-slate-900 dark:text-white">Nightly Briefer</div>
+            <div className="text-[11px] text-slate-600 dark:text-slate-400 leading-snug">
               Compiles the 5 highest-value items for the owner's review.
             </div>
           </div>
@@ -181,11 +181,11 @@ export const AgentsTab: React.FC<AgentsTabProps> = ({ messages }) => {
       </div>
 
       {/* FILTER BAR & MESSAGE FEED */}
-      <div className="rounded-2xl border border-slate-800 bg-[#0f172a] overflow-hidden">
-        <div className="p-4 sm:p-5 border-b border-slate-800 flex items-center justify-between gap-3 bg-[#0b1120]">
+      <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0f172a] overflow-hidden shadow-xs dark:shadow-none">
+        <div className="p-4 sm:p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3 bg-slate-50 dark:bg-[#0b1120]">
           <div className="flex items-center gap-2">
-            <Cpu className="w-4 h-4 text-orange-400" />
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-slate-200">
+            <Cpu className="w-4 h-4 text-orange-500" />
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200">
               Live Agent Feed ({visibleMessages.length})
             </span>
           </div>
@@ -193,20 +193,20 @@ export const AgentsTab: React.FC<AgentsTabProps> = ({ messages }) => {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setActiveFilter('all')}
-              className={`px-2.5 py-1 rounded-md text-[11px] font-mono font-semibold transition ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition ${
                 activeFilter === 'all'
-                  ? 'bg-orange-500 text-black font-bold'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-orange-500 text-black font-bold shadow-xs'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800'
               }`}
             >
               All Messages
             </button>
             <button
               onClick={() => setActiveFilter('alert')}
-              className={`px-2.5 py-1 rounded-md text-[11px] font-mono font-semibold transition ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition ${
                 activeFilter === 'alert'
-                  ? 'bg-orange-500 text-black font-bold'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-orange-500 text-black font-bold shadow-xs'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800'
               }`}
             >
               Alerts Only
@@ -225,18 +225,18 @@ export const AgentsTab: React.FC<AgentsTabProps> = ({ messages }) => {
                 key={msg.id}
                 className={`p-4 rounded-xl border transition-all text-xs space-y-2 animate-in fade-in duration-300 ${
                   isUrgent
-                    ? 'border-red-500/50 bg-red-950/20 shadow-lg shadow-red-950/20'
+                    ? 'border-red-300 dark:border-red-500/50 bg-red-50 dark:bg-red-950/20 shadow-xs dark:shadow-lg dark:shadow-red-950/20'
                     : isAlert
-                    ? 'border-amber-500/40 bg-amber-950/15'
-                    : 'border-slate-800/80 bg-[#0b1120] hover:border-slate-700'
+                    ? 'border-amber-300 dark:border-amber-500/40 bg-amber-50 dark:bg-amber-950/15'
+                    : 'border-slate-200 dark:border-slate-800/80 bg-slate-50 dark:bg-[#0b1120] hover:border-slate-300 dark:hover:border-slate-700'
                 }`}
                 style={{ animationDelay: `${index * 60}ms` }}
               >
                 {/* Header: Timestamp, From -> To Routing, Load ID */}
                 <div className="flex items-center justify-between flex-wrap gap-2 text-[11px]">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-slate-500 font-mono flex items-center gap-1">
-                      <Clock className="w-3 h-3 text-slate-500" />
+                    <span className="text-slate-500 dark:text-slate-400 font-mono flex items-center gap-1">
+                      <Clock className="w-3 h-3 text-slate-400" />
                       {msg.timestamp}
                     </span>
 
@@ -246,7 +246,7 @@ export const AgentsTab: React.FC<AgentsTabProps> = ({ messages }) => {
                     </span>
 
                     {/* Routing Arrow */}
-                    <ArrowRight className="w-3.5 h-3.5 text-slate-500" />
+                    <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
 
                     {/* To Agent */}
                     <span className={`px-2 py-0.5 rounded font-bold uppercase border ${getAgentColor(msg.to)}`}>
@@ -254,7 +254,7 @@ export const AgentsTab: React.FC<AgentsTabProps> = ({ messages }) => {
                     </span>
 
                     {msg.loadId && (
-                      <span className="text-orange-400 bg-orange-950/40 px-2 py-0.5 rounded border border-orange-800/40 font-bold">
+                      <span className="text-orange-700 dark:text-orange-400 bg-orange-100 dark:bg-orange-950/40 px-2 py-0.5 rounded border border-orange-300 dark:border-orange-800/40 font-bold">
                         {msg.loadId}
                       </span>
                     )}
@@ -265,7 +265,7 @@ export const AgentsTab: React.FC<AgentsTabProps> = ({ messages }) => {
                     <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
                       isUrgent 
                         ? 'bg-red-500 text-black font-black' 
-                        : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                        : 'bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-400 border border-amber-300 dark:border-amber-500/30'
                     }`}>
                       {msg.priority}
                     </span>
@@ -273,10 +273,10 @@ export const AgentsTab: React.FC<AgentsTabProps> = ({ messages }) => {
                 </div>
 
                 {/* Message Body */}
-                <div className="text-slate-200 leading-relaxed font-sans sm:font-mono text-xs sm:text-[13px] pt-1">
+                <div className="text-slate-800 dark:text-slate-200 leading-relaxed font-sans sm:font-mono text-xs sm:text-sm pt-1">
                   {msg.text}
                   {isStreaming && index === visibleMessages.length - 1 && (
-                    <span className="inline-block w-1.5 h-3.5 bg-orange-400 ml-1.5 align-middle animate-pulse" />
+                    <span className="inline-block w-1.5 h-3.5 bg-orange-500 ml-1.5 align-middle animate-pulse" />
                   )}
                 </div>
               </div>
