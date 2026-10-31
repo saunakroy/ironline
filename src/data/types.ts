@@ -13,6 +13,8 @@ export interface ExtractedField {
   status: FieldStatus
 }
 
+export type BriefingSeverity = 'critical' | 'warning'
+
 export interface BriefingItem {
   id: string
   title: string
@@ -23,6 +25,7 @@ export interface BriefingItem {
   evidenceUrl: string
   confidence: number
   fields: ExtractedField[]
+  severity: BriefingSeverity
 }
 
 export type WatchSeverity = 'warning' | 'info'

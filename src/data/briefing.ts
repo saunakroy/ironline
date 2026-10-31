@@ -10,6 +10,7 @@ export const briefingItems: BriefingItem[] = [
     loadId: 'P8',
     evidenceUrl: '/evidence/p8-fuel-receipt.svg',
     confidence: 0.97,
+    severity: 'critical',
     fields: [
       { label: 'Station', value: 'Pilot #412, Joplin MO', status: 'ok' },
       { label: 'Date', value: '2026-10-24 14:12', status: 'ok' },
@@ -27,6 +28,7 @@ export const briefingItems: BriefingItem[] = [
     loadId: 'P7',
     evidenceUrl: '/evidence/p7-fuel-card.svg',
     confidence: 0.94,
+    severity: 'critical',
     fields: [
       { label: 'Swipe 1', value: 'Kansas City, MO — 09:05', status: 'flagged' },
       { label: 'Swipe 2', value: 'Amarillo, TX — 12:08', status: 'flagged' },
@@ -44,6 +46,7 @@ export const briefingItems: BriefingItem[] = [
     loadId: 'P3',
     evidenceUrl: '/evidence/p3-rate-con.svg',
     confidence: 0.99,
+    severity: 'warning',
     fields: [
       { label: 'Rate con (signed)', value: '$1,680.00', status: 'flagged' },
       { label: 'Invoice billed', value: '$1,380.00', status: 'flagged' },
@@ -61,6 +64,7 @@ export const briefingItems: BriefingItem[] = [
     loadId: 'P6',
     evidenceUrl: '/evidence/p6-lumper-receipt.svg',
     confidence: 0.91,
+    severity: 'warning',
     fields: [
       { label: 'Receipt amount', value: '$175.00', status: 'flagged' },
       { label: 'Location', value: 'Walmart DC 6094, Bentonville AR', status: 'ok' },
@@ -77,6 +81,7 @@ export const briefingItems: BriefingItem[] = [
     loadId: 'P1',
     evidenceUrl: '/evidence/p1-detention-log.svg',
     confidence: 0.89,
+    severity: 'warning',
     fields: [
       { label: 'Check-in', value: '07:40', status: 'ok' },
       { label: 'Check-out', value: '12:10', status: 'ok' },

@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { seedUploads, type UploadFile, type UploadStatus } from '../data/uploads'
 
 const STATUS_STYLES: Record<UploadStatus, string> = {
-  extracting: 'bg-amber-500/10 text-amber-400 ring-amber-500/30',
-  done: 'bg-emerald-500/10 text-emerald-400 ring-emerald-500/30',
-  'needs review': 'bg-red-500/10 text-red-400 ring-red-500/30',
+  extracting: 'bg-amber-400/10 text-amber-200/90 ring-amber-400/20',
+  done: 'bg-emerald-400/10 text-emerald-200/90 ring-emerald-400/20',
+  'needs review': 'bg-rose-400/10 text-rose-200/90 ring-rose-400/20',
 }
 
 export default function UploadScreen() {
@@ -41,7 +41,7 @@ export default function UploadScreen() {
         onDragLeave={() => setIsDragOver(false)}
         onDrop={handleDrop}
         className={`mt-5 flex flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed px-4 py-10 text-center transition-colors ${
-          isDragOver ? 'border-violet-400 bg-violet-400/5' : 'border-white/15 bg-white/[0.02]'
+          isDragOver ? 'border-slate-300 bg-white/[0.04]' : 'border-white/15 bg-white/[0.02]'
         }`}
       >
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" className="text-white/40">

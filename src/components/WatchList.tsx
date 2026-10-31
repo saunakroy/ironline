@@ -16,7 +16,7 @@ export default function WatchList({ items }: { items: WatchItem[] }) {
             <div className="flex items-start gap-2.5">
               <span
                 className={`mt-1.5 h-1.5 w-1.5 flex-none rounded-full ${
-                  item.severity === 'warning' ? 'bg-amber-400' : 'bg-sky-400'
+                  item.severity === 'warning' ? 'bg-amber-300/70' : 'bg-slate-400/70'
                 }`}
               />
               <div>

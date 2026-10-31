@@ -3,8 +3,8 @@ import { kpiCards } from '../data/dashboard'
 
 const TREND_ICON: Record<string, string> = { up: '↑', down: '↓', flat: '→' }
 const TREND_COLOR: Record<string, string> = {
-  up: 'text-emerald-400',
-  down: 'text-red-400',
+  up: 'text-emerald-300/80',
+  down: 'text-rose-300/80',
   flat: 'text-white/40',
 }
 

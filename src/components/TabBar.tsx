@@ -67,8 +67,8 @@ export default function TabBar({ active, onChange }: { active: Tab; onChange: (t
               key={tab.id}
               type="button"
               onClick={() => onChange(tab.id)}
-              className={`flex flex-col items-center gap-1 py-2.5 text-[11px] font-medium transition-colors ${
-                isActive ? 'text-violet-400' : 'text-white/40'
+              className={`flex flex-col items-center gap-1 py-3 text-[11px] font-medium transition-colors ${
+                isActive ? 'text-slate-100' : 'text-white/40'
               }`}
             >
               <svg width="22" height="22" viewBox="0 0 24 24">

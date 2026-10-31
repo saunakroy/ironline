@@ -26,7 +26,7 @@ export default function EvidenceDrawer({
 
   const confidencePct = Math.round(item.confidence * 100)
   const confidenceColor =
-    confidencePct >= 95 ? 'bg-emerald-400' : confidencePct >= 85 ? 'bg-amber-400' : 'bg-red-400'
+    confidencePct >= 95 ? 'bg-emerald-400/70' : confidencePct >= 85 ? 'bg-amber-300/70' : 'bg-rose-400/70'
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-6">
@@ -82,13 +82,13 @@ export default function EvidenceDrawer({
                 <div
                   key={field.label}
                   className={`flex items-center justify-between gap-3 px-3.5 py-2.5 ${
-                    field.status === 'flagged' ? 'bg-red-500/[0.07]' : ''
+                    field.status === 'flagged' ? 'bg-rose-400/[0.06]' : ''
                   }`}
                 >
                   <dt className="text-[13px] text-white/55">{field.label}</dt>
                   <dd
                     className={`text-[13.5px] font-medium ${
-                      field.status === 'flagged' ? 'text-red-300' : 'text-white/80'
+                      field.status === 'flagged' ? 'text-rose-200' : 'text-white/80'
                     }`}
                   >
                     {field.value}
@@ -98,9 +98,9 @@ export default function EvidenceDrawer({
             </dl>
           </div>
 
-          <div className="mt-5 flex items-center justify-between rounded-xl border border-red-500/20 bg-red-500/[0.06] px-3.5 py-3">
+          <div className="mt-5 flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-3">
             <span className="text-[13px] font-medium text-white/70">Flagged amount</span>
-            <span className="text-lg font-bold tabular-nums text-red-400">{formatUsd(item.amount)}</span>
+            <span className="text-lg font-bold tabular-nums text-rose-200">{formatUsd(item.amount)}</span>
           </div>
         </div>
       </div>
