@@ -183,25 +183,27 @@ export default function App() {
 
       {/* Main Viewport */}
       <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
-        {activeTab === 'home' && (
-          <HomeScreen
-            briefingItems={briefingItems}
-            watchItems={watchItems}
-            processedFiles={processedFiles}
-            onSelectBriefingItem={setSelectedBriefingItem}
-            onLoadDemoFiles={handleLoadDemoFiles}
-            onFileUpload={handleFileUpload}
-            onToggleExpandFile={handleToggleExpandFile}
-          />
-        )}
+        <div key={activeTab} className="animate-tab-enter">
+          {activeTab === 'home' && (
+            <HomeScreen
+              briefingItems={briefingItems}
+              watchItems={watchItems}
+              processedFiles={processedFiles}
+              onSelectBriefingItem={setSelectedBriefingItem}
+              onLoadDemoFiles={handleLoadDemoFiles}
+              onFileUpload={handleFileUpload}
+              onToggleExpandFile={handleToggleExpandFile}
+            />
+          )}
 
-        {activeTab === 'dashboard' && (
-          <DashboardTab kpis={kpis} />
-        )}
+          {activeTab === 'dashboard' && (
+            <DashboardTab kpis={kpis} />
+          )}
 
-        {activeTab === 'agents' && (
-          <AgentsTab messages={messages} />
-        )}
+          {activeTab === 'agents' && (
+            <AgentsTab messages={messages} />
+          )}
+        </div>
       </main>
 
       {/* Evidence Viewer Drawer (Modal / Bottom Sheet) */}

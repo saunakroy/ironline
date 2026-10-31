@@ -48,6 +48,12 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   const targetTotal = briefingItems.reduce((acc, curr) => acc + curr.amount, 0);
 
   useEffect(() => {
+    // Respect prefers-reduced-motion
+    if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setDisplayTotal(targetTotal);
+      return;
+    }
+
     let startTimestamp: number | null = null;
     const duration = 1200; // ms
     const target = targetTotal;
@@ -323,6 +329,10 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
       <div className="space-y-6">
         {/* Hero Headline Box with subtle glow */}
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-b from-[#0f172a] to-[#070b14] border border-slate-800 p-6 sm:p-8 hero-glow">
+          {/* Ambient Glowing Background Orb */}
+          <div className="absolute -top-16 -right-16 w-80 h-80 rounded-full bg-orange-500/10 blur-3xl pointer-events-none animate-hero-glow" />
+          <div className="absolute -bottom-16 -left-16 w-72 h-72 rounded-full bg-sky-500/10 blur-3xl pointer-events-none" />
+
           <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="space-y-2 max-w-2xl">
               <div className="flex items-center gap-2">
@@ -378,7 +388,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
                 <div
                   key={item.id}
                   onClick={() => onSelectBriefingItem(item)}
-                  className="rounded-xl border border-slate-800 bg-[#0f172a] p-4 sm:p-5 card-hover-glow transition-all cursor-pointer flex flex-col md:flex-row md:items-center justify-between gap-4 group"
+                  className="rounded-xl border border-slate-800 bg-[#0f172a] p-4 sm:p-5 card-hover-glow transition-all cursor-pointer flex flex-col md:flex-row md:items-center justify-between gap-4 group animate-stagger-card"
                   style={{ animationDelay: `${index * 80}ms` }}
                 >
                   {/* Left: Icon, Details & Explanation */}

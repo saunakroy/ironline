@@ -59,7 +59,7 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({ item, onClose, o
       {/* Drawer Container: slides from right on desktop, bottom sheet on mobile */}
       <div className="fixed inset-y-0 right-0 max-w-full flex pl-0 sm:pl-10 max-sm:inset-x-0 max-sm:top-auto max-sm:bottom-0">
         <div 
-          className="w-screen max-w-xl bg-[#0f172a] border-l border-slate-800 shadow-2xl flex flex-col max-sm:rounded-t-3xl max-sm:max-h-[90vh] max-sm:border-t max-sm:border-l-0"
+          className="w-screen max-w-xl bg-[#0f172a] border-l border-slate-800 shadow-2xl flex flex-col max-sm:rounded-t-3xl max-sm:max-h-[90vh] max-sm:border-t max-sm:border-l-0 animate-drawer-in"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Mobile Drag Indicator */}

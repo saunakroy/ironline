@@ -275,6 +275,9 @@ export const AgentsTab: React.FC<AgentsTabProps> = ({ messages }) => {
                 {/* Message Body */}
                 <div className="text-slate-200 leading-relaxed font-sans sm:font-mono text-xs sm:text-[13px] pt-1">
                   {msg.text}
+                  {isStreaming && index === visibleMessages.length - 1 && (
+                    <span className="inline-block w-1.5 h-3.5 bg-orange-400 ml-1.5 align-middle animate-pulse" />
+                  )}
                 </div>
               </div>
             );
