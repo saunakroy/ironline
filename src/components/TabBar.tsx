@@ -1,79 +1,31 @@
-export type Tab = 'briefing' | 'dashboard' | 'upload' | 'agents'
+import { LayoutDashboard, MessageSquareText, ScrollText } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 
-const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
-  {
-    id: 'briefing',
-    label: 'Briefing',
-    icon: (
-      <path
-        d="M4 4h16v12H9l-5 4V4z"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinejoin="round"
-        fill="none"
-      />
-    ),
-  },
-  {
-    id: 'dashboard',
-    label: 'Dashboard',
-    icon: (
-      <path
-        d="M4 13h4v7H4v-7zM10 4h4v16h-4V4zM16 9h4v11h-4V9z"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinejoin="round"
-        fill="none"
-      />
-    ),
-  },
-  {
-    id: 'upload',
-    label: 'Upload',
-    icon: (
-      <path
-        d="M12 16V4M12 4L7 9M12 4L17 9M5 20H19"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        fill="none"
-      />
-    ),
-  },
-  {
-    id: 'agents',
-    label: 'Agents',
-    icon: (
-      <path
-        d="M4 6h16M4 12h16M4 18h10"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        fill="none"
-      />
-    ),
-  },
+export type Tab = 'home' | 'dashboard' | 'agents'
+
+const TABS: { id: Tab; label: string; icon: LucideIcon }[] = [
+  { id: 'home', label: 'Home', icon: ScrollText },
+  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { id: 'agents', label: 'Agents', icon: MessageSquareText },
 ]
 
 export default function TabBar({ active, onChange }: { active: Tab; onChange: (tab: Tab) => void }) {
   return (
-    <nav className="sticky bottom-0 z-30 border-t border-white/10 bg-[#0a0a0d]/95 backdrop-blur-md">
-      <div className="mx-auto grid max-w-2xl grid-cols-4">
+    <nav className="sticky bottom-0 z-30 border-t border-white/10 bg-[#14161b]/95 backdrop-blur-md">
+      <div className="mx-auto grid max-w-2xl grid-cols-3">
         {TABS.map((tab) => {
           const isActive = tab.id === active
+          const Icon = tab.icon
           return (
             <button
               key={tab.id}
               type="button"
               onClick={() => onChange(tab.id)}
               className={`flex flex-col items-center gap-1 py-3 text-[11px] font-medium transition-colors ${
-                isActive ? 'text-slate-100' : 'text-white/40'
+                isActive ? 'text-orange-300' : 'text-white/40'
               }`}
             >
-              <svg width="22" height="22" viewBox="0 0 24 24">
-                {tab.icon}
-              </svg>
+              <Icon size={22} strokeWidth={isActive ? 2 : 1.6} />
               {tab.label}
             </button>
           )

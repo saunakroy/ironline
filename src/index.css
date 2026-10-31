@@ -35,3 +35,38 @@ body {
   background: #2e303a;
   border-radius: 4px;
 }
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+@keyframes hero-glow {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: translate(-10%, -15%) scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: translate(5%, -5%) scale(1.08);
+  }
+}
+
+.hero-glow {
+  animation: hero-glow 8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,17 +1,47 @@
-import { useEffect } from 'react'
-import type { BriefingItem } from '../data/types'
-import AgentBadge from './AgentBadge'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import type { ReactNode } from 'react'
+import type { ExtractedField } from '../data/types'
 
-const formatUsd = (amount: number) =>
-  amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+export interface EvidenceDrawerProps {
+  title: string
+  badge?: ReactNode
+  tag?: string
+  evidenceUrl: string
+  confidence: number
+  fields: ExtractedField[]
+  footer?: { label: string; value: string }
+  onClose: () => void
+}
+
+function ConfidenceBar({ pct }: { pct: number }) {
+  const reduced = useReducedMotion()
+  const color = pct >= 95 ? 'bg-emerald-400/70' : pct >= 85 ? 'bg-amber-300/70' : 'bg-rose-400/70'
+  return (
+    <div className="h-1.5 w-20 overflow-hidden rounded-full bg-white/10">
+      <motion.div
+        className={`h-full rounded-full ${color}`}
+        initial={{ width: 0 }}
+        animate={{ width: `${pct}%` }}
+        transition={{ duration: reduced ? 0 : 0.6, ease: 'easeOut' }}
+      />
+    </div>
+  )
+}
 
 export default function EvidenceDrawer({
-  item,
+  title,
+  badge,
+  tag,
+  evidenceUrl,
+  confidence,
+  fields,
+  footer,
   onClose,
-}: {
-  item: BriefingItem
-  onClose: () => void
-}) {
+}: EvidenceDrawerProps) {
+  const reduced = useReducedMotion()
+  const [imgError, setImgError] = useState(false)
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
@@ -24,29 +54,37 @@ export default function EvidenceDrawer({
     }
   }, [onClose])
 
-  const confidencePct = Math.round(item.confidence * 100)
-  const confidenceColor =
-    confidencePct >= 95 ? 'bg-emerald-400/70' : confidencePct >= 85 ? 'bg-amber-300/70' : 'bg-rose-400/70'
+  const confidencePct = Math.round(confidence * 100)
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-6">
-      <button
+      <motion.button
         type="button"
         aria-label="Close evidence viewer"
         onClick={onClose}
         className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: reduced ? 0 : 0.2 }}
       />
 
-      <div className="relative flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-3xl border border-white/10 bg-[#121218] shadow-2xl sm:max-w-2xl sm:rounded-3xl">
+      <motion.div
+        initial={reduced ? { opacity: 0 } : { y: 48, opacity: 0 }}
+        animate={reduced ? { opacity: 1 } : { y: 0, opacity: 1 }}
+        exit={reduced ? { opacity: 0 } : { y: 24, opacity: 0 }}
+        transition={{ duration: reduced ? 0 : 0.28, ease: [0.16, 1, 0.3, 1] }}
+        className="relative flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-3xl border border-white/10 bg-[#17191f] shadow-2xl sm:max-w-2xl sm:rounded-3xl"
+      >
         <div className="flex items-start justify-between gap-3 border-b border-white/10 px-5 py-4">
           <div>
             <div className="flex items-center gap-2">
-              <AgentBadge agent={item.agent} />
-              <span className="rounded-full bg-white/5 px-2.5 py-1 text-[11px] font-medium text-white/50">
-                Load {item.loadId}
-              </span>
+              {badge}
+              {tag && (
+                <span className="rounded-full bg-white/5 px-2.5 py-1 text-[11px] font-medium text-white/50">{tag}</span>
+              )}
             </div>
-            <h2 className="mt-2 text-base font-semibold text-white leading-snug">{item.title}</h2>
+            <h2 className="mt-2 text-base font-semibold text-white leading-snug">{title}</h2>
           </div>
           <button
             type="button"
@@ -64,23 +102,33 @@ export default function EvidenceDrawer({
           <div className="flex items-center justify-between rounded-xl bg-white/[0.03] px-3.5 py-2.5">
             <span className="text-[13px] font-medium text-white/60">Extraction confidence</span>
             <div className="flex items-center gap-2">
-              <div className="h-1.5 w-20 overflow-hidden rounded-full bg-white/10">
-                <div className={`h-full rounded-full ${confidenceColor}`} style={{ width: `${confidencePct}%` }} />
-              </div>
+              <ConfidenceBar pct={confidencePct} />
               <span className="text-[13px] font-semibold tabular-nums text-white/80">{confidencePct}%</span>
             </div>
           </div>
 
           <div className="mt-4 overflow-hidden rounded-xl border border-white/10 bg-white">
-            <img src={item.evidenceUrl} alt={`Source document for ${item.title}`} className="block w-full" />
+            {!imgError ? (
+              <img
+                src={evidenceUrl}
+                alt={`Source document for ${title}`}
+                className="block w-full"
+                onError={() => setImgError(true)}
+              />
+            ) : (
+              <div className="flex h-48 items-center justify-center text-sm text-slate-400">Preview unavailable</div>
+            )}
           </div>
 
           <div className="mt-5">
             <h3 className="text-xs font-semibold uppercase tracking-wide text-white/40">Extracted fields</h3>
             <dl className="mt-2 divide-y divide-white/5 rounded-xl border border-white/10">
-              {item.fields.map((field) => (
-                <div
+              {fields.map((field, i) => (
+                <motion.div
                   key={field.label}
+                  initial={field.status === 'flagged' && !reduced ? { backgroundColor: 'rgba(251,113,133,0.22)' } : undefined}
+                  animate={field.status === 'flagged' && !reduced ? { backgroundColor: 'rgba(251,113,133,0)' } : undefined}
+                  transition={{ duration: 0.6, delay: 0.15 + i * 0.04 }}
                   className={`flex items-center justify-between gap-3 px-3.5 py-2.5 ${
                     field.status === 'flagged' ? 'bg-rose-400/[0.06]' : ''
                   }`}
@@ -93,17 +141,25 @@ export default function EvidenceDrawer({
                   >
                     {field.value}
                   </dd>
-                </div>
+                </motion.div>
               ))}
             </dl>
           </div>
 
-          <div className="mt-5 flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-3">
-            <span className="text-[13px] font-medium text-white/70">Flagged amount</span>
-            <span className="text-lg font-bold tabular-nums text-rose-200">{formatUsd(item.amount)}</span>
-          </div>
+          {footer && (
+            <div className="mt-5 flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-3">
+              <span className="text-[13px] font-medium text-white/70">{footer.label}</span>
+              <span className="text-lg font-bold tabular-nums text-rose-200">{footer.value}</span>
+            </div>
+          )}
         </div>
-      </div>
+      </motion.div>
     </div>
+  )
+}
+
+export function AnimatedEvidenceDrawer(props: EvidenceDrawerProps | null) {
+  return (
+    <AnimatePresence>{props && <EvidenceDrawer key={props.title} {...props} />}</AnimatePresence>
   )
 }

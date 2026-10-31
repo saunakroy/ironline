@@ -14,6 +14,7 @@ export interface ExtractedField {
 }
 
 export type BriefingSeverity = 'critical' | 'warning'
+export type ProblemCategory = 'fuel' | 'rate' | 'lumper' | 'detention'
 
 export interface BriefingItem {
   id: string
@@ -26,6 +27,7 @@ export interface BriefingItem {
   confidence: number
   fields: ExtractedField[]
   severity: BriefingSeverity
+  category: ProblemCategory
 }
 
 export type WatchSeverity = 'warning' | 'info'

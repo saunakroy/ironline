@@ -3,6 +3,7 @@ import type { BriefingItem, WatchItem } from './types'
 export const briefingItems: BriefingItem[] = [
   {
     id: 'p8-duplicate-fuel',
+    category: 'fuel',
     title: 'Duplicate fuel receipt',
     amount: 1250.43,
     summary: 'Same fuel receipt was submitted twice and both were queued for payment.',
@@ -21,6 +22,7 @@ export const briefingItems: BriefingItem[] = [
   },
   {
     id: 'p7-fuel-card-two-states',
+    category: 'fuel',
     title: 'Fuel card used in two states, 3 hours apart',
     amount: 800.73,
     summary: 'Card swiped in Kansas City, then Amarillo 3 hrs later — too far to drive in that time.',
@@ -39,6 +41,7 @@ export const briefingItems: BriefingItem[] = [
   },
   {
     id: 'p3-rate-mismatch',
+    category: 'rate',
     title: 'Invoice used the wrong rate',
     amount: 300.0,
     summary: 'Invoice billed the $1,380 first quote instead of the $1,680 signed rate confirmation.',
@@ -57,6 +60,7 @@ export const briefingItems: BriefingItem[] = [
   },
   {
     id: 'p6-lumper-not-invoiced',
+    category: 'lumper',
     title: 'Lumper receipt not on any invoice',
     amount: 175.0,
     summary: 'A $175 lumper receipt exists but was never added to the load invoice.',
@@ -74,6 +78,7 @@ export const briefingItems: BriefingItem[] = [
   },
   {
     id: 'p1-unbilled-detention',
+    category: 'detention',
     title: 'Unbilled detention',
     amount: 162.5,
     summary: 'Driver waited 2 hrs past the 2 free hours at the dock and it was never billed.',
