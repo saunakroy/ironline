@@ -226,10 +226,10 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({ item, onClose, o
           </div>
 
           {/* Footer Actions */}
-          <div className="p-4 sm:p-5 border-t border-slate-800 bg-[#0b1120] flex items-center justify-end gap-3">
+          <div className="p-4 sm:p-5 border-t border-slate-800 bg-[#0b1120] flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-3">
             <button
               onClick={onClose}
-              className="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition"
+              className="w-full sm:w-auto px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-400 hover:text-white hover:bg-slate-800 min-h-[44px] transition flex items-center justify-center"
             >
               Dismiss
             </button>
@@ -238,7 +238,7 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({ item, onClose, o
                 if (onResolve) onResolve(item.id);
                 onClose();
               }}
-              className="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-orange-500 hover:bg-orange-600 text-black flex items-center gap-2 transition shadow-lg shadow-orange-500/20"
+              className="w-full sm:w-auto px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-orange-500 hover:bg-orange-600 text-black flex items-center justify-center gap-2 transition shadow-lg shadow-orange-500/20 min-h-[44px] active:scale-98"
             >
               <CheckCircle2 className="w-4 h-4" />
               <span>Apply Fix & Reconcile</span>

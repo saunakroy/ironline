@@ -61,7 +61,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         <nav className="flex items-center bg-[#0f172a] p-1 rounded-xl border border-slate-800">
           <button
             onClick={() => onTabChange('home')}
-            className={`px-3 sm:px-4 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center gap-2 ${
+            className={`px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center gap-1.5 sm:gap-2 min-h-[38px] ${
               activeTab === 'home'
                 ? 'bg-orange-500 text-black shadow-sm font-bold'
                 : 'text-slate-400 hover:text-white'
@@ -78,7 +78,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           <button
             onClick={() => onTabChange('dashboard')}
-            className={`px-3 sm:px-4 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center gap-2 ${
+            className={`px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center gap-1.5 sm:gap-2 min-h-[38px] ${
               activeTab === 'dashboard'
                 ? 'bg-orange-500 text-black shadow-sm font-bold'
                 : 'text-slate-400 hover:text-white'
@@ -90,7 +90,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           <button
             onClick={() => onTabChange('agents')}
-            className={`px-3 sm:px-4 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center gap-2 relative ${
+            className={`px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center gap-1.5 sm:gap-2 min-h-[38px] relative ${
               activeTab === 'agents'
                 ? 'bg-orange-500 text-black shadow-sm font-bold'
                 : 'text-slate-400 hover:text-white'

@@ -197,11 +197,11 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             </div>
 
             {/* Action buttons: Mobile photo + One-Click Demo Load */}
-            <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end shrink-0" onClick={(e) => e.stopPropagation()}>
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto justify-end shrink-0" onClick={(e) => e.stopPropagation()}>
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="sm:hidden flex-1 px-4 py-2 text-xs font-semibold rounded-xl bg-slate-800 text-slate-200 border border-slate-700 flex items-center justify-center gap-2"
+                className="sm:hidden w-full px-4 py-2.5 text-xs font-semibold rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center justify-center gap-2 min-h-[44px] transition active:scale-98"
               >
                 <Camera className="w-4 h-4 text-sky-400" />
                 <span>Take photo / choose file</span>
@@ -210,7 +210,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
               <button
                 type="button"
                 onClick={onLoadDemoFiles}
-                className="px-4 py-2.5 text-xs font-bold rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-black flex items-center gap-2 transition shadow-md shadow-orange-500/20"
+                className="w-full sm:w-auto px-4 py-2.5 text-xs font-bold rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-black flex items-center justify-center gap-2 transition shadow-md shadow-orange-500/20 min-h-[44px] active:scale-98"
                 title="Load Monday's sample files automatically"
               >
                 <Play className="w-3.5 h-3.5 fill-current" />
@@ -479,7 +479,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
                   </div>
 
                   {/* Right: Big Dollar Amount & Evidence Link */}
-                  <div className="flex md:flex-col items-center md:items-end justify-between md:justify-center gap-2 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-slate-800/80">
+                  <div className="flex md:flex-col items-center md:items-end justify-between md:justify-center gap-3 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-slate-800/80">
                     <div className="text-2xl sm:text-3xl font-black font-mono text-orange-400 tabular-nums">
                       {item.amountFormatted}
                     </div>
@@ -490,10 +490,10 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
                         e.stopPropagation();
                         onSelectBriefingItem(item);
                       }}
-                      className="px-3 py-1.5 rounded-lg text-xs font-mono font-semibold text-orange-400 bg-orange-500/10 hover:bg-orange-500/20 border border-orange-500/30 flex items-center gap-1.5 transition"
+                      className="px-4 py-2 rounded-lg text-xs font-mono font-semibold text-orange-400 bg-orange-500/10 hover:bg-orange-500/20 active:bg-orange-500/30 border border-orange-500/30 flex items-center gap-1.5 transition min-h-[40px]"
                     >
                       <span>View evidence</span>
-                      <ExternalLink className="w-3 h-3" />
+                      <ExternalLink className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 </div>
