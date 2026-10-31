@@ -1,0 +1,21 @@
+{
+    "name": "fleet-agents",
+    "private": true,
+    "type": "module",
+    "workspaces": [
+        "apps/*"
+    ],
+    "engines": {
+        "bun": ">=1.4.2"
+    },
+    "scripts": {
+        "dev:actors": "bun run --cwd apps/data dev:actors",
+        "dev:data": "bun run --cwd apps/data dev",
+        "dev:inference": "bun run --cwd apps/inference dev",
+        "test": "bun test",
+        "check": "bun run --cwd apps/data check && bun run --cwd apps/inference check"
+    },
+    "trustedDependencies": [
+        "esbuild"
+    ]
+}
