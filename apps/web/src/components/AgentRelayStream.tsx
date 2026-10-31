@@ -7,13 +7,18 @@ interface AgentRelayStreamProps {
   onTriggerReconcile: () => void;
   isOpen: boolean;
   onClose: () => void;
+  /** Live mode: link to the backend's full tracker (every file, every agent). */
+  trackerUrl?: string;
+  isChecking?: boolean;
 }
 
 export const AgentRelayStream: React.FC<AgentRelayStreamProps> = ({ 
   messages, 
   onTriggerReconcile, 
   isOpen, 
-  onClose 
+  onClose,
+  trackerUrl,
+  isChecking = false
 }) => {
   const [activeFilter, setActiveFilter] = useState<'all' | 'alert' | 'normal'>('all');
 
@@ -38,6 +43,11 @@ export const AgentRelayStream: React.FC<AgentRelayStreamProps> = ({
               <h3 className="text-base font-bold text-slate-900">Live Activity</h3>
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             </div>
+            {trackerUrl && (
+              <a href={trackerUrl} target="_blank" rel="noreferrer" className="text-xs font-semibold text-blue-600 hover:text-blue-700">
+                Open full tracker →
+              </a>
+            )}
             <p className="text-xs text-slate-500 font-medium">
               Autonomous back-office agents running in background
             </p>
@@ -60,10 +70,11 @@ export const AgentRelayStream: React.FC<AgentRelayStreamProps> = ({
 
         <button
           onClick={onTriggerReconcile}
-          className="px-3.5 py-1.5 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl flex items-center gap-1.5 transition shadow-xs"
+          disabled={isChecking}
+          className="px-3.5 py-1.5 text-xs font-bold bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white rounded-xl flex items-center gap-1.5 transition shadow-xs"
         >
           <Play className="w-3 h-3 fill-current" />
-          <span>Run Check Now</span>
+          <span>{isChecking ? 'Checking…' : 'Run Check Now'}</span>
         </button>
       </div>
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { DriverProfile, ExtractedDocument, LoadItem } from '../types';
 import { 
   Camera, 
@@ -24,6 +24,8 @@ interface TruckerPortalProps {
   activeLoad?: LoadItem;
   recentDocuments: ExtractedDocument[];
   onUploadDocument: (doc: ExtractedDocument) => void;
+  /** Live mode: send the real photo/file to the Intake agent. Without it, capture is simulated. */
+  onUploadFile?: (file: File) => Promise<ExtractedDocument>;
 }
 
 export const TruckerPortal: React.FC<TruckerPortalProps> = ({
@@ -32,12 +34,39 @@ export const TruckerPortal: React.FC<TruckerPortalProps> = ({
   onSelectDriver,
   activeLoad,
   recentDocuments,
-  onUploadDocument
+  onUploadDocument,
+  onUploadFile
 }) => {
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [uploadSuccessToast, setUploadSuccessToast] = useState<string | null>(null);
+  const fileInput = useRef<HTMLInputElement>(null);
+  const pendingType = useRef<string>('Document');
+
+  const handlePickedFiles = async (files: File[]) => {
+    if (!onUploadFile || !files.length) return;
+    setIsUploading(true);
+    try {
+      for (const f of files) {
+        const doc = await onUploadFile(f);
+        onUploadDocument(doc);
+        setUploadSuccessToast(
+          doc.needsReview
+            ? `Uploaded ${f.name} — needs review (${String(Object.values(doc.extractedFields)[0] ?? '')})`
+            : `✓ ${doc.docClassification} read and filed on ${doc.loadRef ?? 'the fleet ledger'}`,
+        );
+      }
+    } finally {
+      setIsUploading(false);
+      setTimeout(() => setUploadSuccessToast(null), 4000);
+    }
+  };
 
   const handleSimulateMobileCapture = (docType: 'BOL' | 'Fuel Receipt' | 'Lumper' | 'DVIR') => {
+    if (onUploadFile) {
+      pendingType.current = docType;
+      fileInput.current?.click();
+      return;
+    }
     setIsUploading(true);
     setTimeout(() => {
       const id = `DOC-${Math.floor(100 + Math.random() * 900)}`;
@@ -293,6 +322,19 @@ export const TruckerPortal: React.FC<TruckerPortalProps> = ({
           </p>
         </div>
 
+        <input
+          ref={fileInput}
+          type="file"
+          accept="image/*,.pdf,.docx,.eml,.txt"
+          capture="environment"
+          multiple
+          className="hidden"
+          onChange={e => {
+            const files = Array.from(e.target.files ?? []);
+            e.target.value = '';
+            void handlePickedFiles(files);
+          }}
+        />
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
           {/* Action 1: BOL / POD */}
           <button

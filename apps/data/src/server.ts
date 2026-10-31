@@ -62,6 +62,11 @@ app.post("/api/companies/:c/seed", wrap(async (req, res) => {
 
 app.get("/api/companies/:c/snapshot", wrap(async (req, res) => void res.json(await Company.get(String(req.params.c)).snapshot())))
 
+app.get("/api/companies/:c/fleet", wrap(async (req, res) => {
+    const asOf = String(req.query.asOf ?? new Date().toISOString().slice(0, 10))
+    res.json(await Company.get(String(req.params.c)).fleetOverview(asOf))
+}))
+
 app.get("/api/companies/:c/open-loads", wrap(async (req, res) => void res.json(await Company.get(String(req.params.c)).listOpenLoads())))
 
 app.get("/api/companies/:c/loads/:id", wrap(async (req, res) => void res.json(await Load.get(loadActorId(String(req.params.c), String(req.params.id))).get())))

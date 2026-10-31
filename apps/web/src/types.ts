@@ -91,8 +91,8 @@ export interface LoadItem {
 export interface AgentRelayMessage {
   id: string;
   timestamp: string;
-  fromAgent: 'extractor' | 'reconciler' | 'watchdog' | 'briefer';
-  toAgent: 'extractor' | 'reconciler' | 'watchdog' | 'briefer' | 'all';
+  fromAgent: 'extractor' | 'reconciler' | 'watchdog' | 'briefer' | 'enrichment';
+  toAgent: 'extractor' | 'reconciler' | 'watchdog' | 'briefer' | 'enrichment' | 'all';
   loadRef?: string;
   message: string;
   priority: 'normal' | 'alert' | 'urgent';
