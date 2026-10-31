@@ -219,13 +219,15 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#070b14] text-[#f8fafc] flex flex-col font-sans antialiased w-full max-w-full overflow-x-hidden selection:bg-orange-500 selection:text-black">
-      {/* Top Navigation */}
+      {/* Top Navigation with Profile Picture & Dropdown */}
       <Navbar
         activeTab={activeTab}
         onTabChange={setActiveTab}
         unresolvedCount={briefingItems.length}
         currentRole={currentRole}
         activeDriver={activeDriver}
+        demoDrivers={DEMO_DRIVERS}
+        onSelectRole={handleSelectRole}
         onOpenLoginModal={() => setIsLoginModalOpen(true)}
       />
 
