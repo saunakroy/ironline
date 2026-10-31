@@ -166,7 +166,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   return (
     <div className="space-y-8 pb-16">
       {/* SECTION 1: COMPACT DROP ZONE AT TOP (DROPDOWN ACCORDION) */}
-      <div className="space-y-3">
+      <div className="space-y-2">
         <div 
           onClick={() => setIsDropzoneOpen(!isDropzoneOpen)}
           className="flex items-center justify-between text-xs font-mono text-slate-400 px-1 select-none cursor-pointer hover:text-slate-200 transition"
@@ -174,10 +174,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           <div className="flex items-center gap-2">
             <span className="uppercase tracking-wider font-semibold text-slate-300 flex items-center gap-1.5">
               <UploadCloud className="w-3.5 h-3.5 text-orange-400" />
-              Paperwork Ingestion Zone
-            </span>
-            <span className="text-[10px] text-slate-500 font-normal hidden sm:inline">
-              (PDF, DOCX, JPG, EML, TXT)
+              Paperwork Drop
             </span>
           </div>
           <div className="flex items-center gap-1 text-[11px] text-slate-400">
@@ -192,7 +189,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
             onClick={() => fileInputRef.current?.click()}
-            className={`relative rounded-2xl border-2 border-dashed transition-all cursor-pointer p-6 sm:p-7 text-center overflow-hidden group animate-in fade-in duration-150 ${
+            className={`relative rounded-2xl border-2 border-dashed transition-all cursor-pointer p-4 sm:p-5 text-center overflow-hidden group animate-in fade-in duration-150 ${
               isDragging 
                 ? 'border-orange-500 bg-orange-950/20 shadow-lg shadow-orange-500/10' 
                 : 'border-slate-800 hover:border-orange-500/50 bg-[#0f172a]/80 hover:bg-[#0f172a]'
@@ -207,40 +204,39 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
               className="hidden" 
             />
 
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="flex items-center gap-4 text-left">
-                <div className="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 group-hover:scale-105 transition-transform shrink-0">
-                  <UploadCloud className="w-6 h-6" />
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div className="flex items-center gap-3 text-left">
+                <div className="w-10 h-10 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 group-hover:scale-105 transition-transform shrink-0">
+                  <UploadCloud className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-base sm:text-lg font-bold text-white tracking-tight flex items-center gap-2">
-                    <span>Drop paperwork here: rate cons, BOL photos, receipts, texts</span>
+                  <h3 className="text-sm sm:text-base font-bold text-white tracking-tight">
+                    Drop paperwork here
                   </h3>
-                  <p className="text-xs text-slate-400 mt-0.5">
-                    Accepts <span className="text-slate-300 font-mono">PDF, DOCX, JPG, EML, TXT</span> · Drag & drop or click anywhere
+                  <p className="text-xs text-slate-400">
+                    Rate cons, BOLs, receipts, texts (PDF, JPG, PNG)
                   </p>
                 </div>
               </div>
 
-              {/* Action buttons: Mobile photo + One-Click Demo Load */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto justify-end shrink-0" onClick={(e) => e.stopPropagation()}>
+              {/* Action buttons */}
+              <div className="flex items-center gap-2 w-full sm:w-auto justify-end shrink-0" onClick={(e) => e.stopPropagation()}>
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="sm:hidden w-full px-4 py-2.5 text-xs font-semibold rounded-xl bg-slate-800 hover:bg-slate-750 text-slate-200 border border-slate-700 flex items-center justify-center gap-2 min-h-[44px] transition active:scale-98"
+                  className="sm:hidden flex-1 px-3 py-2 text-xs font-semibold rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center justify-center gap-1.5 min-h-[40px]"
                 >
-                  <Camera className="w-4 h-4 text-sky-400" />
-                  <span>Take photo / choose file</span>
+                  <Camera className="w-3.5 h-3.5 text-sky-400" />
+                  <span>Choose file</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={onLoadDemoFiles}
-                  className="w-full sm:w-auto px-4 py-2.5 text-xs font-bold rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-black flex items-center justify-center gap-2 transition shadow-md shadow-orange-500/20 min-h-[44px] active:scale-98"
-                  title="Load Monday's sample files automatically"
+                  className="w-full sm:w-auto px-4 py-2 text-xs font-bold rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-black flex items-center justify-center gap-1.5 transition shadow-md shadow-orange-500/20 min-h-[40px]"
                 >
-                  <Play className="w-3.5 h-3.5 fill-current" />
-                  <span>Load demo files</span>
+                  <Play className="w-3 h-3 fill-current" />
+                  <span>Load demo batch</span>
                 </button>
               </div>
             </div>
@@ -410,39 +406,39 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           <div className="absolute -bottom-16 -left-16 w-72 h-72 rounded-full bg-sky-500/10 blur-3xl pointer-events-none" />
 
           <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div className="space-y-2 max-w-2xl">
+            <div className="space-y-1.5 max-w-2xl">
               <div className="flex items-center gap-2">
                 <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-red-950/60 text-red-400 border border-red-800/50 flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                  Tonight's Audit · 18:00 EST Reconcile Complete
+                  Audit Complete · 18:00 EST
                 </span>
-                <span className="text-xs font-mono text-slate-500">Oct 31, 2026</span>
+                <span className="text-xs font-mono text-slate-500">Oct 31</span>
               </div>
 
               <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight">
                 5 things need your attention tonight
               </h1>
 
-              <p className="text-sm text-slate-300 leading-relaxed">
-                Ironline agents reconciled rate confirmations, BOL photos, driver text receipts, and fuel card swipes against Samsara telematics. Here is the flagged leakage requiring sign-off before broker invoicing and payroll settlement.
+              <p className="text-xs sm:text-sm text-slate-300">
+                Cross-checked rates, detention, fuel, and telematics before settlement.
               </p>
             </div>
 
             {/* Big Dollar Flag Stat */}
-            <div className="p-5 rounded-2xl bg-[#0b1120] border border-orange-500/40 shadow-xl shrink-0 flex items-center gap-4 min-w-[240px]">
-              <div className="w-12 h-12 rounded-xl bg-orange-500/15 border border-orange-500/30 flex items-center justify-center text-orange-400 shrink-0">
-                <Coins className="w-6 h-6" />
+            <div className="p-4 sm:p-5 rounded-2xl bg-[#0b1120] border border-orange-500/40 shadow-xl shrink-0 flex items-center gap-4 min-w-[220px]">
+              <div className="w-11 h-11 rounded-xl bg-orange-500/15 border border-orange-500/30 flex items-center justify-center text-orange-400 shrink-0">
+                <Coins className="w-5 h-5" />
               </div>
               <div>
-                <div className="text-[11px] uppercase font-mono tracking-wider text-slate-400 font-semibold">
-                  Total Flagged Tonight
+                <div className="text-[10px] uppercase font-mono tracking-wider text-slate-400 font-semibold">
+                  Flagged Tonight
                 </div>
                 <div className="text-3xl sm:text-4xl font-black font-mono text-orange-400 tabular-nums">
                   ${displayTotal.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}
                 </div>
-                <div className="text-[11px] text-emerald-400 font-mono mt-0.5 flex items-center gap-1">
+                <div className="text-[10px] text-emerald-400 font-mono mt-0.5 flex items-center gap-1">
                   <Sparkles className="w-3 h-3" />
-                  <span>5 of 5 backed by document proof</span>
+                  <span>5 of 5 document-backed</span>
                 </div>
               </div>
             </div>
