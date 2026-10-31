@@ -78,7 +78,7 @@ export const BRIEFING_ITEMS: BriefingItem[] = [
     title: '$175 lumper receipt not on any invoice',
     amount: 175.00,
     amountFormatted: '$175.00',
-    summary: 'Driver paid $175 out-of-pocket unload fee in Dallas; thermal receipt received via text but never attached to broker billing.',
+    summary: 'Driver sent $175 thermal unload slip via text to Dispatch; agent verified Clause 8 and prepares direct reimbursement claim for broker invoice.',
     agent: 'extractor',
     loadId: 'LD-4093',
     truckId: 'Truck 103',
@@ -102,7 +102,7 @@ export const BRIEFING_ITEMS: BriefingItem[] = [
     title: 'Unbilled detention (in 07:40, out 12:10, 2 hrs free at $65/hr)',
     amount: 162.50,
     amountFormatted: '$162.50',
-    summary: 'Shipper BOL confirms 4.5 hours dwell time on dock. After 2 free hours, carrier is owed 2.5 billable hours at $65/hr.',
+    summary: 'Driver texted signed Shipper BOL to Dispatch confirming 4.5 hrs on dock. Agent calculates 2.5 billable hours and drafts supplemental invoice for broker.',
     agent: 'reconciler',
     loadId: 'LD-4091',
     truckId: 'Truck 104',
@@ -225,7 +225,7 @@ export const AGENT_RELAY_MESSAGES: AgentMessage[] = [
     from: 'extractor',
     to: 'reconciler',
     loadId: 'LD-4091',
-    text: 'Extracted timestamps from BOL photo: In 07:40, Out 12:10. Total dwell: 4.5 hours.',
+    text: 'Extracted timestamps from driver BOL photo: In 07:40, Out 12:10. Total dwell: 4.5 hours.',
     priority: 'normal'
   },
   {
@@ -234,7 +234,7 @@ export const AGENT_RELAY_MESSAGES: AgentMessage[] = [
     from: 'reconciler',
     to: 'watchdog',
     loadId: 'LD-4091',
-    text: 'Cross-checked Apex Rate Con. 2 hrs free allowed at $65/hr. DETENTION FLAG: 2.5 hrs = $162.50 unbilled.',
+    text: 'Cross-checked Apex Rate Con. 2 hrs free allowed at $65/hr. DETENTION FLAG: 2.5 hrs = $162.50 unbilled. Preparing supplemental claim directly for broker.',
     priority: 'alert'
   },
   {
@@ -251,7 +251,7 @@ export const AGENT_RELAY_MESSAGES: AgentMessage[] = [
     from: 'reconciler',
     to: 'briefer',
     loadId: 'LD-4088',
-    text: 'Rate mismatch: Invoice draft INV-1088 has $1,380 quote. Signed rate con is $1,680. Underbilled by $300.00.',
+    text: 'Rate mismatch: Invoice draft INV-1088 has $1,380 quote. Signed rate con is $1,680. Underbilled by $300.00. Dispatch agent updating broker invoice.',
     priority: 'alert'
   },
   {
@@ -260,7 +260,7 @@ export const AGENT_RELAY_MESSAGES: AgentMessage[] = [
     from: 'extractor',
     to: 'reconciler',
     loadId: 'LD-4093',
-    text: 'Driver SMS image parsed: $175 lumper fee at Capstone Dallas. Reconciler: append to broker invoice.',
+    text: 'Driver SMS to Dispatch parsed: $175 lumper fee at Capstone Dallas. Reconciler: dispatch agent filing reimbursement addendum with broker.',
     priority: 'normal'
   },
   {
@@ -276,7 +276,7 @@ export const AGENT_RELAY_MESSAGES: AgentMessage[] = [
     timestamp: '12:34:55',
     from: 'briefer',
     to: 'all',
-    text: 'BRIEFING READY: 5 items compiled for owner review. Total money flagged: $2,688.66.',
+    text: 'BRIEFING READY: 5 items compiled for owner review. Total money flagged: $2,688.66. Driver-Broker Air-Gap active: Carrier represents all claims.',
     priority: 'urgent'
   }
 ];

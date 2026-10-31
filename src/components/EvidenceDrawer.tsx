@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BriefingItem } from '../types';
-import { X, CheckCircle2, Sparkles, ExternalLink, AlertTriangle, FileText, Bot } from 'lucide-react';
+import { X, CheckCircle2, Sparkles, ExternalLink, AlertTriangle, FileText, Bot, ChevronDown, ChevronUp } from 'lucide-react';
 
 interface EvidenceDrawerProps {
   item: BriefingItem | null;
@@ -10,6 +10,9 @@ interface EvidenceDrawerProps {
 
 export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({ item, onClose, onResolve }) => {
   const [animatedConfidence, setAnimatedConfidence] = useState<number>(0);
+  const [isDocOpen, setIsDocOpen] = useState<boolean>(true);
+  const [isFieldsOpen, setIsFieldsOpen] = useState<boolean>(true);
+  const [isActionOpen, setIsActionOpen] = useState<boolean>(true);
 
   useEffect(() => {
     if (item) {
@@ -137,91 +140,124 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({ item, onClose, o
               </div>
             </div>
 
-            {/* Document Evidence Viewer */}
+            {/* Document Evidence Viewer (Collapsible Dropdown) */}
             <div className="space-y-2">
-              <div className="flex items-center justify-between">
+              <div 
+                onClick={() => setIsDocOpen(!isDocOpen)}
+                className="flex items-center justify-between cursor-pointer select-none"
+              >
                 <span className="text-xs font-mono uppercase tracking-wider text-slate-400 flex items-center gap-1.5 font-semibold">
                   <FileText className="w-3.5 h-3.5 text-orange-400" />
                   Physical Document Proof
                 </span>
-                <a
-                  href={item.evidenceUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-xs text-orange-400 hover:text-orange-300 flex items-center gap-1 transition font-mono"
-                >
-                  <span>Open Full Asset</span>
-                  <ExternalLink className="w-3 h-3" />
-                </a>
+                <div className="flex items-center gap-2">
+                  <a
+                    href={item.evidenceUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="text-xs text-orange-400 hover:text-orange-300 flex items-center gap-1 transition font-mono mr-2"
+                  >
+                    <span>Full Asset</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                  {isDocOpen ? <ChevronUp className="w-3.5 h-3.5 text-slate-400" /> : <ChevronDown className="w-3.5 h-3.5 text-slate-400" />}
+                </div>
               </div>
 
               {/* Vector Document Frame */}
-              <div className="rounded-xl border border-slate-700/80 bg-black/60 p-2 overflow-hidden shadow-inner flex items-center justify-center">
-                <img 
-                  src={item.evidenceUrl} 
-                  alt={item.evidenceTitle}
-                  className="max-h-64 w-auto object-contain rounded border border-slate-800"
-                />
-              </div>
-              <div className="text-[11px] font-mono text-slate-400 text-center">
-                {item.evidenceTitle}
-              </div>
+              {isDocOpen && (
+                <div className="animate-in fade-in duration-150 space-y-1.5">
+                  <div className="rounded-xl border border-slate-700/80 bg-black/60 p-2 overflow-hidden shadow-inner flex items-center justify-center">
+                    <img 
+                      src={item.evidenceUrl} 
+                      alt={item.evidenceTitle}
+                      className="max-h-64 w-auto object-contain rounded border border-slate-800"
+                    />
+                  </div>
+                  <div className="text-[11px] font-mono text-slate-400 text-center">
+                    {item.evidenceTitle}
+                  </div>
+                </div>
+              )}
             </div>
 
-            {/* Extracted Fields Table with Problem Highlighting */}
+            {/* Extracted Fields Table with Problem Highlighting (Collapsible Dropdown) */}
             <div className="space-y-2">
-              <div className="text-xs font-mono uppercase tracking-wider text-slate-400 font-semibold flex items-center gap-1.5">
-                <Bot className="w-3.5 h-3.5 text-sky-400" />
-                Extracted Fields & Discrepancies
+              <div 
+                onClick={() => setIsFieldsOpen(!isFieldsOpen)}
+                className="flex items-center justify-between cursor-pointer select-none"
+              >
+                <div className="text-xs font-mono uppercase tracking-wider text-slate-400 font-semibold flex items-center gap-1.5">
+                  <Bot className="w-3.5 h-3.5 text-sky-400" />
+                  Extracted Fields & Discrepancies ({item.fields.length})
+                </div>
+                {isFieldsOpen ? <ChevronUp className="w-3.5 h-3.5 text-slate-400" /> : <ChevronDown className="w-3.5 h-3.5 text-slate-400" />}
               </div>
 
-              <div className="rounded-xl border border-slate-800 divide-y divide-slate-800/80 bg-[#0b1120] overflow-hidden">
-                {item.fields.map((field, idx) => {
-                  const isProblem = field.isProblem || item.problemFields.includes(field.label);
+              {isFieldsOpen && (
+                <div className="rounded-xl border border-slate-800 divide-y divide-slate-800/80 bg-[#0b1120] overflow-hidden animate-in fade-in duration-150">
+                  {item.fields.map((field, idx) => {
+                    const isProblem = field.isProblem || item.problemFields.includes(field.label);
 
-                  return (
-                    <div 
-                      key={idx}
-                      className={`p-3 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-1 transition-all ${
-                        isProblem 
-                          ? 'bg-orange-950/20 border-l-4 border-l-orange-500 animate-problem-pulse' 
-                          : 'hover:bg-slate-800/30'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2">
-                        {isProblem && (
-                          <AlertTriangle className="w-3.5 h-3.5 text-orange-400 shrink-0" />
-                        )}
-                        <span className={`font-mono ${isProblem ? 'text-orange-300 font-bold' : 'text-slate-400'}`}>
-                          {field.label}
-                        </span>
+                    return (
+                      <div 
+                        key={idx}
+                        className={`p-3 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-1 transition-all ${
+                          isProblem 
+                            ? 'bg-orange-950/25 border border-orange-500/50 rounded-lg animate-problem-pulse shadow-xs shadow-orange-500/10' 
+                            : 'hover:bg-slate-800/30'
+                        }`}
+                      >
+                        <div className="flex items-center gap-2">
+                          {isProblem && (
+                            <AlertTriangle className="w-3.5 h-3.5 text-orange-400 shrink-0" />
+                          )}
+                          <span className={`font-mono ${isProblem ? 'text-orange-300 font-bold' : 'text-slate-400'}`}>
+                            {field.label}
+                          </span>
+                        </div>
+                        <div className={`font-mono text-right sm:max-w-[60%] truncate ${
+                          isProblem ? 'text-orange-200 font-semibold' : 'text-slate-200'
+                        }`}>
+                          {field.value}
+                        </div>
                       </div>
-                      <div className={`font-mono text-right sm:max-w-[60%] truncate ${
-                        isProblem ? 'text-orange-200 font-semibold' : 'text-slate-200'
-                      }`}>
-                        {field.value}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
 
-            {/* Recommended Action & Notes */}
-            <div className="space-y-3">
-              <div className="p-3.5 rounded-xl bg-slate-900 border border-slate-800 space-y-1.5">
-                <div className="text-[11px] font-mono uppercase tracking-wider text-slate-400 font-semibold">
-                  Agent Recommendation
+            {/* Recommended Action & Notes (Collapsible Dropdown) */}
+            <div className="space-y-2">
+              <div 
+                onClick={() => setIsActionOpen(!isActionOpen)}
+                className="flex items-center justify-between cursor-pointer select-none"
+              >
+                <div className="text-xs font-mono uppercase tracking-wider text-slate-400 font-semibold">
+                  Autonomous Agent Recommendation
                 </div>
-                <div className="text-xs text-white leading-relaxed">
-                  {item.suggestedAction}
-                </div>
+                {isActionOpen ? <ChevronUp className="w-3.5 h-3.5 text-slate-400" /> : <ChevronDown className="w-3.5 h-3.5 text-slate-400" />}
               </div>
 
-              <div className="p-3 rounded-xl bg-[#070b14] border border-slate-800/80 text-[11px] text-slate-400 leading-relaxed font-mono">
-                <span className="text-slate-500 font-semibold block mb-0.5">Audit Note:</span>
-                {item.notes}
-              </div>
+              {isActionOpen && (
+                <div className="space-y-3 animate-in fade-in duration-150">
+                  <div className="p-3.5 rounded-xl bg-slate-900 border border-slate-800 space-y-1.5">
+                    <div className="text-[11px] font-mono uppercase tracking-wider text-orange-400 font-semibold">
+                      Proposed Resolution
+                    </div>
+                    <div className="text-xs text-white leading-relaxed">
+                      {item.suggestedAction}
+                    </div>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-[#070b14] border border-slate-800/80 text-[11px] text-slate-400 leading-relaxed font-mono">
+                    <span className="text-slate-500 font-semibold block mb-0.5">Audit Note:</span>
+                    {item.notes}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 

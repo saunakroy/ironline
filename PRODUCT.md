@@ -37,7 +37,12 @@ Unlike conventional TMS or document filers (e.g., Bubba.ai, TruckingOffice) that
 
 - **Name**: Ironline (Ironline Freight LLC).
 - **Voice**: Clean, calm, authoritative, non-technical, and margin-focused.
-- **Theme**: Crisp, high-contrast light theme (slate-50 canvas, pure white cards, refined typography) optimized for mobile and iPad viewing.
+- **Theme**: Nocturnal industrial dark theme (deep obsidian `#070b14` canvas, dark slate `#0f172a` cards, Safety Orange `#f97316` highlights, Telematics Cyan `#38bdf8`) with high contrast for night-shift cab and arm's-length tablet viewing.
+
+## Communication Architecture (The Dispatcher Air-Gap)
+
+- **Strict Driver-Broker Isolation**: The driver and the broker **never** talk. Only the driver and the dispatcher (or autonomous fleet agent acting for dispatch) ever communicate.
+- **Agent-Mediated Broker Channel**: The autonomous agent (or dispatcher) is the sole entity interfacing with brokers. The driver texts raw photos/stamps to the agent; the agent parses the clauses, verifies Samsara GPS telematics, formulates supplemental claims, and transmits revisions directly to the broker.
 
 ## Evidence on Hand
 
@@ -49,5 +54,6 @@ Unlike conventional TMS or document filers (e.g., Bubba.ai, TruckingOffice) that
 
 1. **Evidence Before Assertions**: Every flagged dollar must be backed by verifiable document or telematics proof.
 2. **Zero In-Cab Friction**: Drivers must never have to type data into forms while on duty; 1-tap capture is mandatory.
-3. **Calm Executive Clarity**: Owners should see simple, prioritized action items and direct dollar impacts, not raw developer logs or noisy alarms.
-4. **Stateful Durability**: Load lifecycles and scheduled reconciliation triggers persist reliably across any system downtime.
+3. **The Dispatcher Air-Gap**: Drivers never speak with brokers. Drivers report to their agent; the agent reconciles contract terms and represents the carrier to the broker.
+4. **Calm Executive Clarity**: Owners should see simple, prioritized action items and direct dollar impacts, not raw developer logs or noisy alarms.
+5. **Stateful Durability**: Load lifecycles and scheduled reconciliation triggers persist reliably across any system downtime.

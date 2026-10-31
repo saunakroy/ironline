@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-31T13:53:00Z",
+  "generatedAt": "2026-10-31T14:18:00Z",
   "title": "Design System: Ironline",
   "extensions": {
     "colorMeta": {
@@ -78,6 +78,14 @@
       "description": "Standard card for displaying flagged leaks with prominent tabular dollars.",
       "html": "<div class=\"ds-card-briefing\"><div class=\"ds-tag\">P8 • WATCHDOG</div><div class=\"ds-amount\">$1,250.43</div><div class=\"ds-title\">Duplicate fuel receipt uploaded twice</div></div>",
       "css": ".ds-card-briefing { background: #0f172a; border: 1px solid #1e293b; border-radius: 16px; padding: 20px; color: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif; transition: border-color 0.2s, transform 0.2s; } .ds-card-briefing:hover { border-color: rgba(249, 115, 22, 0.4); transform: translateY(-2px); } .ds-tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: #f97316; margin-bottom: 8px; } .ds-amount { font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 800; color: #f97316; } .ds-title { font-size: 14px; font-weight: 600; color: #cbd5e1; margin-top: 4px; }"
+    },
+    {
+      "name": "Dropdown Accordion Header",
+      "kind": "custom",
+      "refersTo": "card-surface",
+      "description": "Collapsible section header for managing screen density on mobile.",
+      "html": "<div class=\"ds-accordion-header\"><span>PAPERWORK INGESTION ZONE</span><span class=\"ds-toggle\">Collapse ▲</span></div>",
+      "css": ".ds-accordion-header { display: flex; justify-content: space-between; align-items: center; color: #94a3b8; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; padding: 4px; cursor: pointer; } .ds-toggle { font-size: 11px; color: #64748b; }"
     }
   ],
   "narrative": {
@@ -86,7 +94,9 @@
     "keyCharacteristics": [
       "Nocturnal High Contrast: Obsidian background (#070b14) paired with crisp white text (#f8fafc).",
       "Dollars as the Stars: Financial figures in oversized tabular monospace (JetBrains Mono).",
-      "Precision Evidence Anchors: Discrepancies anchor to physical document proof with glowing problem field overlays."
+      "Precision Evidence Anchors: Discrepancies anchor to physical document proof with glowing problem field overlays.",
+      "Collapsible Section Density: Every primary operational screen area is an expandable dropdown accordion.",
+      "The Dispatcher Air-Gap: Drivers and brokers never communicate directly; the autonomous agent represents all broker claims."
     ],
     "rules": [
       {
@@ -98,15 +108,28 @@
         "name": "The Tabular Money Rule",
         "body": "Every dollar amount must render in font-mono tabular-nums to prevent layout jitter during count-up animations and maintain visual alignment.",
         "section": "typography"
+      },
+      {
+        "name": "The Dispatcher Air-Gap Rule",
+        "body": "Drivers and brokers never speak directly. Drivers communicate solely with dispatch/agents; the agent alone communicates with brokers.",
+        "section": "overview"
+      },
+      {
+        "name": "The Collapsible Section Rule",
+        "body": "Every primary operational zone (dropzone, processed feed, decisions list, watch items) must support interactive accordion collapse to maintain vertical density.",
+        "section": "layout"
       }
     ],
     "dos": [
       "Do format every dollar amount with consistent 2-decimal precision ($1,250.43).",
+      "Do wrap operational sections in collapsible dropdowns so users can manage screen space.",
+      "Do isolate drivers from brokers: drivers speak only to dispatch/agents; agents speak to brokers.",
       "Do display an extraction confidence badge on every parsed document.",
       "Do anchor every financial discrepancy to verifiable document evidence.",
       "Do ensure 100% responsive fluid behavior on 390px iPhone/iPad screens."
     ],
     "donts": [
+      "Don't ever show or facilitate direct driver-to-broker communication; the dispatcher/agent owns all broker discussions.",
       "Don't use bright light backgrounds that cause glare in night driving conditions.",
       "Don't require drivers or owners to fill in manual spreadsheet forms.",
       "Don't bury dollar amounts behind secondary clicks; money is always hero.",
