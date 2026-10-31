@@ -2,7 +2,7 @@
 import express from "express"
 import { join } from "node:path"
 
-import type { ExtractedDoc, RelayMessage } from "./shared/index.js"
+import type { Briefing, ExtractedDoc, RelayMessage } from "./shared/index.js"
 
 import { Company, Load } from "./actors.js"
 import { loadActorId, routeDoc } from "./router.js"
@@ -87,8 +87,19 @@ app.post("/api/companies/:c/check", wrap(async (req, res) => {
         console.warn(`briefing.ready contract violated, ignoring: ${bad}`)
         briefing = null
     }
-    if (briefing) await company.setBriefing(briefing)
     res.json({ ...result, briefing: briefing ?? null })
+}))
+
+/** Both manual and alarm-triggered briefings arrive through this relay callback. */
+app.post("/api/companies/:c/briefing", wrap(async (req, res) => {
+    const briefing = req.body as Briefing
+    if (typeof briefing?.text !== "string" || !Array.isArray(briefing.findings) || !Number.isFinite(briefing.totalAtRisk)
+        || typeof briefing.asOf !== "string" || typeof briefing.generatedAt !== "string") {
+        res.status(400).json({ error: "Invalid briefing" })
+        return
+    }
+    await Company.get(String(req.params.c)).setBriefing(briefing)
+    res.json({ ok: true })
 }))
 
 app.post("/api/companies/:c/schedule", wrap(async (req, res) => {

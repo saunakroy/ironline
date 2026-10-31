@@ -68,7 +68,7 @@ them as named endpoints when you design the relay network.
   - keeps the fuel ledger
   - runs `runCheck(asOf)` → `Finding[]`
 - **Schedules:** one durable alarm. `scheduleCheck()` defaults to the next 02:00. `onAlarm` runs the check and
-  then **publishes `findings.ready` to `RELAY_HUB_URL` by itself**. That's the only relay call made from inside an actor.
+  then **publishes `findings.ready` to `RELAY_HUB_URL` by itself**, with `wait:false` so the actor can receive the later briefing callback. That's the only relay call made from inside an actor.
 - **Broadcasts** to WebSocket clients: `{type:"findings"}`, `{type:"load"}`, `{type:"briefing"}`.
 
 ### `Load` actor: one load's record, from rate con to payment (id = `${companyId}.${loadId}`, e.g. `ironline.IRN-1852`)
@@ -110,11 +110,12 @@ fills in `id` and `at`.
 |---|---|---|---|---|
 | **in** | `doc.extracted` | `intake-agent` → `company:<id>` | `{ companyId, doc: ExtractedDoc, cached: boolean }` | Delivered today by the hub as `POST /api/companies/:c/docs` with **body = `doc`**. Response is a `RouteResult` (`{file, kind, loadIds, matchedBy, note?}`) |
 | out | `load.updated` | `data-server` → `ui` | `RouteResult` | Fire-and-forget, sent once per routed doc |
-| out | `findings.ready` | `data-server` (or `company:<id>` from the alarm) → `briefer` | `{ companyId, asOf, findings: Finding[], totalAtRisk, unmatched: {file,kind,addedAt}[] }` | **Request/reply:** `POST /check` waits for the reply and reads `delivery.briefing` (a `Briefing`), then stores it with `Company.setBriefing` |
+| out | `findings.ready` | `data-server` (or `company:<id>` from the alarm) → `briefer` | `{ companyId, asOf, findings: Finding[], totalAtRisk, unmatched: {file,kind,addedAt}[] }` | **Request/reply:** `POST /check` waits for the reply and reads `delivery.briefing` (a `Briefing`), while the `briefing.ready` callback stores it with `Company.setBriefing` |
 
 ### What the Agent Relay migration has to preserve
 1. **`findings.ready` is request/reply.** `server.ts` → `/check` expects the publish response to contain
-   `{ delivery: { briefing } }`. If Agent Relay is async-only, do one of the following:
+   `{ delivery: { briefing } }`. The installed transport preserves this using correlated completion receipts.
+   Briefings are persisted through `POST /api/companies/:c/briefing`, including alarm-triggered runs. For a future async-only API, do one of the following:
    - (a) have the Briefer publish `briefing.ready` and add a data-side subscriber that calls `Company.setBriefing`, *or*
    - (b) keep a correlation id and wait for the reply.
 
@@ -140,6 +141,7 @@ fills in `id` and `at`.
 | GET | `/api/companies/:c/loads/:id` | → `LoadRecord` |
 | POST | `/api/companies/:c/docs` | `ExtractedDoc \| ExtractedDoc[]` → `RouteResult[]` (the **`doc.extracted` delivery endpoint**) |
 | POST | `/api/companies/:c/check` | `{asOf?}` → `{findings, totalAtRisk, briefing}` |
+| POST | `/api/companies/:c/briefing` | `Briefing` → `{ok}`; relay callback persists and broadcasts the result |
 | POST | `/api/companies/:c/schedule` | `{atMs?}` → `{nextCheckAt}` |
 | POST | `/api/companies/:c/reset` | clears live data and keeps history |
 | POST | `/api/companies/:c/socket` | Terse WebSocket grant (`websocketUrl`) for the company feed |

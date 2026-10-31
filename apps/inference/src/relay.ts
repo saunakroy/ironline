@@ -1,14 +1,17 @@
 // Relay hub: every agent-to-agent message goes through here, so the UI can show the agents coordinating.
-// Transport is local HTTP for now. To move onto Agent Relay, implement `Transport` with its SDK and
-// keep the topics/payloads unchanged.
+// Transport selects in-process delivery or the Agent Relay network while preserving the same handlers.
 import { randomUUID } from "node:crypto"
 
 import type { RelayMessage } from "@fleet/data/shared"
 
-type Handler = (msg: RelayMessage) => Promise<unknown>
+export type Handler = (msg: RelayMessage) => Promise<unknown>
 
 export interface Transport {
+    accept?(msg: RelayMessage): void
+    message?(id: string): RelayMessage | undefined
     deliver(msg: RelayMessage, handler: Handler | undefined): Promise<unknown>
+    start?(hub: RelayHub): Promise<void>
+    close?(): Promise<void>
 }
 
 const localTransport: Transport = { deliver: async (msg, handler) => (handler ? handler(msg) : null) }
@@ -17,6 +20,7 @@ export class RelayHub {
     private feed: RelayMessage[] = []
     private listeners = new Set<(m: RelayMessage) => void>()
     private handlers = new Map<string, Handler>()
+    private recorded = new Set<string>()
 
     constructor(private transport: Transport = localTransport) {}
 
@@ -25,15 +29,25 @@ export class RelayHub {
         this.handlers.set(topic, handler)
     }
 
-    async publish(input: Omit<RelayMessage, "id" | "at">): Promise<{ message: RelayMessage; delivery: unknown }> {
-        const message: RelayMessage = { ...input, id: randomUUID(), at: new Date().toISOString() }
+    async start() { await this.transport.start?.(this) }
+    async close() { await this.transport.close?.() }
+    message(id: string) { return this.transport.message?.(id) ?? this.feed.find(message => message.id === id) }
+
+    /** Receive from the network without publishing the message again. */
+    async dispatch(message: RelayMessage): Promise<unknown> {
         this.record(message)
-        const delivery = await this.transport.deliver(message, this.handlers.get(message.topic))
-        return { message, delivery }
+        return this.handlers.get(message.topic)?.(message) ?? null
     }
 
-    log(from: string, to: string, payload: unknown, traceId?: string) {
-        this.record({ id: randomUUID(), at: new Date().toISOString(), topic: "log", from, to, payload, traceId })
+    publish(input: Omit<RelayMessage, "id" | "at"> & { id?: string }): Promise<{ message: RelayMessage; delivery: unknown }> {
+        const message: RelayMessage = { ...input, id: input.id ?? randomUUID(), at: new Date().toISOString() }
+        this.transport.accept?.(message)
+        this.record(message)
+        return this.transport.deliver(message, this.handlers.get(message.topic)).then(delivery => ({ message, delivery }))
+    }
+
+    async log(from: string, to: string, payload: unknown, traceId?: string) {
+        await this.publish({ topic: "log", from, to, payload, traceId })
     }
 
     recent(limit = 200) {
@@ -46,8 +60,10 @@ export class RelayHub {
     }
 
     private record(m: RelayMessage) {
+        if (this.recorded.has(m.id)) return
+        this.recorded.add(m.id)
         this.feed.push(m)
-        if (this.feed.length > 1000) this.feed.shift()
+        if (this.feed.length > 1000) this.recorded.delete(this.feed.shift()!.id)
         for (const l of this.listeners) l(m)
     }
 }

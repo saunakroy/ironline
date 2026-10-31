@@ -69,6 +69,7 @@ export class Company extends Actor<null, null, CompanyOutgoing> {
     @Persisted @Emittable briefing: Briefing | null = null
     @Persisted @Emittable lastCheckAt: string | null = null
     @Persisted private nextLoadSeq = 0
+    @Persisted private pendingCheck: { id: string; payload: unknown } | null = null
 
     constructor(context: ActorContext) {
         super(context)
@@ -230,6 +231,7 @@ export class Company extends Actor<null, null, CompanyOutgoing> {
     }
 
     async setBriefing(briefing: Briefing): Promise<void> {
+        if (this.briefing && this.briefing.generatedAt >= briefing.generatedAt) return
         this.briefing = briefing
         this.broadcast({ type: "briefing", briefing })
     }
@@ -242,27 +244,32 @@ export class Company extends Actor<null, null, CompanyOutgoing> {
     }
 
     async onAlarm(): Promise<void> {
-        const asOf = new Date().toISOString().slice(0, 10)
-        const result = await this.runCheck(asOf)
-        this.alarm.set(nextLocalHour(2))
-        // Hand findings to the Briefer through the relay hub. Best effort: the UI also gets the broadcast.
-        const hub = process.env.RELAY_HUB_URL
-        if (hub) {
-            try {
-                await fetch(`${hub}/relay/publish`, {
-                    method: "POST",
-                    headers: { "content-type": "application/json" },
-                    body: JSON.stringify({
-                        topic: "findings.ready",
-                        from: `company:${this.id}`,
-                        to: "briefer",
-                        payload: { companyId: this.id, asOf, ...result }
-                    }),
-                    signal: AbortSignal.timeout(40_000)
+        if (!this.pendingCheck) {
+            const asOf = new Date().toISOString().slice(0, 10)
+            const result = await this.runCheck(asOf)
+            this.pendingCheck = { id: `check:${this.id}:${crypto.randomUUID()}`, payload: { companyId: this.id, asOf, ...result } }
+        }
+        const hub = process.env.RELAY_HUB_URL ?? "http://127.0.0.1:4100"
+        try {
+            const response = await fetch(`${hub}/relay/publish`, {
+                method: "POST",
+                headers: { "content-type": "application/json" },
+                signal: AbortSignal.timeout(10_000),
+                body: JSON.stringify({
+                    id: this.pendingCheck.id,
+                    wait: false,
+                    topic: "findings.ready",
+                    from: `company:${this.id}`,
+                    to: "briefer",
+                    payload: this.pendingCheck.payload
                 })
-            } catch {
-                /* hub down; briefing can be regenerated from the UI */
-            }
+            })
+            if (!response.ok) throw new Error("Relay unavailable")
+            this.pendingCheck = null
+            this.alarm.set(nextLocalHour(2))
+        } catch {
+            // Keep the same message ID and findings until the hub accepts them.
+            this.alarm.set(Date.now() + 60_000)
         }
     }
 
@@ -287,6 +294,7 @@ export class Company extends Actor<null, null, CompanyOutgoing> {
         this.briefing = null
         this.lastCheckAt = null
         this.nextLoadSeq = 0
+        this.pendingCheck = null
     }
 
 }
