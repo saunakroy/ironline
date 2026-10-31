@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { AgentRelayMessage } from '../types';
-import { Terminal, Send, Play, ShieldAlert, Sparkles, X } from 'lucide-react';
+import { X, Sparkles, CheckCircle, ShieldAlert, FileText, Play } from 'lucide-react';
 
 interface AgentRelayStreamProps {
   messages: AgentRelayMessage[];
@@ -15,157 +15,139 @@ export const AgentRelayStream: React.FC<AgentRelayStreamProps> = ({
   isOpen, 
   onClose 
 }) => {
-  const [activeFilter, setActiveFilter] = useState<'all' | 'watchdog' | 'reconciler' | 'extractor' | 'briefer'>('all');
+  const [activeFilter, setActiveFilter] = useState<'all' | 'alert' | 'normal'>('all');
 
   const filteredMessages = messages.filter(m => {
     if (activeFilter === 'all') return true;
-    return m.fromAgent === activeFilter || m.toAgent === activeFilter;
+    if (activeFilter === 'alert') return m.priority === 'alert' || m.priority === 'urgent';
+    return m.priority === 'normal';
   });
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-y-0 right-0 z-50 w-full sm:w-[460px] bg-white border-l border-slate-200 shadow-2xl flex flex-col animate-in slide-in-from-right duration-200">
-      {/* Header */}
-      <div className="p-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          <div className="p-1.5 rounded-lg bg-blue-100 text-blue-700">
-            <Terminal className="w-4 h-4" />
+    <div className="fixed inset-y-0 right-0 z-50 w-full sm:w-[440px] bg-white border-l border-slate-200 shadow-2xl flex flex-col animate-in slide-in-from-right duration-200">
+      {/* Minimal Header */}
+      <div className="p-5 bg-white border-b border-slate-100 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+            <Sparkles className="w-5 h-5" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-sm font-bold text-slate-900 tracking-tight">Agent Relay Live Stream</h3>
-              <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+              <h3 className="text-base font-bold text-slate-900">Live Activity</h3>
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             </div>
-            <p className="text-[11px] text-slate-500 font-mono">
-              Mesh Relay • 4 Autonomous Back-Office Agents
+            <p className="text-xs text-slate-500 font-medium">
+              Autonomous back-office agents running in background
             </p>
           </div>
         </div>
         <button 
           onClick={onClose}
-          className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-200/60 transition"
+          className="p-2 text-slate-400 hover:text-slate-700 rounded-xl hover:bg-slate-100 transition"
         >
           <X className="w-5 h-5" />
         </button>
       </div>
 
-      {/* Agents Topology Pill Bar */}
-      <div className="p-3 bg-white border-b border-slate-100">
-        <div className="text-[10px] font-mono uppercase text-slate-400 mb-1.5 font-bold tracking-wider">
-          Filter by Active Agent:
+      {/* Trigger & Quick Status Bar */}
+      <div className="p-4 bg-slate-50 border-b border-slate-200/80 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-1.5 text-xs text-slate-600 font-medium">
+          <span className="w-2 h-2 rounded-full bg-emerald-500" />
+          <span>4 AI agents active</span>
         </div>
-        <div className="grid grid-cols-4 gap-1.5 text-center text-[10px] font-mono">
-          <button
-            onClick={() => setActiveFilter(activeFilter === 'extractor' ? 'all' : 'extractor')}
-            className={`p-1.5 rounded-xl border transition ${
-              activeFilter === 'extractor'
-                ? 'bg-blue-600 text-white font-bold border-blue-600 shadow-xs'
-                : 'bg-slate-50 border-slate-200 text-blue-700 hover:bg-slate-100'
-            }`}
-          >
-            Extractor
-          </button>
-          <button
-            onClick={() => setActiveFilter(activeFilter === 'reconciler' ? 'all' : 'reconciler')}
-            className={`p-1.5 rounded-xl border transition ${
-              activeFilter === 'reconciler'
-                ? 'bg-purple-600 text-white font-bold border-purple-600 shadow-xs'
-                : 'bg-slate-50 border-slate-200 text-purple-700 hover:bg-slate-100'
-            }`}
-          >
-            Reconciler
-          </button>
-          <button
-            onClick={() => setActiveFilter(activeFilter === 'watchdog' ? 'all' : 'watchdog')}
-            className={`p-1.5 rounded-xl border transition ${
-              activeFilter === 'watchdog'
-                ? 'bg-red-600 text-white font-bold border-red-600 shadow-xs'
-                : 'bg-slate-50 border-slate-200 text-red-700 hover:bg-slate-100'
-            }`}
-          >
-            Watchdog
-          </button>
-          <button
-            onClick={() => setActiveFilter(activeFilter === 'briefer' ? 'all' : 'briefer')}
-            className={`p-1.5 rounded-xl border transition ${
-              activeFilter === 'briefer'
-                ? 'bg-emerald-600 text-white font-bold border-emerald-600 shadow-xs'
-                : 'bg-slate-50 border-slate-200 text-emerald-700 hover:bg-slate-100'
-            }`}
-          >
-            Briefer
-          </button>
-        </div>
-      </div>
 
-      {/* Demo Action Trigger */}
-      <div className="p-3 bg-blue-50/60 border-b border-blue-100 flex items-center justify-between">
-        <div className="text-xs text-blue-900 font-medium flex items-center gap-1.5">
-          <Sparkles className="w-3.5 h-3.5 text-blue-600" />
-          <span>Demo Step 4: Agents talking</span>
-        </div>
         <button
           onClick={onTriggerReconcile}
-          className="px-3 py-1 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center gap-1.5 transition shadow-xs"
+          className="px-3.5 py-1.5 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl flex items-center gap-1.5 transition shadow-xs"
         >
           <Play className="w-3 h-3 fill-current" />
-          Trigger 18:00 Alarm
+          <span>Run Check Now</span>
         </button>
       </div>
 
-      {/* Message Feed */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-3 font-mono text-xs bg-slate-50/50">
-        {filteredMessages.map((msg) => (
-          <div 
-            key={msg.id}
-            className={`p-3 rounded-2xl border space-y-1.5 bg-white shadow-xs transition-all ${
-              msg.priority === 'urgent'
-                ? 'border-red-200 ring-1 ring-red-400/20'
-                : msg.priority === 'alert'
-                ? 'border-amber-200 ring-1 ring-amber-400/20'
-                : 'border-slate-200/80'
-            }`}
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1.5">
-                <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                  msg.fromAgent === 'extractor' ? 'bg-blue-100 text-blue-800' :
-                  msg.fromAgent === 'reconciler' ? 'bg-purple-100 text-purple-800' :
-                  msg.fromAgent === 'watchdog' ? 'bg-red-100 text-red-800' :
-                  'bg-emerald-100 text-emerald-800'
-                }`}>
-                  {msg.fromAgent}
-                </span>
-                <Send className="w-2.5 h-2.5 text-slate-400" />
-                <span className="text-[10px] text-slate-500 uppercase font-semibold">
-                  {msg.toAgent}
-                </span>
-              </div>
-
-              <div className="flex items-center gap-1 text-[10px] text-slate-400">
-                {msg.priority === 'urgent' && <ShieldAlert className="w-3 h-3 text-red-600" />}
-                {msg.timestamp}
-              </div>
-            </div>
-
-            <p className="text-slate-800 leading-relaxed font-sans text-xs">
-              {msg.message}
-            </p>
-
-            {msg.loadRef && (
-              <div className="text-[10px] text-slate-500 pt-1 border-t border-slate-100 font-mono">
-                Context: <strong className="text-blue-700">{msg.loadRef}</strong>
-              </div>
-            )}
-          </div>
-        ))}
+      {/* Filter Tabs */}
+      <div className="px-5 py-2.5 bg-white border-b border-slate-100 flex items-center gap-2">
+        <span className="text-xs text-slate-400 font-semibold">Filter:</span>
+        <button
+          onClick={() => setActiveFilter('all')}
+          className={`px-3 py-1 rounded-lg text-xs font-bold transition ${
+            activeFilter === 'all'
+              ? 'bg-slate-900 text-white'
+              : 'text-slate-600 hover:bg-slate-100'
+          }`}
+        >
+          All ({messages.length})
+        </button>
+        <button
+          onClick={() => setActiveFilter('alert')}
+          className={`px-3 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1 ${
+            activeFilter === 'alert'
+              ? 'bg-amber-600 text-white'
+              : 'text-amber-700 hover:bg-amber-50'
+          }`}
+        >
+          <span>Flagged Items</span>
+        </button>
       </div>
 
-      {/* Bottom Status */}
-      <div className="p-3 bg-white border-t border-slate-200 text-[11px] text-slate-500 flex items-center justify-between font-mono">
-        <span>Channel: <strong className="text-slate-700">fleet.relay.v1</strong></span>
-        <span className="text-emerald-700 font-semibold">4 Agents Online</span>
+      {/* Clean Activity Feed */}
+      <div className="flex-1 overflow-y-auto p-5 space-y-3 bg-slate-50/50">
+        {filteredMessages.map((msg) => {
+          const isAlert = msg.priority === 'alert' || msg.priority === 'urgent';
+
+          return (
+            <div 
+              key={msg.id}
+              className={`p-4 rounded-2xl border transition-all bg-white shadow-xs ${
+                isAlert ? 'border-amber-200 ring-1 ring-amber-400/20' : 'border-slate-200/80'
+              }`}
+            >
+              <div className="flex items-center justify-between gap-2 mb-1.5">
+                <div className="flex items-center gap-2">
+                  <div className={`p-1.5 rounded-lg ${
+                    msg.fromAgent === 'watchdog' ? 'bg-red-50 text-red-600' :
+                    msg.fromAgent === 'reconciler' ? 'bg-purple-50 text-purple-600' :
+                    msg.fromAgent === 'extractor' ? 'bg-blue-50 text-blue-600' :
+                    'bg-emerald-50 text-emerald-600'
+                  }`}>
+                    {msg.fromAgent === 'watchdog' ? <ShieldAlert className="w-3.5 h-3.5" /> :
+                     msg.fromAgent === 'reconciler' ? <Sparkles className="w-3.5 h-3.5" /> :
+                     msg.fromAgent === 'extractor' ? <FileText className="w-3.5 h-3.5" /> :
+                     <CheckCircle className="w-3.5 h-3.5" />}
+                  </div>
+
+                  <span className="text-xs font-bold uppercase tracking-wider text-slate-500 font-mono">
+                    {msg.fromAgent} Agent
+                  </span>
+                </div>
+
+                <span className="text-xs text-slate-400 font-medium">
+                  {msg.timestamp}
+                </span>
+              </div>
+
+              {/* Human-friendly Narrative Summary */}
+              <p className="text-sm font-semibold text-slate-800 leading-snug">
+                {msg.humanSummary || msg.message}
+              </p>
+
+              {msg.loadRef && (
+                <div className="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                  <span>Linked to Load: <strong className="text-blue-700 font-mono">{msg.loadRef}</strong></span>
+                  <span className="text-slate-400">Verified</span>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Minimal Footer */}
+      <div className="p-4 bg-white border-t border-slate-200 text-xs text-slate-500 flex items-center justify-between">
+        <span className="font-medium">Powered by Agent Relay & Durable Actors</span>
+        <span className="text-emerald-700 font-bold">100% Synced</span>
       </div>
     </div>
   );

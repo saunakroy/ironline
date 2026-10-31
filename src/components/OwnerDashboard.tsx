@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import { EvidenceModal } from './EvidenceModal';
 
-interface MaintainerDashboardProps {
+interface OwnerDashboardProps {
   drivers: DriverProfile[];
   problems: PlantedProblem[];
   loads: LoadItem[];
@@ -27,7 +27,7 @@ interface MaintainerDashboardProps {
   onSelectDriverForTruckerMode?: (driver: DriverProfile) => void;
 }
 
-export const MaintainerDashboard: React.FC<MaintainerDashboardProps> = ({
+export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({
   drivers,
   problems,
   loads,
@@ -61,12 +61,17 @@ export const MaintainerDashboard: React.FC<MaintainerDashboardProps> = ({
 
       {/* Simplified Header 1: Fleet Overview Metrics */}
       <div className="space-y-3">
-        <h2 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2">
-          <span>Fleet Overview</span>
-          <span className="text-xs font-bold text-slate-500 font-normal">
-            (Live Financial & Operating KPIs)
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+            <span>Fleet Overview</span>
+            <span className="text-xs font-bold text-slate-500 font-normal">
+              (Financial & Operational Health)
+            </span>
+          </h2>
+          <span className="text-xs font-semibold text-slate-500 font-mono">
+            4 Trucks Synced
           </span>
-        </h2>
+        </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-xs">
@@ -140,7 +145,7 @@ export const MaintainerDashboard: React.FC<MaintainerDashboardProps> = ({
               <span>Drivers & Equipment</span>
             </h2>
             <p className="text-sm text-slate-500">
-              Tap any driver card to inspect their assignment, audit receipts, or run fleet tools.
+              Select any driver to review their load, audit paperwork, or run fleet tools.
             </p>
           </div>
           <span className="text-xs font-mono font-bold px-3 py-1.5 rounded-full bg-slate-100 text-slate-700 self-start sm:self-auto">
@@ -211,7 +216,7 @@ export const MaintainerDashboard: React.FC<MaintainerDashboardProps> = ({
                   </div>
 
                   <div className="p-3 rounded-2xl bg-slate-50 border border-slate-100">
-                    <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">Agent Audit</div>
+                    <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">Audit Status</div>
                     <div className="text-base sm:text-lg font-bold truncate mt-0.5">
                       {driverProblem ? (
                         <span className="text-amber-600 flex items-center gap-1">
@@ -360,7 +365,7 @@ export const MaintainerDashboard: React.FC<MaintainerDashboardProps> = ({
           </div>
         </div>
 
-        {/* Clean, Non-overwhelming Priority Cards */}
+        {/* Clean Priority Cards */}
         <div className="divide-y divide-slate-100">
           {tonightProblems.map((problem) => (
             <div key={problem.id} className="py-4.5 first:pt-0 last:pb-0 flex flex-col sm:flex-row sm:items-center justify-between gap-4">

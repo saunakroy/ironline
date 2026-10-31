@@ -1,4 +1,4 @@
-export type UserRole = 'trucker' | 'maintainer';
+export type UserRole = 'trucker' | 'owner';
 
 export type Severity = 'critical' | 'warning' | 'info';
 
@@ -96,6 +96,7 @@ export interface AgentRelayMessage {
   loadRef?: string;
   message: string;
   priority: 'normal' | 'alert' | 'urgent';
+  humanSummary?: string; // friendly 1-sentence summary
 }
 
 export interface FleetKPIs {

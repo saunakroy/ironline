@@ -508,62 +508,69 @@ export const MOCK_LOADS: LoadItem[] = [
 export const MOCK_AGENT_MESSAGES: AgentRelayMessage[] = [
   {
     id: 'MSG-101',
-    timestamp: '12:31:04',
+    timestamp: '12:31 PM',
     fromAgent: 'extractor',
     toAgent: 'reconciler',
     loadRef: 'LD-4091',
     message: 'Extracted BOL timestamps: Arrived 07:40, Departed 12:10 (4.5 hrs total dwell time). Passing to Reconciler.',
+    humanSummary: 'Read BOL photo for Load 4091: 4.5 hours spent at receiver dock.',
     priority: 'normal'
   },
   {
     id: 'MSG-102',
-    timestamp: '12:31:06',
+    timestamp: '12:31 PM',
     fromAgent: 'reconciler',
     toAgent: 'briefer',
     loadRef: 'LD-4091',
     message: 'DISCREPANCY: Rate con gives 2 hrs free at $65/hr. Unbilled detention detected: 2.5 hrs = $162.50.',
+    humanSummary: 'Found $162.50 in unbilled detention pay to claim from Apex Freight.',
     priority: 'alert'
   },
   {
     id: 'MSG-103',
-    timestamp: '12:32:15',
+    timestamp: '12:32 PM',
     fromAgent: 'watchdog',
     toAgent: 'all',
     message: 'FRAUD ALERT: Card #4412 swiped in Amarillo, TX at 14:15. Samsara GPS verifies Truck 102 in Kansas City, MO at 14:15. Flagging $800.73 charge.',
+    humanSummary: 'Flagged $800.73 fuel card charge: Truck 102 was 580 miles away at the time.',
     priority: 'urgent'
   },
   {
     id: 'MSG-104',
-    timestamp: '12:33:02',
+    timestamp: '12:33 PM',
     fromAgent: 'reconciler',
     toAgent: 'briefer',
     loadRef: 'LD-4088',
     message: 'RATE MISMATCH: Invoice draft #INV-1088 has $1,380.00 but signed rate confirmation is $1,680.00. Underbilled by $300.00.',
+    humanSummary: 'Corrected invoice underbilling: Raised Load 4088 from $1,380 to $1,680 ($300 saved).',
     priority: 'alert'
   },
   {
     id: 'MSG-105',
-    timestamp: '12:33:48',
+    timestamp: '12:33 PM',
     fromAgent: 'extractor',
     toAgent: 'reconciler',
     loadRef: 'LD-4093',
     message: 'Driver text receipt parsed: Capstone Logistics $175.00 lumper fee. No corresponding invoice line exists.',
+    humanSummary: 'Recovered $175 out-of-pocket lumper fee from Elena\'s text message.',
     priority: 'normal'
   },
   {
     id: 'MSG-106',
-    timestamp: '12:34:10',
+    timestamp: '12:34 PM',
     fromAgent: 'watchdog',
     toAgent: 'briefer',
     message: 'DUPLICATE EXPENSE: Pilot Flying J receipt for $1,250.43 matches previous upload on Monday.',
+    humanSummary: 'Blocked $1,250.43 duplicate fuel receipt submitted twice.',
     priority: 'alert'
   },
   {
     id: 'MSG-107',
-    timestamp: '12:34:55',
+    timestamp: '12:34 PM',
     fromAgent: 'briefer',
     toAgent: 'all',
     message: 'NIGHTLY BRIEFING COMPILED: 5 critical items ready for owner sign-off. Total flagged leakage: $2,688.66.',
+    humanSummary: 'Compiled tonight\'s owner briefing: 5 actionable items totaling $2,688.66.',
     priority: 'urgent'
   }
 ];

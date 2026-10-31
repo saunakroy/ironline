@@ -10,7 +10,7 @@ import {
 import { UserRole, DriverProfile, PlantedProblem, ExtractedDocument, AgentRelayMessage } from './types';
 import { Navbar } from './components/Navbar';
 import { TruckerPortal } from './components/TruckerPortal';
-import { MaintainerDashboard } from './components/MaintainerDashboard';
+import { OwnerDashboard } from './components/OwnerDashboard';
 import { AgentRelayStream } from './components/AgentRelayStream';
 
 export default function App() {
@@ -31,21 +31,22 @@ export default function App() {
 
     setProblems(prev => prev.filter(p => p.id !== id));
     
-    // Add audit log to Agent Relay stream
+    // Add human-friendly activity log
     const now = new Date();
-    const timeStr = now.toTimeString().split(' ')[0];
+    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     const newMsg: AgentRelayMessage = {
       id: `MSG-${Date.now()}`,
       timestamp: timeStr,
       fromAgent: 'briefer',
       toAgent: 'all',
       loadRef: resolvedItem.loadId,
-      message: `RESOLVED: ${resolvedItem.id} (${resolvedItem.title}). Reconciled and saved to carrier ledger.`,
+      message: `Owner resolved ${resolvedItem.id}: ${resolvedItem.title}. Reconciled on ledger.`,
+      humanSummary: `✓ Resolved ${resolvedItem.id} (${resolvedItem.title}) — Updated carrier ledger.`,
       priority: 'normal'
     };
     setMessages(prev => [newMsg, ...prev]);
 
-    setActionNotice(`✓ Resolved ${resolvedItem.id}: ${resolvedItem.suggestedAction}`);
+    setActionNotice(`✓ Reconciled ${resolvedItem.id}: ${resolvedItem.suggestedAction}`);
     setTimeout(() => setActionNotice(null), 3500);
   };
 
@@ -53,14 +54,15 @@ export default function App() {
     setDocuments(prev => [newDoc, ...prev]);
 
     const now = new Date();
-    const timeStr = now.toTimeString().split(' ')[0];
+    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     const newMsg: AgentRelayMessage = {
       id: `MSG-${Date.now()}`,
       timestamp: timeStr,
       fromAgent: 'extractor',
       toAgent: 'reconciler',
       loadRef: newDoc.loadRef,
-      message: `MOBILE UPLOAD: ${newDoc.filename} (${newDoc.docClassification}) received from ${newDoc.driverName || 'driver'}. Running cross-check.`,
+      message: `New upload: ${newDoc.filename} (${newDoc.docClassification}) received from ${newDoc.driverName || 'driver'}.`,
+      humanSummary: `📄 Ingested ${newDoc.docClassification} from ${newDoc.driverName || 'driver'}: matched to ${newDoc.loadRef || 'fleet expenses'}.`,
       priority: 'normal'
     };
     setMessages(prev => [newMsg, ...prev]);
@@ -68,15 +70,16 @@ export default function App() {
 
   const handleTriggerReconcile = () => {
     const now = new Date();
-    const timeStr = now.toTimeString().split(' ')[0];
+    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     
     const triggerMsg: AgentRelayMessage = {
-      id: `MSG-${Date.now()}-alarm`,
+      id: `MSG-${Date.now()}-check`,
       timestamp: timeStr,
-      fromAgent: 'watchdog',
-      toAgent: 'reconciler',
-      message: '18:00 EST SCHEDULED CRON: Verifying 4 loads, 12 receipts, and telematics...',
-      priority: 'normal'
+      fromAgent: 'reconciler',
+      toAgent: 'briefer',
+      message: 'Automated 18:00 check completed across all loads, BOLs, and receipts.',
+      humanSummary: '⚡ Manual audit trigger: Reconciled 4 trucks, 12 receipts, and telematics in 42ms.',
+      priority: 'alert'
     };
 
     setMessages(prev => [triggerMsg, ...prev]);
@@ -95,9 +98,9 @@ export default function App() {
         unresolvedCount={problems.filter(p => p.isTonightBriefing).length}
       />
 
-      {/* Floating Action Notice Toast */}
+      {/* Floating Notification Toast */}
       {actionNotice && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white text-xs font-semibold px-4 py-2.5 rounded-full shadow-2xl animate-in slide-in-from-bottom duration-200">
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white text-sm font-bold px-6 py-3 rounded-full shadow-2xl animate-in slide-in-from-bottom duration-200">
           {actionNotice}
         </div>
       )}
@@ -114,7 +117,7 @@ export default function App() {
             onUploadDocument={handleAddDocument}
           />
         ) : (
-          <MaintainerDashboard
+          <OwnerDashboard
             drivers={drivers}
             problems={problems}
             loads={loads}
@@ -128,7 +131,7 @@ export default function App() {
         )}
       </main>
 
-      {/* Agent Relay Live Stream Drawer */}
+      {/* Minimalist Live Activity Drawer */}
       <AgentRelayStream
         messages={messages}
         onTriggerReconcile={handleTriggerReconcile}
