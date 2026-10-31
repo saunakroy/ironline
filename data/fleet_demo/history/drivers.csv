@@ -1,0 +1,5 @@
+driver_id,source_driver_id,first_name,last_name,phone,hire_date,years_experience,license_number,license_state,cdl_class,cdl_expiration,medical_card_expiration,assigned_truck,home_terminal
+D01,DRV00002,William,Martin,(614) 555-0191,2020-10-02,14,DL128955006,GA,A,2028-11-03,2027-05-20,T101,"Columbus, OH"
+D02,DRV00026,Charles,Miller,(614) 555-0127,2019-10-10,22,DL993271900,TX,A,2027-08-17,2027-02-11,T102,"Columbus, OH"
+D03,DRV00039,Thomas,Martinez,(614) 555-0155,2021-03-15,8,DL173678414,TX,A,2029-08-14,2028-01-09,T103,"Columbus, OH"
+D04,DRV00101,John,Davis,(614) 555-0174,2022-06-01,6,DL672030854,CA,A,2027-03-03,2026-11-11,T104,"Columbus, OH"

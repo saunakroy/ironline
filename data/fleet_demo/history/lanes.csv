@@ -1,0 +1,59 @@
+route_id,origin_city,origin_state,destination_city,destination_state,typical_distance_miles
+RTE00001,Atlanta,GA,Chicago,IL,677
+RTE00002,Atlanta,GA,Miami,FL,697
+RTE00003,Chicago,IL,Los Angeles,CA,2003
+RTE00004,Chicago,IL,Portland,OR,2017
+RTE00005,Chicago,IL,Las Vegas,NV,1749
+RTE00006,Chicago,IL,Charlotte,NC,675
+RTE00007,Dallas,TX,New York,NY,1576
+RTE00008,Dallas,TX,Denver,CO,762
+RTE00009,Dallas,TX,Indianapolis,IN,878
+RTE00010,New York,NY,Philadelphia,PA,92
+RTE00011,New York,NY,Columbus,OH,547
+RTE00012,Phoenix,AZ,Philadelphia,PA,2389
+RTE00013,Phoenix,AZ,Denver,CO,673
+RTE00014,Phoenix,AZ,Kansas City,MO,1204
+RTE00015,Philadelphia,PA,New York,NY,92
+RTE00016,Philadelphia,PA,Seattle,WA,2729
+RTE00017,Philadelphia,PA,Minneapolis,MN,1130
+RTE00018,Philadelphia,PA,Indianapolis,IN,670
+RTE00019,Houston,TX,Detroit,MI,1271
+RTE00020,Houston,TX,Seattle,WA,2172
+RTE00021,Houston,TX,Portland,OR,2108
+RTE00022,Houston,TX,Memphis,TN,557
+RTE00023,Miami,FL,Dallas,TX,1276
+RTE00024,Miami,FL,Philadelphia,PA,1175
+RTE00025,Miami,FL,Seattle,WA,3141
+RTE00026,Miami,FL,Denver,CO,1984
+RTE00027,Detroit,MI,Houston,TX,1271
+RTE00028,Seattle,WA,Houston,TX,2172
+RTE00029,Seattle,WA,Charlotte,NC,2623
+RTE00030,Seattle,WA,Indianapolis,IN,2147
+RTE00031,Denver,CO,Kansas City,MO,640
+RTE00032,Portland,OR,Detroit,MI,2259
+RTE00033,Portland,OR,Seattle,WA,167
+RTE00034,Portland,OR,Columbus,OH,2332
+RTE00035,Las Vegas,NV,Dallas,TX,1229
+RTE00036,Las Vegas,NV,Los Angeles,CA,262
+RTE00037,Las Vegas,NV,New York,NY,2561
+RTE00038,Las Vegas,NV,Kansas City,MO,1311
+RTE00039,Minneapolis,MN,Atlanta,GA,1044
+RTE00040,Minneapolis,MN,Los Angeles,CA,1749
+RTE00041,Minneapolis,MN,Houston,TX,1216
+RTE00042,Charlotte,NC,Seattle,WA,2623
+RTE00043,Charlotte,NC,Denver,CO,1559
+RTE00044,Charlotte,NC,Portland,OR,2627
+RTE00045,Charlotte,NC,Memphis,TN,597
+RTE00046,Columbus,OH,Los Angeles,CA,2269
+RTE00047,Columbus,OH,Philadelphia,PA,476
+RTE00048,Columbus,OH,Portland,OR,2332
+RTE00049,Columbus,OH,Minneapolis,MN,720
+RTE00050,Columbus,OH,Kansas City,MO,712
+RTE00051,Memphis,TN,Los Angeles,CA,1840
+RTE00052,Memphis,TN,Minneapolis,MN,804
+RTE00053,Kansas City,MO,Atlanta,GA,777
+RTE00054,Kansas City,MO,Los Angeles,CA,1557
+RTE00055,Kansas City,MO,Miami,FL,1429
+RTE00056,Kansas City,MO,Portland,OR,1718
+RTE00057,Kansas City,MO,Charlotte,NC,921
+RTE00058,Kansas City,MO,Indianapolis,IN,519

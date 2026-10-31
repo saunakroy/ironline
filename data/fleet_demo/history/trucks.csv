@@ -1,0 +1,5 @@
+truck_id,fleet_unit,source_truck_id,make,model_year,vin,tank_capacity_gallons,baseline_mpg,fuel_card,odometer_start,home_terminal,status
+T101,101,TRK00010,Volvo,2015,1MU182160377362421,200,6.6,FC-7741,612480,"Columbus, OH",Active
+T102,102,TRK00050,Peterbilt,2015,1NT453185644930902,150,6.2,FC-7742,734915,"Columbus, OH",Active
+T103,103,TRK00051,Mack,2016,1MT877433803899130,250,6.9,FC-7743,548102,"Columbus, OH",Active
+T104,104,TRK00058,Mack,2015,1VV866452895220495,200,6.4,FC-7744,689377,"Columbus, OH",Active

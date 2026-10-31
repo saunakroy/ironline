@@ -1,0 +1,16 @@
+customer_id,customer_name,customer_type,source_customer_id,credit_terms_days,billing_email
+C001,Buckeye Paper Products,Shipper,CUST00001,60,buckeyepaperproduc@ap.example
+C002,Scioto Valley Foods,Shipper,CUST00002,30,sciotovalleyfoods@ap.example
+C003,Great Lakes Housewares,Shipper,CUST00003,30,greatlakeshousewar@ap.example
+C004,Heartland Building Supply,Shipper,CUST00004,15,heartlandbuildings@ap.example
+C005,Olentangy Plastics,Shipper,CUST00006,30,olentangyplastics@ap.example
+C006,Tri-State Beverage Distributors,Shipper,CUST00008,30,tristatebeveragedi@ap.example
+C007,Maumee Auto Parts,Shipper,CUST00009,30,maumeeautoparts@ap.example
+C008,Prairie Pet Nutrition,Shipper,CUST00010,45,prairiepetnutritio@ap.example
+C009,Hocking Hills Furniture,Shipper,CUST00011,15,hockinghillsfurnit@ap.example
+C010,Lakeshore Packaging Co,Shipper,CUST00012,30,lakeshorepackaging@ap.example
+C011,Midstate Appliance Supply,Shipper,CUST00013,60,midstateappliances@ap.example
+C012,Cardinal Home Goods,Shipper,CUST00014,45,cardinalhomegoods@ap.example
+BRK001,Ridgeline Freight Logistics LLC,Broker,,30,carrierpay@ridgelinefreight.example
+BRK002,Summit Lane Logistics Inc,Broker,,30,ap@summitlanelogistics.example
+BRK003,Coastal Load Partners LLC,Broker,,30,invoices@coastalloadpartners.example
