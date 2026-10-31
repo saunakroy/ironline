@@ -31,7 +31,8 @@ bun install
 bun run dev:actors          # Terse runtime on :7100 (wait for "Ready")
 bun run dev:data            # data server on :4000
 bun run dev:inference       # inference server on :4100 — put OPENAI_API_KEY in apps/inference/.env
-bun run dev:web             # owner UI on :5173 (proxies /data -> :4000, /inference -> :4100)
+bun run dev:web             # Rachit's UI on :5173 (mock data; not wired to the backend yet)
+# live agent tracker (raw relay feed): http://localhost:4100/tracker
 ```
 
 Then:

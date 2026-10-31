@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="100%" height="100%">
+  <rect width="600" height="400" fill="#0f172a" rx="12"/>
+  <rect x="20" y="20" width="560" height="360" fill="#1e293b" rx="8" stroke="#334155" stroke-width="2"/>
+  <rect x="40" y="40" width="520" height="50" fill="#0f172a" rx="6"/>
+  <text x="60" y="70" fill="#f8fafc" font-family="monospace" font-size="16" font-weight="bold">CONTRACT vs INVOICE RATE AUDIT — LOAD LD-4088</text>
+  <rect x="40" y="110" width="245" height="120" fill="#0f172a" rx="8" stroke="#ef4444"/>
+  <text x="55" y="135" fill="#f87171" font-family="monospace" font-size="12" font-weight="bold">OWNER INVOICE DRAFT</text>
+  <text x="55" y="165" fill="#94a3b8" font-family="monospace" font-size="12">DOC: INV-1088.docx</text>
+  <text x="55" y="195" fill="#f87171" font-family="monospace" font-size="16" font-weight="bold">RATE: $1,380.00</text>
+  <text x="55" y="218" fill="#64748b" font-family="sans-serif" font-size="10">(Initial broker tender email quote)</text>
+  <rect x="315" y="110" width="245" height="120" fill="#0f172a" rx="8" stroke="#10b981"/>
+  <text x="330" y="135" fill="#34d399" font-family="monospace" font-size="12" font-weight="bold">SIGNED RATE CONFIRMATION</text>
+  <text x="330" y="165" fill="#94a3b8" font-family="monospace" font-size="12">DOC: RC-CHROBINSON.pdf</text>
+  <text x="330" y="195" fill="#34d399" font-family="monospace" font-size="16" font-weight="bold">RATE: $1,680.00</text>
+  <text x="330" y="218" fill="#64748b" font-family="sans-serif" font-size="10">(Signed rate with $300 driver assist)</text>
+  <rect x="40" y="250" width="520" height="90" fill="rgba(249, 115, 22, 0.15)" stroke="#f97316" rx="8"/>
+  <text x="60" y="280" fill="#fb923c" font-family="monospace" font-size="14" font-weight="bold">RECONCILER FLAG: $300.00 UNDERBILLED TO FACTORING</text>
+  <text x="60" y="305" fill="#cbd5e1" font-family="sans-serif" font-size="12">Drafted invoice failed to incorporate negotiated rate bump.</text>
+  <text x="60" y="325" fill="#38bdf8" font-family="sans-serif" font-size="12">Fix: Auto-update invoice line total to $1,680.00 before broker EDI dispatch.</text>
+</svg>

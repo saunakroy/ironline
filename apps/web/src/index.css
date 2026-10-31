@@ -1,172 +1,314 @@
-@import 'tailwindcss';
-
-@theme {
-  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: ui-monospace, 'SF Mono', Consolas, monospace;
-
-  --color-bg: #f7f6f3;
-  --color-bg-elevated: #ffffff;
-  --color-surface: #ffffff;
-  --color-surface-2: #f1efea;
-  --color-border: #e4e1d8;
-  --color-border-strong: #d2cec1;
-  --color-text: #1c1b18;
-  --color-text-secondary: #55524a;
-  --color-text-muted: #85816f;
-  --color-text-faint: #a8a394;
-  --color-overlay: rgb(28 27 24 / 0.55);
-
-  --color-accent: #c2540a;
-  --color-accent-soft: #c2540a1a;
-  --color-accent-text: #9a4208;
-
-  --color-critical: #be123c;
-  --color-critical-soft: #be123c14;
-  --color-critical-text: #9f1239;
-
-  --color-warning: #b45309;
-  --color-warning-soft: #b4530914;
-  --color-warning-text: #92400e;
-
-  --color-success: #15803d;
-  --color-success-soft: #15803d14;
-  --color-success-text: #166534;
-
-  --color-info: #0369a1;
-  --color-info-soft: #0369a114;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --color-bg: #14161b;
-    --color-bg-elevated: #191b21;
-    --color-surface: #ffffff0a;
-    --color-surface-2: #ffffff12;
-    --color-border: #ffffff14;
-    --color-border-strong: #ffffff22;
-    --color-text: #f1f0ee;
-    --color-text-secondary: #c2c0ba;
-    --color-text-muted: #8c8a84;
-    --color-text-faint: #6b6965;
-    --color-overlay: rgb(0 0 0 / 0.7);
-
-    --color-accent: #fb923c;
-    --color-accent-soft: #fb923c22;
-    --color-accent-text: #fdba74;
-
-    --color-critical: #fb7185;
-    --color-critical-soft: #fb718522;
-    --color-critical-text: #fda4af;
-
-    --color-warning: #fbbf24;
-    --color-warning-soft: #fbbf2420;
-    --color-warning-text: #fde68a;
-
-    --color-success: #34d399;
-    --color-success-soft: #34d39920;
-    --color-success-text: #6ee7b7;
-
-    --color-info: #38bdf8;
-    --color-info-soft: #38bdf820;
-  }
-}
-
-:root[data-theme='dark'] {
-  --color-bg: #14161b;
-  --color-bg-elevated: #191b21;
-  --color-surface: #ffffff0a;
-  --color-surface-2: #ffffff12;
-  --color-border: #ffffff14;
-  --color-border-strong: #ffffff22;
-  --color-text: #f1f0ee;
-  --color-text-secondary: #c2c0ba;
-  --color-text-muted: #8c8a84;
-  --color-text-faint: #6b6965;
-  --color-overlay: rgb(0 0 0 / 0.7);
-
-  --color-accent: #fb923c;
-  --color-accent-soft: #fb923c22;
-  --color-accent-text: #fdba74;
-
-  --color-critical: #fb7185;
-  --color-critical-soft: #fb718522;
-  --color-critical-text: #fda4af;
-
-  --color-warning: #fbbf24;
-  --color-warning-soft: #fbbf2420;
-  --color-warning-text: #fde68a;
-
-  --color-success: #34d399;
-  --color-success-soft: #34d39920;
-  --color-success-text: #6ee7b7;
-
-  --color-info: #38bdf8;
-  --color-info-soft: #38bdf820;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  color-scheme: light dark;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  color-scheme: dark;
 }
 
-html,
-body,
-#root {
-  min-height: 100%;
-}
-
-body {
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   margin: 0;
-  background: var(--color-bg);
-  color: var(--color-text);
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-  transition: background-color 0.25s ease, color 0.25s ease;
+  padding: 0;
+  background-color: #070b14;
+  color: #f8fafc;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
-* {
-  box-sizing: border-box;
+#root {
+  width: 100%;
+  max-width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-color: #070b14;
 }
 
+code, pre, .font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Custom dark scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-::-webkit-scrollbar-thumb {
-  background: var(--color-border-strong);
-  border-radius: 4px;
+  width: 6px;
+  height: 6px;
 }
 
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Touch targets and mobile optimizations */
+button, input, select, textarea {
+  touch-action: manipulation;
+}
+
+/* Shimmer animation for extracting stage */
 @keyframes shimmer {
   0% {
-    transform: translateX(-100%);
+    background-position: -200% 0;
   }
   100% {
-    transform: translateX(200%);
+    background-position: 200% 0;
   }
 }
 
-@keyframes hero-glow {
-  0%,
-  100% {
-    opacity: 0.45;
-    transform: translate(-10%, -15%) scale(1);
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(30, 41, 59, 0.4) 0%,
+    rgba(56, 189, 248, 0.2) 50%,
+    rgba(30, 41, 59, 0.4) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s infinite linear;
+}
+
+/* Problem fields pulsing highlight in evidence drawer */
+@keyframes problemPulse {
+  0%, 100% {
+    border-color: rgba(249, 115, 22, 0.4);
+    box-shadow: 0 0 0 0 rgba(249, 115, 22, 0);
   }
   50% {
-    opacity: 0.7;
-    transform: translate(5%, -5%) scale(1.08);
+    border-color: #f97316;
+    box-shadow: 0 0 14px 2px rgba(249, 115, 22, 0.35);
   }
 }
 
-.hero-glow {
-  animation: hero-glow 8s ease-in-out infinite;
+.animate-problem-pulse {
+  animation: problemPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
+/* Staggered card entrance */
+@keyframes staggerSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-stagger-card {
+  animation: staggerSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Card hover lift & orange accent glow */
+.card-hover-glow {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.2s ease, 
+              box-shadow 0.2s ease, 
+              background-color 0.2s ease;
+}
+
+.card-hover-glow:hover {
+  transform: translateY(-2px);
+  border-color: rgba(249, 115, 22, 0.5);
+  box-shadow: 0 12px 28px -6px rgba(249, 115, 22, 0.16), 0 0 0 1px rgba(249, 115, 22, 0.2);
+}
+
+/* Animated gradient glow behind the hero */
+@keyframes heroGlowPulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.04);
+  }
+}
+
+.animate-hero-glow {
+  animation: heroGlowPulse 5s ease-in-out infinite;
+}
+
+/* Tab entrance animation */
+.animate-tab-enter {
+  animation: staggerSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Slide in from right for drawer */
+@keyframes drawerSlideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes bottomSheetSlideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.animate-drawer-in {
+  animation: drawerSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (max-width: 639px) {
+  .animate-drawer-in {
+    animation: bottomSheetSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+
+/* Cybernetic laser scanner beam for Login Terminal */
+@keyframes laserScan {
+  0% {
+    top: 0%;
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0.6;
+  }
+}
+
+.animate-laser-scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #38bdf8 20%, #f97316 50%, #38bdf8 80%, transparent);
+  box-shadow: 0 0 16px 3px rgba(249, 115, 22, 0.7), 0 0 8px 1px rgba(56, 189, 248, 0.9);
+  animation: laserScan 2.4s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+/* Radar sweep effect for logo beacon */
+@keyframes radarSweep {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-radar-sweep {
+  animation: radarSweep 8s linear infinite;
+}
+
+/* Biometric keycard RFID pulse */
+@keyframes biometricPulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.6);
+  }
+  70% {
+    transform: scale(1.04);
+    box-shadow: 0 0 0 16px rgba(249, 115, 22, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(249, 115, 22, 0);
+  }
+}
+
+.animate-biometric-pulse {
+  animation: biometricPulse 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Respect user's motion preference */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, ::before, ::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
+}
+
+/* ==========================================================================
+   LIGHT / DARK THEME SYSTEM
+   ========================================================================== */
+
+.light {
+  color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+html.light,
+body.light {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+html.dark,
+body.dark {
+  background-color: #070b14;
+  color: #f8fafc;
+}
+
+/* Light mode scrollbar */
+.light ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.light ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+}
+
+.light ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Card hover glow in light mode */
+.light .card-hover-glow:hover {
+  border-color: #f97316;
+  box-shadow: 0 10px 25px -5px rgba(249, 115, 22, 0.12), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Drawer in light mode */
+.light .animate-drawer-in {
+  background-color: #ffffff;
+  border-color: #e2e8f0;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+}
+
+/* Dropzone in light mode */
+.light .border-dashed {
+  border-color: #cbd5e1;
+}
+
+.light .border-dashed:hover {
+  border-color: #f97316;
+}
+
+.light ::selection {
+  background-color: #f97316;
+  color: #ffffff;
 }

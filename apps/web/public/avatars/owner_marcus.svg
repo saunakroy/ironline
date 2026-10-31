@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+    <linearGradient id="skinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#cbd5e1"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background Circle -->
+  <circle cx="60" cy="60" r="58" fill="url(#bgGrad)" stroke="#f97316" stroke-width="2.5" stroke-opacity="0.6"/>
+  
+  <!-- Subtle ambient inner glow -->
+  <circle cx="60" cy="60" r="52" fill="none" stroke="#f97316" stroke-width="1" stroke-opacity="0.2"/>
+
+  <!-- Shoulders / Jacket -->
+  <path d="M 24 104 C 28 82, 45 74, 60 74 C 75 74, 92 82, 96 104 Z" fill="#0b1120" stroke="#334155" stroke-width="2"/>
+  
+  <!-- Collar / Shirt -->
+  <polygon points="60,86 50,74 70,74" fill="url(#accentGrad)"/>
+  <polygon points="60,94 44,74 52,74" fill="#334155"/>
+  <polygon points="60,94 76,74 68,74" fill="#1e293b"/>
+
+  <!-- Head / Face -->
+  <ellipse cx="60" cy="50" rx="20" ry="24" fill="url(#skinGrad)"/>
+  
+  <!-- Hair / Grooming -->
+  <path d="M 40 46 C 40 30, 48 24, 60 24 C 72 24, 80 30, 80 46 C 76 38, 70 34, 60 34 C 50 34, 44 38, 40 46 Z" fill="#0f172a"/>
+
+  <!-- Glasses / Modern Frame -->
+  <rect x="44" y="44" width="13" height="9" rx="3" fill="none" stroke="#f97316" stroke-width="2"/>
+  <rect x="63" y="44" width="13" height="9" rx="3" fill="none" stroke="#f97316" stroke-width="2"/>
+  <line x1="57" y1="48" x2="63" y2="48" stroke="#f97316" stroke-width="2"/>
+
+  <!-- Subtle Eyes -->
+  <circle cx="50.5" cy="48.5" r="1.5" fill="#0f172a"/>
+  <circle cx="69.5" cy="48.5" r="1.5" fill="#0f172a"/>
+
+  <!-- Small Beard Accent -->
+  <path d="M 54 66 C 57 69, 63 69, 66 66 C 64 71, 56 71, 54 66 Z" fill="#64748b"/>
+</svg>

@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-31T14:18:00Z",
+  "title": "Design System: Ironline",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Safety Orange",
+        "canonical": "#f97316",
+        "tonalRamp": ["#431407", "#7c2d12", "#9a3412", "#c2410c", "#ea580c", "#f97316", "#fb923c", "#fdba74"]
+      },
+      "secondary": {
+        "role": "secondary",
+        "displayName": "Telematics Cyan",
+        "canonical": "#38bdf8",
+        "tonalRamp": ["#082f49", "#0c4a6e", "#0369a1", "#0284c7", "#0ea5e9", "#38bdf8", "#7dd3fc", "#bae6fd"]
+      },
+      "neutral-bg": {
+        "role": "neutral",
+        "displayName": "Obsidian Black",
+        "canonical": "#070b14",
+        "tonalRamp": ["#020408", "#070b14", "#0f172a", "#1e293b", "#334155", "#64748b", "#94a3b8", "#f8fafc"]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero count-up dollar totals ($2,689) and pitch hooks."
+      },
+      "mono": {
+        "displayName": "Tabular Numbers",
+        "purpose": "Numeric rates, discrepancy amounts, and timestamps."
+      }
+    },
+    "shadows": [
+      {
+        "name": "orange-glow",
+        "value": "0 8px 24px rgba(249, 115, 22, 0.14)",
+        "purpose": "Subtle attention glow on hero briefing and card hovers."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out-smooth",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Drawer slide-in and dollar count-up easing."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Action Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "High-emphasis action for file intake and one-click reconciliation.",
+      "html": "<button class=\"ds-btn-primary\">Review Evidence & Resolve</button>",
+      "css": ".ds-btn-primary { background: #f97316; color: #070b14; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; font-weight: 700; padding: 10px 20px; border: none; border-radius: 12px; cursor: pointer; transition: background 0.2s, transform 0.2s; } .ds-btn-primary:hover { background: #ea580c; transform: translateY(-1px); }"
+    },
+    {
+      "name": "Briefing Discrepancy Card",
+      "kind": "card",
+      "refersTo": "card-surface",
+      "description": "Standard card for displaying flagged leaks with prominent tabular dollars.",
+      "html": "<div class=\"ds-card-briefing\"><div class=\"ds-tag\">P8 • WATCHDOG</div><div class=\"ds-amount\">$1,250.43</div><div class=\"ds-title\">Duplicate fuel receipt uploaded twice</div></div>",
+      "css": ".ds-card-briefing { background: #0f172a; border: 1px solid #1e293b; border-radius: 16px; padding: 20px; color: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif; transition: border-color 0.2s, transform 0.2s; } .ds-card-briefing:hover { border-color: rgba(249, 115, 22, 0.4); transform: translateY(-2px); } .ds-tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: #f97316; margin-bottom: 8px; } .ds-amount { font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 800; color: #f97316; } .ds-title { font-size: 14px; font-weight: 600; color: #cbd5e1; margin-top: 4px; }"
+    },
+    {
+      "name": "Dropdown Accordion Header",
+      "kind": "custom",
+      "refersTo": "card-surface",
+      "description": "Collapsible section header for managing screen density on mobile.",
+      "html": "<div class=\"ds-accordion-header\"><span>PAPERWORK INGESTION ZONE</span><span class=\"ds-toggle\">Collapse ▲</span></div>",
+      "css": ".ds-accordion-header { display: flex; justify-content: space-between; align-items: center; color: #94a3b8; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; padding: 4px; cursor: pointer; } .ds-toggle { font-size: 11px; color: #64748b; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Night Shift Dispatcher",
+    "overview": "Ironline is built for long-haul trucking owners and in-cab drivers operating in high-stakes, fatigue-prone environments. The visual language rejects SaaS template defaults in favor of an authoritative, nocturnal industrial craft: high-contrast dark surfaces, precision tabular numerals, and safety orange callouts that highlight dollars at stake before settlement.",
+    "keyCharacteristics": [
+      "Nocturnal High Contrast: Obsidian background (#070b14) paired with crisp white text (#f8fafc).",
+      "Dollars as the Stars: Financial figures in oversized tabular monospace (JetBrains Mono).",
+      "Precision Evidence Anchors: Discrepancies anchor to physical document proof with glowing problem field overlays.",
+      "Collapsible Section Density: Every primary operational screen area is an expandable dropdown accordion.",
+      "The Dispatcher Air-Gap: Drivers and brokers never communicate directly; the autonomous agent represents all broker claims."
+    ],
+    "rules": [
+      {
+        "name": "The Rarity of Orange Rule",
+        "body": "Safety orange is used on ≤5% of screen real estate. When orange appears, it means dollars need immediate human attention.",
+        "section": "colors"
+      },
+      {
+        "name": "The Tabular Money Rule",
+        "body": "Every dollar amount must render in font-mono tabular-nums to prevent layout jitter during count-up animations and maintain visual alignment.",
+        "section": "typography"
+      },
+      {
+        "name": "The Dispatcher Air-Gap Rule",
+        "body": "Drivers and brokers never speak directly. Drivers communicate solely with dispatch/agents; the agent alone communicates with brokers.",
+        "section": "overview"
+      },
+      {
+        "name": "The Collapsible Section Rule",
+        "body": "Every primary operational zone (dropzone, processed feed, decisions list, watch items) must support interactive accordion collapse to maintain vertical density.",
+        "section": "layout"
+      }
+    ],
+    "dos": [
+      "Do format every dollar amount with consistent 2-decimal precision ($1,250.43).",
+      "Do wrap operational sections in collapsible dropdowns so users can manage screen space.",
+      "Do isolate drivers from brokers: drivers speak only to dispatch/agents; agents speak to brokers.",
+      "Do display an extraction confidence badge on every parsed document.",
+      "Do anchor every financial discrepancy to verifiable document evidence.",
+      "Do ensure 100% responsive fluid behavior on 390px iPhone/iPad screens."
+    ],
+    "donts": [
+      "Don't ever show or facilitate direct driver-to-broker communication; the dispatcher/agent owns all broker discussions.",
+      "Don't use bright light backgrounds that cause glare in night driving conditions.",
+      "Don't require drivers or owners to fill in manual spreadsheet forms.",
+      "Don't bury dollar amounts behind secondary clicks; money is always hero.",
+      "Don't animate elements longer than 600ms (except smooth count-up)."
+    ]
+  }
+}

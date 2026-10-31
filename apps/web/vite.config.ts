@@ -1,18 +1,12 @@
-import tailwindcss from '@tailwindcss/vite'
-import react from '@vitejs/plugin-react'
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
-// Dev proxy to the backend: /data -> data server (:4000), /inference -> inference server (:4100).
-const DATA = process.env.DATA_URL ?? 'http://127.0.0.1:4000'
-const INFERENCE = process.env.INFERENCE_URL ?? 'http://127.0.0.1:4100'
-
-// https://vite.dev/config/
+// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [react()],
   server: {
-    proxy: {
-      '/data': { target: DATA, changeOrigin: true, rewrite: (p) => p.replace(/^\/data/, '') },
-      '/inference': { target: INFERENCE, changeOrigin: true, rewrite: (p) => p.replace(/^\/inference/, '') },
-    },
-  },
-})
+    port: 5173,
+    host: true,
+    allowedHosts: true
+  }
+});
