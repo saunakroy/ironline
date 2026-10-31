@@ -129,6 +129,8 @@ app.post("/relay/publish", wrap(async (req, res) => {
         res.status(202).json({ accepted: true })
     } else res.json(await published)
 }))
+/** Live tracker page for the relay feed: incoming files, which agent is doing what, raw messages. */
+app.get("/tracker", (_req, res) => void res.sendFile(join(import.meta.dir, "tracker.html")))
 app.get("/relay/recent", (_req, res) => void res.json(hub.recent()))
 /** Live agent-message feed for the UI (Server-Sent Events). */
 app.get("/relay/feed", (req, res) => {

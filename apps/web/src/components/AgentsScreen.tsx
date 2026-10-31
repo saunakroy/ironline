@@ -91,6 +91,16 @@ export default function AgentsScreen() {
         <p className="mt-2 text-sm text-text-muted">
           Every night the agents check documents against each other before the briefing goes out.
         </p>
+        {status !== 'mock' && (
+          <a
+            href="/inference/tracker"
+            target="_blank"
+            rel="noreferrer"
+            className="mt-2 inline-block text-[12.5px] font-semibold text-accent-text hover:text-accent"
+          >
+            Open the live tracker (every file, every agent, raw messages) &rarr;
+          </a>
+        )}
       </header>
 
       {status !== 'mock' && agentMessages.length === 0 && (
