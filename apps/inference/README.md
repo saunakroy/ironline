@@ -113,6 +113,10 @@ upload ─▶ Intake ──doc.extracted──▶ company:<id> (router → Load/
 
 ## Plugging in Agent Relay: where to start
 
+> The step-by-step setup guide (workspace, identities, channels, the `AgentRelayTransport` code, and a check
+> that it works) is in the [root README → Agent communication network](../../README.md#agent-communication-network-agent-relay).
+> This section is the summary.
+
 `src/relay.ts` is the only file that needs to know about the transport:
 
 ```ts
