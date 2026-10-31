@@ -89,7 +89,7 @@ export default function App() {
   const activeLoadForDriver = loads.find(l => l.id === currentDriver.currentLoadId);
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans antialiased">
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans antialiased w-full max-w-full overflow-x-hidden">
       <Navbar
         currentRole={currentRole}
         onRoleChange={setCurrentRole}

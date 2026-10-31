@@ -164,7 +164,7 @@ export const TruckerPortal: React.FC<TruckerPortalProps> = ({
             <img 
               src={currentDriver.avatar} 
               alt={currentDriver.name} 
-              className="w-18 h-18 sm:w-20 sm:h-20 rounded-2xl object-cover border-2 border-slate-100 shadow-sm shrink-0"
+              className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border-2 border-slate-100 shadow-sm shrink-0"
             />
             <div>
               <div className="flex flex-wrap items-center gap-2.5">
