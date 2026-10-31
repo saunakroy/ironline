@@ -25,22 +25,22 @@ function MessageRow({
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: active ? 1 : 0.25, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="rounded-2xl border border-white/10 bg-white/[0.03] p-3.5"
+      className="rounded-2xl border border-border bg-surface p-3.5"
     >
       <div className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-1.5 text-[12.5px] font-medium text-white/50">
+        <div className="flex items-center gap-1.5 text-[12.5px] font-medium text-text-muted">
           <AgentBadge agent={message.from} tone="colored" live={active} />
-          <ArrowRight size={12} className="text-white/25" />
-          <span className="text-white/60">{message.to}</span>
+          <ArrowRight size={12} className="text-text-faint" />
+          <span className="text-text-secondary">{message.to}</span>
         </div>
-        <span className="flex-none text-[11.5px] text-white/35">{message.time}</span>
+        <span className="flex-none text-[11.5px] text-text-faint">{message.time}</span>
       </div>
-      <p className="mt-2 min-h-[2.5em] text-[13.5px] leading-snug text-white/80">
+      <p className="mt-2 min-h-[2.5em] text-[13.5px] leading-snug text-text-secondary">
         {text}
-        {isTyping && <span className="ml-0.5 inline-block h-3.5 w-[2px] animate-pulse bg-white/50 align-middle" />}
+        {isTyping && <span className="ml-0.5 inline-block h-3.5 w-[2px] animate-pulse bg-text-muted align-middle" />}
       </p>
       {message.loadId && (active || reduced) && (
-        <span className="mt-2 inline-flex rounded-full bg-white/5 px-2.5 py-1 text-[11px] font-medium text-white/50">
+        <span className="mt-2 inline-flex rounded-full bg-surface-2 px-2.5 py-1 text-[11px] font-medium text-text-muted">
           Load {message.loadId}
         </span>
       )}
@@ -63,9 +63,9 @@ export default function AgentsScreen() {
   return (
     <div className="px-4 pb-8 pt-6 sm:px-6">
       <header>
-        <p className="text-[13px] font-medium text-white/40">Agent Relay &middot; live feed</p>
-        <h1 className="mt-1 text-[26px] font-bold text-white sm:text-3xl">Agents</h1>
-        <p className="mt-2 text-sm text-white/50">
+        <p className="text-[13px] font-medium text-text-muted">Agent Relay &middot; live feed</p>
+        <h1 className="mt-1 text-[26px] font-bold text-text sm:text-3xl">Agents</h1>
+        <p className="mt-2 text-sm text-text-muted">
           Every night the agents check documents against each other before the briefing goes out.
         </p>
       </header>

@@ -5,13 +5,13 @@ import { CATEGORY_ICON } from '../lib/icons'
 import AgentBadge from './AgentBadge'
 
 const AMOUNT_COLOR: Record<BriefingItem['severity'], string> = {
-  critical: 'text-rose-300',
-  warning: 'text-amber-200/90',
+  critical: 'text-critical-text',
+  warning: 'text-warning-text',
 }
 
 const RANK_DOT: Record<BriefingItem['severity'], string> = {
-  critical: 'bg-rose-400/20 text-rose-200',
-  warning: 'bg-white/10 text-white/60',
+  critical: 'bg-critical-soft text-critical-text',
+  warning: 'bg-surface-2 text-text-secondary',
 }
 
 export const cardVariants = {
@@ -35,7 +35,7 @@ export default function BriefingCard({
       variants={cardVariants}
       whileHover={{ y: -2 }}
       transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-      className="rounded-2xl border border-white/8 bg-white/[0.025] p-4 transition-shadow duration-300 hover:border-orange-400/20 hover:shadow-[0_8px_30px_-8px_rgba(251,146,60,0.25)]"
+      className="rounded-2xl border border-border bg-surface p-4 transition-shadow duration-300 hover:border-accent/30 hover:shadow-[0_8px_30px_-8px_var(--color-accent-soft)]"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-start gap-3">
@@ -46,10 +46,10 @@ export default function BriefingCard({
           </span>
           <div>
             <div className="flex items-center gap-1.5">
-              <Icon size={14} className="text-white/35" strokeWidth={1.8} />
-              <h3 className="text-[15px] font-semibold text-white/90 leading-snug">{item.title}</h3>
+              <Icon size={14} className="text-text-faint" strokeWidth={1.8} />
+              <h3 className="text-[15px] font-semibold text-text leading-snug">{item.title}</h3>
             </div>
-            <p className="mt-1 text-sm text-white/50 leading-snug">{item.summary}</p>
+            <p className="mt-1 text-sm text-text-muted leading-snug">{item.summary}</p>
           </div>
         </div>
         <div className="flex-none text-right">
@@ -62,14 +62,14 @@ export default function BriefingCard({
       <div className="mt-3 flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <AgentBadge agent={item.agent} />
-          <span className="rounded-full bg-white/5 px-2.5 py-1 text-[11px] font-medium text-white/40">
+          <span className="rounded-full bg-surface-2 px-2.5 py-1 text-[11px] font-medium text-text-muted">
             Load {item.loadId}
           </span>
         </div>
         <button
           type="button"
           onClick={() => onViewEvidence(item)}
-          className="flex-none text-[13px] font-semibold text-orange-300 hover:text-orange-200 active:text-orange-200"
+          className="flex-none text-[13px] font-semibold text-accent-text hover:text-accent"
         >
           View evidence &rarr;
         </button>

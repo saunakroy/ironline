@@ -53,12 +53,12 @@ export const kpiCards: KpiCard[] = [
 export interface AgingBucket {
   label: string
   amount: number
-  color: string
+  colorClass: string
 }
 
 export const agingBuckets: AgingBucket[] = [
-  { label: '0–30 days', amount: 29870, color: 'bg-emerald-400/70' },
-  { label: '31–60 days', amount: 9440, color: 'bg-amber-300/70' },
-  { label: '61–90 days', amount: 6200, color: 'bg-orange-400/70' },
-  { label: '90+ days', amount: 2800, color: 'bg-rose-400/70' },
+  { label: '0–30 days', amount: 29870, colorClass: 'bg-success' },
+  { label: '31–60 days', amount: 9440, colorClass: 'bg-warning' },
+  { label: '61–90 days', amount: 6200, colorClass: 'bg-accent' },
+  { label: '90+ days', amount: 2800, colorClass: 'bg-critical' },
 ]

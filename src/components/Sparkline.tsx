@@ -1,4 +1,4 @@
-export default function Sparkline({ values, color = '#fb923c' }: { values: number[]; color?: string }) {
+export default function Sparkline({ values, colorClass = 'text-accent' }: { values: number[]; colorClass?: string }) {
   const w = 96
   const h = 28
   const min = Math.min(...values)
@@ -13,8 +13,8 @@ export default function Sparkline({ values, color = '#fb923c' }: { values: numbe
     .join(' ')
 
   return (
-    <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} className="flex-none overflow-visible">
-      <polyline points={points} fill="none" stroke={color} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} className={`flex-none overflow-visible ${colorClass}`}>
+      <polyline points={points} fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }

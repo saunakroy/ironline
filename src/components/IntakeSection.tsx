@@ -30,17 +30,17 @@ function StagePill({ stage }: { stage: DocStage }) {
   const base = 'inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium'
   if (stage === 'done') {
     return (
-      <span className={`${base} bg-emerald-400/10 text-emerald-200/90`}>
+      <span className={`${base} bg-success-soft text-success-text`}>
         <CheckCircle2 size={12} /> {STAGE_LABEL[stage]}
       </span>
     )
   }
   if (stage === 'needs review') {
-    return <span className={`${base} bg-rose-400/10 text-rose-200/90`}>{STAGE_LABEL[stage]}</span>
+    return <span className={`${base} bg-critical-soft text-critical-text`}>{STAGE_LABEL[stage]}</span>
   }
   return (
-    <span className={`${base} bg-white/8 text-white/55`}>
-      <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-300" />
+    <span className={`${base} bg-surface-2 text-text-secondary`}>
+      <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent" />
       {STAGE_LABEL[stage]}
     </span>
   )
@@ -134,17 +134,17 @@ export default function IntakeSection({
           addFiles(Array.from(e.dataTransfer.files))
         }}
         className={`relative flex flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed px-4 py-4 text-center transition-colors sm:py-8 ${
-          isDragOver ? 'border-orange-400/60 bg-orange-400/[0.06]' : 'border-white/12 bg-white/[0.02]'
+          isDragOver ? 'border-accent/60 bg-accent-soft' : 'border-border bg-surface'
         }`}
       >
-        <CloudUpload size={24} className="hidden text-white/35 sm:block" strokeWidth={1.6} />
-        <p className="hidden text-sm font-medium text-white/70 sm:block">
+        <CloudUpload size={24} className="hidden text-text-muted sm:block" strokeWidth={1.6} />
+        <p className="hidden text-sm font-medium text-text-secondary sm:block">
           Drop paperwork here: rate cons, BOL photos, receipts, texts
         </p>
-        <p className="hidden text-[12px] text-white/35 sm:block">PDF, DOCX, JPG, EML, TXT</p>
+        <p className="hidden text-[12px] text-text-muted sm:block">PDF, DOCX, JPG, EML, TXT</p>
 
         <div className="flex w-full flex-col items-center justify-center gap-2 sm:w-auto sm:flex-row sm:flex-wrap">
-          <label className="w-full cursor-pointer rounded-full bg-white/10 px-4 py-3 text-center text-[13px] font-semibold text-white hover:bg-white/15 sm:w-auto sm:py-2">
+          <label className="w-full cursor-pointer rounded-full bg-surface-2 px-4 py-3 text-center text-[13px] font-semibold text-text hover:bg-border sm:w-auto sm:py-2">
             <span className="sm:hidden">Take photo / choose file</span>
             <span className="hidden sm:inline">Browse files</span>
             <input
@@ -159,17 +159,17 @@ export default function IntakeSection({
           <button
             type="button"
             onClick={loadDemoFiles}
-            className="flex w-full items-center justify-center gap-1.5 rounded-full bg-orange-400/15 px-4 py-3 text-[13px] font-semibold text-orange-200 hover:bg-orange-400/25 sm:w-auto sm:py-2"
+            className="flex w-full items-center justify-center gap-1.5 rounded-full bg-accent-soft px-4 py-3 text-[13px] font-semibold text-accent-text hover:bg-accent/20 sm:w-auto sm:py-2"
           >
             <Sparkles size={14} /> Load demo files
           </button>
         </div>
       </div>
 
-      {error && <p className="mt-2 text-[12.5px] text-rose-300">{error}</p>}
+      {error && <p className="mt-2 text-[12.5px] text-critical-text">{error}</p>}
 
       {queue.length === 0 ? (
-        <p className="mt-3 flex items-center gap-1.5 text-[12.5px] text-white/30">
+        <p className="mt-3 flex items-center gap-1.5 text-[12.5px] text-text-faint">
           <ListChecks size={13} /> Nothing processed yet tonight — drop a file or load the demo set.
         </p>
       ) : (
@@ -187,7 +187,7 @@ export default function IntakeSection({
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: reduced ? 0 : 0.3 }}
-                  className="overflow-hidden rounded-xl border border-white/8 bg-white/[0.025]"
+                  className="overflow-hidden rounded-xl border border-border bg-surface"
                 >
                   <button
                     type="button"
@@ -196,8 +196,8 @@ export default function IntakeSection({
                     className="flex w-full items-center justify-between gap-3 px-3.5 py-3 text-left"
                   >
                     <div className="flex items-center gap-2.5 overflow-hidden">
-                      <Icon size={16} className="flex-none text-white/40" strokeWidth={1.7} />
-                      <span className="truncate text-[13.5px] font-medium text-white/85">{item.name}</span>
+                      <Icon size={16} className="flex-none text-text-muted" strokeWidth={1.7} />
+                      <span className="truncate text-[13.5px] font-medium text-text-secondary">{item.name}</span>
                     </div>
                     <div className="flex flex-none items-center gap-2">
                       <StagePill stage={item.stage} />
@@ -207,7 +207,7 @@ export default function IntakeSection({
                           height="14"
                           viewBox="0 0 16 16"
                           fill="none"
-                          className={`text-white/30 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                          className={`text-text-faint transition-transform ${isExpanded ? 'rotate-180' : ''}`}
                         >
                           <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
@@ -217,8 +217,8 @@ export default function IntakeSection({
 
                   {item.stage === 'extracting' && (
                     <div className="px-3.5 pb-3">
-                      <div className="h-2 w-full overflow-hidden rounded-full bg-white/5">
-                        <div className="h-full w-1/2 animate-[shimmer_1.2s_ease-in-out_infinite] rounded-full bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                      <div className="h-2 w-full overflow-hidden rounded-full bg-surface-2">
+                        <div className="h-full w-1/2 animate-[shimmer_1.2s_ease-in-out_infinite] rounded-full bg-gradient-to-r from-transparent via-border-strong to-transparent" />
                       </div>
                     </div>
                   )}
@@ -230,17 +230,17 @@ export default function IntakeSection({
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: reduced ? 0 : 0.25 }}
-                        className="border-t border-white/8 px-3.5 py-3"
+                        className="border-t border-border px-3.5 py-3"
                       >
                         <div className="flex items-center justify-between">
-                          <span className="text-[12px] font-semibold uppercase tracking-wide text-white/40">
+                          <span className="text-[12px] font-semibold uppercase tracking-wide text-text-muted">
                             {item.docType}
                           </span>
                           <span
                             className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${
                               item.confidence >= 0.85
-                                ? 'bg-emerald-400/10 text-emerald-200/90'
-                                : 'bg-amber-300/10 text-amber-200/90'
+                                ? 'bg-success-soft text-success-text'
+                                : 'bg-warning-soft text-warning-text'
                             }`}
                           >
                             {Math.round(item.confidence * 100)}% confidence
@@ -249,8 +249,8 @@ export default function IntakeSection({
                         <dl className="mt-2 space-y-1">
                           {item.fields.slice(0, 3).map((f) => (
                             <div key={f.label} className="flex items-center justify-between gap-3 text-[12.5px]">
-                              <dt className="text-white/45">{f.label}</dt>
-                              <dd className={f.status === 'flagged' ? 'font-medium text-rose-200' : 'text-white/75'}>
+                              <dt className="text-text-muted">{f.label}</dt>
+                              <dd className={f.status === 'flagged' ? 'font-medium text-critical-text' : 'text-text-secondary'}>
                                 {f.value}
                               </dd>
                             </div>
@@ -268,7 +268,7 @@ export default function IntakeSection({
                                 fields: item.fields,
                               })
                             }
-                            className="mt-2.5 text-[12.5px] font-semibold text-orange-300 hover:text-orange-200"
+                            className="mt-2.5 text-[12.5px] font-semibold text-accent-text hover:text-accent"
                           >
                             View source file &rarr;
                           </button>

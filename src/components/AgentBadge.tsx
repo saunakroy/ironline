@@ -1,19 +1,19 @@
 import type { AgentName } from '../data/types'
 
 const COLORED_STYLES: Record<AgentName, string> = {
-  'Fuel Agent': 'bg-amber-400/10 text-amber-200 ring-amber-400/25',
-  'Billing Agent': 'bg-sky-400/10 text-sky-200 ring-sky-400/25',
-  'Rate Agent': 'bg-orange-400/10 text-orange-200 ring-orange-400/25',
-  'Detention Agent': 'bg-teal-400/10 text-teal-200 ring-teal-400/25',
-  Watchdog: 'bg-rose-400/10 text-rose-200 ring-rose-400/25',
+  'Fuel Agent': 'bg-warning-soft text-warning-text ring-warning/25',
+  'Billing Agent': 'bg-info-soft text-info ring-info/25',
+  'Rate Agent': 'bg-accent-soft text-accent-text ring-accent/25',
+  'Detention Agent': 'bg-success-soft text-success-text ring-success/25',
+  Watchdog: 'bg-critical-soft text-critical-text ring-critical/25',
 }
 
 const DOT_COLOR: Record<AgentName, string> = {
-  'Fuel Agent': 'bg-amber-300',
-  'Billing Agent': 'bg-sky-300',
-  'Rate Agent': 'bg-orange-300',
-  'Detention Agent': 'bg-teal-300',
-  Watchdog: 'bg-rose-300',
+  'Fuel Agent': 'bg-warning',
+  'Billing Agent': 'bg-info',
+  'Rate Agent': 'bg-accent',
+  'Detention Agent': 'bg-success',
+  Watchdog: 'bg-critical',
 }
 
 export default function AgentBadge({
@@ -25,10 +25,7 @@ export default function AgentBadge({
   tone?: 'neutral' | 'colored'
   live?: boolean
 }) {
-  const style =
-    tone === 'colored'
-      ? COLORED_STYLES[agent]
-      : 'bg-slate-500/10 text-slate-300 ring-slate-500/20'
+  const style = tone === 'colored' ? COLORED_STYLES[agent] : 'bg-surface-2 text-text-secondary ring-border'
 
   return (
     <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium ring-1 ring-inset whitespace-nowrap ${style}`}>

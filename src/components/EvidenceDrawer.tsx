@@ -16,9 +16,9 @@ export interface EvidenceDrawerProps {
 
 function ConfidenceBar({ pct }: { pct: number }) {
   const reduced = useReducedMotion()
-  const color = pct >= 95 ? 'bg-emerald-400/70' : pct >= 85 ? 'bg-amber-300/70' : 'bg-rose-400/70'
+  const color = pct >= 95 ? 'bg-success' : pct >= 85 ? 'bg-warning' : 'bg-critical'
   return (
-    <div className="h-1.5 w-20 overflow-hidden rounded-full bg-white/10">
+    <div className="h-1.5 w-20 overflow-hidden rounded-full bg-surface-2">
       <motion.div
         className={`h-full rounded-full ${color}`}
         initial={{ width: 0 }}
@@ -62,7 +62,8 @@ export default function EvidenceDrawer({
         type="button"
         aria-label="Close evidence viewer"
         onClick={onClose}
-        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+        className="absolute inset-0 backdrop-blur-sm"
+        style={{ background: 'var(--color-overlay)' }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -74,22 +75,22 @@ export default function EvidenceDrawer({
         animate={reduced ? { opacity: 1 } : { y: 0, opacity: 1 }}
         exit={reduced ? { opacity: 0 } : { y: 24, opacity: 0 }}
         transition={{ duration: reduced ? 0 : 0.28, ease: [0.16, 1, 0.3, 1] }}
-        className="relative flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-3xl border border-white/10 bg-[#17191f] shadow-2xl sm:max-w-2xl sm:rounded-3xl"
+        className="relative flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-3xl border border-border bg-bg-elevated shadow-2xl sm:max-w-2xl sm:rounded-3xl"
       >
-        <div className="flex items-start justify-between gap-3 border-b border-white/10 px-5 py-4">
+        <div className="flex items-start justify-between gap-3 border-b border-border px-5 py-4">
           <div>
             <div className="flex items-center gap-2">
               {badge}
               {tag && (
-                <span className="rounded-full bg-white/5 px-2.5 py-1 text-[11px] font-medium text-white/50">{tag}</span>
+                <span className="rounded-full bg-surface-2 px-2.5 py-1 text-[11px] font-medium text-text-muted">{tag}</span>
               )}
             </div>
-            <h2 className="mt-2 text-base font-semibold text-white leading-snug">{title}</h2>
+            <h2 className="mt-2 text-base font-semibold text-text leading-snug">{title}</h2>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="flex-none rounded-full bg-white/5 p-2 text-white/60 hover:bg-white/10 hover:text-white"
+            className="flex-none rounded-full bg-surface-2 p-2 text-text-muted hover:text-text"
             aria-label="Close"
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -99,15 +100,15 @@ export default function EvidenceDrawer({
         </div>
 
         <div className="flex-1 overflow-y-auto px-5 py-4">
-          <div className="flex items-center justify-between rounded-xl bg-white/[0.03] px-3.5 py-2.5">
-            <span className="text-[13px] font-medium text-white/60">Extraction confidence</span>
+          <div className="flex items-center justify-between rounded-xl bg-surface px-3.5 py-2.5">
+            <span className="text-[13px] font-medium text-text-secondary">Extraction confidence</span>
             <div className="flex items-center gap-2">
               <ConfidenceBar pct={confidencePct} />
-              <span className="text-[13px] font-semibold tabular-nums text-white/80">{confidencePct}%</span>
+              <span className="text-[13px] font-semibold tabular-nums text-text">{confidencePct}%</span>
             </div>
           </div>
 
-          <div className="mt-4 overflow-hidden rounded-xl border border-white/10 bg-white">
+          <div className="mt-4 overflow-hidden rounded-xl border border-border bg-white">
             {!imgError ? (
               <img
                 src={evidenceUrl}
@@ -116,27 +117,27 @@ export default function EvidenceDrawer({
                 onError={() => setImgError(true)}
               />
             ) : (
-              <div className="flex h-48 items-center justify-center text-sm text-slate-400">Preview unavailable</div>
+              <div className="flex h-48 items-center justify-center text-sm text-gray-400">Preview unavailable</div>
             )}
           </div>
 
           <div className="mt-5">
-            <h3 className="text-xs font-semibold uppercase tracking-wide text-white/40">Extracted fields</h3>
-            <dl className="mt-2 divide-y divide-white/5 rounded-xl border border-white/10">
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-text-muted">Extracted fields</h3>
+            <dl className="mt-2 divide-y divide-border rounded-xl border border-border">
               {fields.map((field, i) => (
                 <motion.div
                   key={field.label}
-                  initial={field.status === 'flagged' && !reduced ? { backgroundColor: 'rgba(251,113,133,0.22)' } : undefined}
-                  animate={field.status === 'flagged' && !reduced ? { backgroundColor: 'rgba(251,113,133,0)' } : undefined}
+                  initial={field.status === 'flagged' && !reduced ? { backgroundColor: 'var(--color-critical-soft)' } : undefined}
+                  animate={field.status === 'flagged' && !reduced ? { backgroundColor: 'rgba(0,0,0,0)' } : undefined}
                   transition={{ duration: 0.6, delay: 0.15 + i * 0.04 }}
                   className={`flex items-center justify-between gap-3 px-3.5 py-2.5 ${
-                    field.status === 'flagged' ? 'bg-rose-400/[0.06]' : ''
+                    field.status === 'flagged' ? 'bg-critical-soft' : ''
                   }`}
                 >
-                  <dt className="text-[13px] text-white/55">{field.label}</dt>
+                  <dt className="text-[13px] text-text-muted">{field.label}</dt>
                   <dd
                     className={`text-[13.5px] font-medium ${
-                      field.status === 'flagged' ? 'text-rose-200' : 'text-white/80'
+                      field.status === 'flagged' ? 'text-critical-text' : 'text-text-secondary'
                     }`}
                   >
                     {field.value}
@@ -147,9 +148,9 @@ export default function EvidenceDrawer({
           </div>
 
           {footer && (
-            <div className="mt-5 flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-3">
-              <span className="text-[13px] font-medium text-white/70">{footer.label}</span>
-              <span className="text-lg font-bold tabular-nums text-rose-200">{footer.value}</span>
+            <div className="mt-5 flex items-center justify-between rounded-xl border border-border bg-surface px-3.5 py-3">
+              <span className="text-[13px] font-medium text-text-secondary">{footer.label}</span>
+              <span className="text-lg font-bold tabular-nums text-critical-text">{footer.value}</span>
             </div>
           )}
         </div>
@@ -159,7 +160,5 @@ export default function EvidenceDrawer({
 }
 
 export function AnimatedEvidenceDrawer(props: EvidenceDrawerProps | null) {
-  return (
-    <AnimatePresence>{props && <EvidenceDrawer key={props.title} {...props} />}</AnimatePresence>
-  )
+  return <AnimatePresence>{props && <EvidenceDrawer key={props.title} {...props} />}</AnimatePresence>
 }
