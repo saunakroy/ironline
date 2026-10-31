@@ -133,19 +133,18 @@ export default function IntakeSection({
           setIsDragOver(false)
           addFiles(Array.from(e.dataTransfer.files))
         }}
-        className={`relative flex flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed px-4 py-7 text-center transition-colors sm:py-8 ${
+        className={`relative flex flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed px-4 py-4 text-center transition-colors sm:py-8 ${
           isDragOver ? 'border-orange-400/60 bg-orange-400/[0.06]' : 'border-white/12 bg-white/[0.02]'
         }`}
       >
-        <CloudUpload size={24} className="text-white/35" strokeWidth={1.6} />
+        <CloudUpload size={24} className="hidden text-white/35 sm:block" strokeWidth={1.6} />
         <p className="hidden text-sm font-medium text-white/70 sm:block">
           Drop paperwork here: rate cons, BOL photos, receipts, texts
         </p>
         <p className="hidden text-[12px] text-white/35 sm:block">PDF, DOCX, JPG, EML, TXT</p>
-        <p className="text-sm font-medium text-white/70 sm:hidden">Add tonight&apos;s paperwork</p>
 
-        <div className="mt-1 flex flex-wrap items-center justify-center gap-2">
-          <label className="cursor-pointer rounded-full bg-white/10 px-4 py-2.5 text-[13px] font-semibold text-white hover:bg-white/15 sm:py-2">
+        <div className="flex w-full flex-col items-center justify-center gap-2 sm:w-auto sm:flex-row sm:flex-wrap">
+          <label className="w-full cursor-pointer rounded-full bg-white/10 px-4 py-3 text-center text-[13px] font-semibold text-white hover:bg-white/15 sm:w-auto sm:py-2">
             <span className="sm:hidden">Take photo / choose file</span>
             <span className="hidden sm:inline">Browse files</span>
             <input
@@ -160,7 +159,7 @@ export default function IntakeSection({
           <button
             type="button"
             onClick={loadDemoFiles}
-            className="flex items-center gap-1.5 rounded-full bg-orange-400/15 px-4 py-2.5 text-[13px] font-semibold text-orange-200 hover:bg-orange-400/25 sm:py-2"
+            className="flex w-full items-center justify-center gap-1.5 rounded-full bg-orange-400/15 px-4 py-3 text-[13px] font-semibold text-orange-200 hover:bg-orange-400/25 sm:w-auto sm:py-2"
           >
             <Sparkles size={14} /> Load demo files
           </button>

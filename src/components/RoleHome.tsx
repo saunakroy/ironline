@@ -28,7 +28,7 @@ export default function RoleHome({ onSelect }: { onSelect: (role: Role) => void 
                 </div>
               </div>
               <div className="flex-none text-right">
-                <p className="text-lg font-bold tabular-nums text-white">{profile.stat}</p>
+                <p className="text-lg font-bold tabular-nums text-orange-300">{profile.stat}</p>
                 <p className="text-[11px] text-white/40">{profile.statLabel}</p>
               </div>
             </button>
