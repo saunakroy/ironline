@@ -65,7 +65,8 @@ const MIME: Record<string, string> = { ".jpg": "image/jpeg", ".jpeg": "image/jpe
 
 export async function extractFile(path: string, opts: { displayName?: string; openLoads?: OpenLoadHint[]; drivers?: string[]; asOf?: string } = {}): Promise<ExtractedDoc> {
     const file = opts.displayName ?? basename(path)
-    const ext = extname(path).toLowerCase()
+    // Uploads land in multer's temp dir with no extension, so the type comes from the original name.
+    const ext = extname(file).toLowerCase()
     const context = [
         `FILE NAME: ${file}`,
         opts.asOf ? `TODAY: ${opts.asOf}` : "",
